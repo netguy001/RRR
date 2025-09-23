@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    xintegrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+    integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
     :root {
@@ -15,13 +15,27 @@
       --primary-yellow: #F4D35E;
       --danger-red: #e74c3c;
       --success-green: #2ecc71;
+      --light-bg: #f7f9fc;
+    }
+
+    * {
+      box-sizing: border-box;
     }
 
     body {
       font-family: 'Inter', sans-serif;
       margin: 0;
-      background: #f4f7f9;
+      background: var(--light-bg);
       color: #333;
+      line-height: 1.6;
+    }
+
+    /* FIXED: Prevent body scroll when modal is open */
+    body.modal-open {
+      overflow: hidden;
+      position: fixed;
+      width: 100%;
+      height: 100%;
     }
 
     header {
@@ -39,24 +53,37 @@
     .logo {
       font-weight: 700;
       font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
     }
 
     .logo-icon {
       background: var(--primary-yellow);
       color: var(--primary-blue);
-      border-radius: 10px;
-      padding: 0.5rem 1rem;
-      margin-right: 0.5rem;
+      border-radius: 12px;
+      padding: 0.6rem 1rem;
+      font-weight: 800;
+      transition: transform 0.3s ease;
+    }
+
+    .logo:hover .logo-icon {
+      transform: rotate(-5deg) scale(1.05);
     }
 
     .user a {
       color: var(--danger-red);
       font-weight: 600;
       text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .user a:hover {
+      color: #c0392b;
     }
 
     main {
-      max-width: 1300px;
+      max-width: 1400px;
       margin: 2rem auto;
       padding: 0 2rem;
     }
@@ -69,7 +96,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
       flex-wrap: wrap;
       gap: 1rem;
     }
@@ -77,113 +104,138 @@
     h2 {
       color: var(--primary-blue);
       margin: 0;
+      font-size: 2rem;
+      font-weight: 800;
     }
 
     .grid-container {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
       gap: 2rem;
     }
 
     .card {
       background: #fff;
-      border-radius: 15px;
-      box-shadow: 0 4px 20px rgba(13, 59, 102, 0.06);
-      padding: 1.5rem;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(13, 59, 102, 0.08);
+      padding: 1.8rem;
       display: flex;
       flex-direction: column;
-      gap: 0.8rem;
-      transition: all .2s;
+      gap: 1rem;
+      transition: all 0.3s ease;
+      border: 1px solid #f0f0f0;
     }
 
     .card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 8px 32px rgba(13, 59, 102, 0.1);
+      box-shadow: 0 12px 40px rgba(13, 59, 102, 0.15);
     }
 
     .card-img {
       width: 100%;
-      height: 180px;
+      height: 200px;
       object-fit: cover;
-      border-radius: 11px;
-      margin-bottom: .5rem;
+      border-radius: 16px;
+      margin-bottom: 1rem;
       background-color: #eee;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover .card-img {
+      transform: scale(1.02);
     }
 
     .card-author-img {
-      width: 60px;
-      height: 60px;
+      width: 70px;
+      height: 70px;
       object-fit: cover;
       border-radius: 50%;
       background-color: #eee;
+      border: 3px solid var(--primary-yellow);
     }
 
     .card-actions {
       display: flex;
-      gap: 0.7rem;
+      gap: 0.8rem;
       margin-top: auto;
-      padding-top: 1rem;
+      padding-top: 1.5rem;
       border-top: 1px solid #f0f0f0;
     }
 
     .card-title {
-      font-weight: bold;
-      font-size: 1.1rem;
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: var(--primary-blue);
+      margin-bottom: 0.5rem;
     }
 
     .card-details {
-      color: #555;
+      color: #666;
+      line-height: 1.5;
+      margin-bottom: 0.5rem;
     }
 
     .card-message {
-      font-size: 0.98rem;
-      padding: 0.8rem;
-      background: #f9f9f9;
-      border-radius: 8px;
+      font-size: 1rem;
+      padding: 1rem;
+      background: var(--light-bg);
+      border-radius: 12px;
       word-break: break-word;
       flex-grow: 1;
+      font-style: italic;
+      border-left: 3px solid var(--primary-yellow);
     }
 
     .btn {
       border: none;
-      border-radius: 8px;
-      padding: 0.6rem 1.2rem;
+      border-radius: 10px;
+      padding: 0.7rem 1.4rem;
       font-weight: 600;
       cursor: pointer;
       font-size: 0.95rem;
-      transition: all .2s;
+      transition: all 0.3s ease;
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.6rem;
+      text-decoration: none;
+      font-family: inherit;
     }
 
     .btn-primary {
       background: var(--primary-yellow);
       color: var(--primary-blue);
+      box-shadow: 0 4px 15px rgba(244, 211, 94, 0.3);
     }
 
     .btn-primary:hover {
-      background: #fddc71;
+      background: #f6d84a;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(244, 211, 94, 0.4);
     }
 
     .btn-danger {
       background: var(--danger-red);
       color: #fff;
+      box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
     }
 
     .btn-danger:hover {
       background: #c0392b;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
     }
 
     .btn:disabled {
       background-color: #ccc;
       cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
     }
 
     .status-badge {
-      padding: 0.3rem 0.8rem;
-      border-radius: 18px;
-      font-size: 0.9rem;
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
       font-weight: 600;
       display: inline-block;
       color: #fff;
@@ -208,24 +260,29 @@
 
     .rating-stars {
       color: #ffc107;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
     }
 
-    /* Modal Styles */
+    /* FIXED MODAL STYLES - PROPER SCROLL CONTAINER */
     .modal-bg {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(13, 59, 102, 0.4);
-      backdrop-filter: blur(4px);
+      background: rgba(13, 59, 102, 0.5);
+      backdrop-filter: blur(8px);
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
-      z-index: 1000;
+      z-index: 2000;
       opacity: 0;
       visibility: hidden;
-      transition: all 0.3s;
+      transition: all 0.3s ease;
+      padding: 20px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     .modal-bg.active {
@@ -235,23 +292,29 @@
 
     .modal {
       background: #fff;
-      border-radius: 16px;
+      border-radius: 20px;
       padding: 2.5rem;
       width: 100%;
-      max-width: 500px;
-      transform: scale(0.95);
-      transition: transform 0.3s;
+      max-width: 550px;
+      margin: auto 0;
+      transform: scale(0.9) translateY(50px);
+      transition: transform 0.3s ease;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      position: relative;
+      max-height: none;
     }
 
     .modal-bg.active .modal {
-      transform: scale(1);
+      transform: scale(1) translateY(0);
     }
 
     .modal-header {
-      padding-bottom: 0.8rem;
-      margin-bottom: 1.5rem;
-      border-bottom: 1px solid #eee;
+      padding-bottom: 1rem;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid var(--primary-yellow);
       color: var(--primary-blue);
+      font-size: 1.8rem;
+      font-weight: 700;
     }
 
     .modal label {
@@ -259,6 +322,7 @@
       color: var(--primary-blue);
       display: block;
       margin-bottom: 0.5rem;
+      margin-top: 1rem;
     }
 
     .modal input,
@@ -267,12 +331,13 @@
       width: 100%;
       box-sizing: border-box;
       margin-bottom: 1.2rem;
-      padding: 0.8rem 1rem;
-      border-radius: 8px;
-      border: 1px solid #dde6f1;
+      padding: 1rem 1.2rem;
+      border-radius: 12px;
+      border: 2px solid #e1e5e9;
       font-size: 1rem;
-      transition: all 0.2s;
+      transition: all 0.3s ease;
       font-family: inherit;
+      background: #fafbfc;
     }
 
     .modal input:focus,
@@ -280,51 +345,58 @@
     .modal select:focus {
       outline: none;
       border-color: var(--primary-blue);
+      background: #fff;
       box-shadow: 0 0 0 3px rgba(13, 59, 102, 0.1);
+      transform: translateY(-1px);
     }
 
     .modal-actions {
       display: flex;
       justify-content: flex-end;
-      gap: 0.8rem;
-      margin-top: 1.5rem;
+      gap: 1rem;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #f0f0f0;
     }
 
     .image-preview {
       max-width: 100%;
       height: auto;
-      border-radius: 8px;
-      margin-top: 0.5rem;
+      border-radius: 12px;
+      margin-top: 1rem;
       display: none;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     }
 
     #confirmModal .modal {
-      max-width: 400px;
+      max-width: 450px;
       text-align: center;
     }
 
     #confirmModal p {
       font-size: 1.1rem;
-      margin: 0 0 1.5rem 0;
+      margin: 0 0 2rem 0;
+      color: #666;
     }
 
     .toast {
       position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translate(-50%, 150%);
+      bottom: 30px;
+      right: 30px;
       background: var(--primary-blue);
       color: white;
-      padding: 1rem 1.5rem;
-      border-radius: 8px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-      z-index: 2000;
+      padding: 1.2rem 1.8rem;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+      z-index: 3000;
+      transform: translateX(400px);
       transition: transform 0.4s ease-out;
       font-weight: 600;
+      max-width: 400px;
     }
 
     .toast.show {
-      transform: translate(-50%, 0);
+      transform: translateX(0);
     }
 
     .toast.error {
@@ -335,7 +407,8 @@
       background-color: var(--success-green);
     }
 
-    @media(max-width:600px) {
+    /* Mobile Responsive */
+    @media(max-width: 768px) {
 
       header,
       main {
@@ -344,10 +417,58 @@
 
       .grid-container {
         grid-template-columns: 1fr;
+        gap: 1.5rem;
       }
 
       .modal {
+        padding: 2rem 1.5rem;
+        margin: 10px auto;
+      }
+
+      .modal-header {
+        font-size: 1.5rem;
+      }
+
+      .section-header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      h2 {
+        font-size: 1.6rem;
+        text-align: center;
+      }
+
+      .toast {
+        bottom: 20px;
+        right: 20px;
+        left: 20px;
+        transform: translateY(100px);
+      }
+
+      .toast.show {
+        transform: translateY(0);
+      }
+    }
+
+    @media(max-width: 480px) {
+      .modal {
         padding: 1.5rem;
+        margin: 5px auto;
+      }
+
+      .card {
+        padding: 1.5rem;
+      }
+
+      .card-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .btn {
+        justify-content: center;
+        padding: 0.8rem;
       }
     }
   </style>
@@ -355,7 +476,10 @@
 
 <body>
   <header>
-    <div class="logo"><span class="logo-icon">RRR</span><span>Admin Panel</span></div>
+    <div class="logo">
+      <span class="logo-icon">RRR</span>
+      <span>Construction Admin Panel</span>
+    </div>
     <div class="user">Welcome, <strong>{{ admin }}</strong> | <a href="{{ url_for('admin_logout') }}">Logout</a></div>
   </header>
 
@@ -363,93 +487,125 @@
     <!-- Projects Section -->
     <div class="section">
       <div class="section-header">
-        <h2>Manage Projects</h2>
-        <button class="btn btn-primary" onclick="openProjectModal()"><i class="fas fa-plus"></i> Add New
-          Project</button>
+        <h2><i class="fas fa-building" style="margin-right: 0.5rem; color: var(--primary-yellow);"></i>Manage Projects
+        </h2>
+        <button class="btn btn-primary" onclick="openProjectModal()">
+          <i class="fas fa-plus"></i> Add New Project
+        </button>
       </div>
       <div class="grid-container" id="projectsList">
         {% for p in projects %}
         <div class="card" data-id="{{p.id}}">
           <img class="card-img"
-            src="{{ url_for('uploaded_file', filename=p.image) if p.image else 'https://placehold.co/400x180/0D3B66/FFFFFF?text=No+Image' }}"
+            src="{{ url_for('uploaded_file', filename=p.image) if p.image else 'https://placehold.co/400x200/0D3B66/FFFFFF?text=No+Image' }}"
             alt="{{ p.title }}">
           <div class="card-title">{{ p.title }}</div>
           <div class="card-details">{{ p.description }}</div>
-          <div class="card-details">{{ p.category|capitalize }} | {{ p.status|capitalize }}</div>
-          <small class="card-details">Created: {{ p.date_created }}</small>
+          <div class="card-details"><strong>Category:</strong> {{ p.category|capitalize }} | <strong>Status:</strong> {{
+            p.status|capitalize }}</div>
+          <small class="card-details"><i class="fas fa-calendar"></i> Created: {{ p.date_created }}</small>
           <div class="card-actions">
-            <button class="btn btn-primary" onclick="editProject('{{p.id}}')"><i class="fas fa-edit"></i> Edit</button>
-            <button class="btn btn-danger" onclick="confirmDelete('project', '{{p.id}}')"><i class="fas fa-trash"></i>
-              Delete</button>
+            <button class="btn btn-primary" onclick="editProject('{{p.id}}')">
+              <i class="fas fa-edit"></i> Edit
+            </button>
+            <button class="btn btn-danger" onclick="confirmDelete('project', '{{p.id}}')">
+              <i class="fas fa-trash"></i> Delete
+            </button>
           </div>
         </div>
-        {% else %} <div>No projects have been added yet.</div> {% endfor %}
+        {% else %}
+        <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: #666;">
+          <i class="fas fa-building" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.3;"></i>
+          <p>No projects have been added yet.</p>
+        </div>
+        {% endfor %}
       </div>
     </div>
 
     <!-- Testimonials Section -->
     <div class="section">
       <div class="section-header">
-        <h2>Manage Testimonials</h2>
-        <button class="btn btn-primary" onclick="openTestimonialModal()"><i class="fas fa-plus"></i> Add New
-          Testimonial</button>
+        <h2><i class="fas fa-quote-left" style="margin-right: 0.5rem; color: var(--primary-yellow);"></i>Manage
+          Testimonials</h2>
+        <button class="btn btn-primary" onclick="openTestimonialModal()">
+          <i class="fas fa-plus"></i> Add New Testimonial
+        </button>
       </div>
       <div class="grid-container" id="testimonialsList">
         {% for t in testimonials %}
         <div class="card" data-id="{{t.id}}">
-          <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+          <div style="display: flex; align-items: center; gap: 1.2rem; margin-bottom: 1.5rem;">
             <img class="card-author-img"
-              src="{{ url_for('uploaded_file', filename=t.image) if t.image else 'https://placehold.co/60x60/EFEFEF/333333?text=?' }}"
+              src="{{ url_for('uploaded_file', filename=t.image) if t.image else 'https://placehold.co/70x70/EFEFEF/333333?text=?' }}"
               alt="{{ t.name }}">
             <div>
-              <div class="card-title">{{ t.name }}</div>
+              <div class="card-title" style="margin-bottom: 0.2rem;">{{ t.name }}</div>
               <div class="card-details">{{ t.company }}</div>
             </div>
           </div>
-          <div class="rating-stars">
-            <!-- Logic to display stars based on rating -->
+          <div class="rating-stars" data-rating="{{ t.rating }}">
+            <!-- Stars will be populated by JavaScript -->
           </div>
           <div class="card-message">"{{t.text}}"</div>
-          <small class="card-details">Created: {{ t.date_created }}</small>
+          <small class="card-details"><i class="fas fa-calendar"></i> Created: {{ t.date_created }}</small>
           <div class="card-actions">
-            <button class="btn btn-primary" onclick="editTestimonial('{{t.id}}')"><i class="fas fa-edit"></i>
-              Edit</button>
-            <button class="btn btn-danger" onclick="confirmDelete('testimonial', '{{t.id}}')"><i
-                class="fas fa-trash"></i> Delete</button>
+            <button class="btn btn-primary" onclick="editTestimonial('{{t.id}}')">
+              <i class="fas fa-edit"></i> Edit
+            </button>
+            <button class="btn btn-danger" onclick="confirmDelete('testimonial', '{{t.id}}')">
+              <i class="fas fa-trash"></i> Delete
+            </button>
           </div>
         </div>
-        {% else %} <div>No testimonials have been added yet.</div> {% endfor %}
+        {% else %}
+        <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: #666;">
+          <i class="fas fa-quote-left" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.3;"></i>
+          <p>No testimonials have been added yet.</p>
+        </div>
+        {% endfor %}
       </div>
     </div>
 
     <!-- Customer Messages Section -->
     <div class="section">
-      <h2>Customer Queries</h2>
+      <div class="section-header">
+        <h2><i class="fas fa-envelope" style="margin-right: 0.5rem; color: var(--primary-yellow);"></i>Customer Queries
+        </h2>
+      </div>
       <div class="grid-container" id="messagesList">
         {% for m in messages %}
         <div class="card" data-id="{{m.id}}">
           <div class="card-title">{{ m.name }}</div>
-          <div><span class="status-badge status-{{m.status.replace(' ','') if m.status else 'New'}}">{{m.status}}</span>
+          <div style="margin-bottom: 1rem;">
+            <span class="status-badge status-{{m.status.replace(' ','') if m.status else 'New'}}">{{m.status or
+              'New'}}</span>
           </div>
           <div class="card-details">
-            <strong>Service:</strong> {{m.service or 'N/A'}}<br>
-            <strong>Email:</strong> {{m.email}}<br>
-            <strong>Phone:</strong> {{m.phone}}
+            <strong><i class="fas fa-cog"></i> Service:</strong> {{m.service or 'N/A'}}<br>
+            <strong><i class="fas fa-envelope"></i> Email:</strong> {{m.email}}<br>
+            <strong><i class="fas fa-phone"></i> Phone:</strong> {{m.phone}}
           </div>
           <div class="card-message">{{m.message}}</div>
-          <small class="card-details">Received: {{m.timestamp.split('T')[0]}}</small>
+          <small class="card-details"><i class="fas fa-clock"></i> Received: {{m.timestamp.split('T')[0] if m.timestamp
+            else 'Unknown'}}</small>
           <div class="card-actions">
             <select onchange="updateMsgStatus('{{m.id}}', this.value)"
-              style="flex-grow:1; padding: 0.5rem; border-radius: 8px; border: 1px solid #ddd;">
+              style="flex-grow:1; padding: 0.7rem; border-radius: 10px; border: 2px solid #e1e5e9; font-family: inherit;">
               {% for st in ['New','In Progress','Answered','Finished'] %}
               <option value="{{st}}" {% if m.status==st %}selected{% endif %}>{{st}}</option>
               {% endfor %}
             </select>
-            <button class="btn btn-danger" onclick="confirmDelete('message', '{{m.id}}')"><i class="fas fa-trash"></i>
-              Delete</button>
+            <button class="btn btn-danger" onclick="confirmDelete('message', '{{m.id}}')">
+              <i class="fas fa-trash"></i> Delete
+            </button>
           </div>
         </div>
-        {% else %} <div>No messages yet.</div> {% endfor %}
+        {% else %}
+        <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: #666;">
+          <i class="fas fa-envelope" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.3;"></i>
+          <p>No messages yet.</p>
+        </div>
+        {% endfor %}
       </div>
     </div>
   </main>
@@ -460,27 +616,38 @@
       <form id="projectForm" autocomplete="off">
         <input type="hidden" name="id" id="proj_id">
         <h2 id="projectModalTitle" class="modal-header">Add Project</h2>
-        <label for="proj_title">Title</label> <input type="text" name="title" id="proj_title" required>
-        <label for="proj_desc">Description</label> <textarea name="description" id="proj_desc" required
-          rows="4"></textarea>
+
+        <label for="proj_title">Project Title</label>
+        <input type="text" name="title" id="proj_title" required placeholder="Enter project title">
+
+        <label for="proj_desc">Description</label>
+        <textarea name="description" id="proj_desc" required rows="4"
+          placeholder="Describe the project details"></textarea>
+
         <label for="proj_category">Category</label>
         <select name="category" id="proj_category" required>
+          <option value="">Select Category</option>
           <option value="residential">Residential</option>
           <option value="commercial">Commercial</option>
           <option value="renovation">Renovation</option>
           <option value="architectural">Architectural</option>
         </select>
+
         <label for="proj_status">Status</label>
         <select name="status" id="proj_status" required>
+          <option value="">Select Status</option>
           <option value="ongoing">Ongoing</option>
           <option value="completed">Completed</option>
           <option value="planned">Planned</option>
         </select>
-        <label for="proj_image">Image (jpg/png, max 2MB)</label> <input type="file" accept="image/*" name="image"
-          id="proj_image">
+
+        <label for="proj_image">Project Image (jpg/png, max 2MB)</label>
+        <input type="file" accept="image/*" name="image" id="proj_image">
         <img class="image-preview" id="proj_imagePreview" src="#" alt="Image Preview" />
+
         <div class="modal-actions">
-          <button type="button" class="btn" onclick="closeModal('projectModalBg')">Cancel</button>
+          <button type="button" class="btn" onclick="closeModal('projectModalBg')"
+            style="background: #6c757d; color: white;">Cancel</button>
           <button type="submit" class="btn btn-primary" id="projSubmitBtn">Save Project</button>
         </div>
       </form>
@@ -492,24 +659,33 @@
       <form id="testimonialForm" autocomplete="off">
         <input type="hidden" name="id" id="test_id">
         <h2 id="testimonialModalTitle" class="modal-header">Add Testimonial</h2>
-        <label for="test_name">Author Name</label> <input type="text" name="name" id="test_name" required>
-        <label for="test_company">Company / Location</label> <input type="text" name="company" id="test_company"
-          required>
-        <label for="test_text">Testimonial Text</label> <textarea name="text" id="test_text" required
-          rows="4"></textarea>
+
+        <label for="test_name">Author Name</label>
+        <input type="text" name="name" id="test_name" required placeholder="Enter client name">
+
+        <label for="test_company">Company / Location</label>
+        <input type="text" name="company" id="test_company" required placeholder="Enter company or location">
+
+        <label for="test_text">Testimonial Text</label>
+        <textarea name="text" id="test_text" required rows="4" placeholder="Enter the client's testimonial"></textarea>
+
         <label for="test_rating">Rating</label>
         <select name="rating" id="test_rating" required>
-          <option value="5">5 Stars</option>
-          <option value="4">4 Stars</option>
-          <option value="3">3 Stars</option>
-          <option value="2">2 Stars</option>
-          <option value="1">1 Star</option>
+          <option value="">Select Rating</option>
+          <option value="5">5 Stars - Excellent</option>
+          <option value="4">4 Stars - Very Good</option>
+          <option value="3">3 Stars - Good</option>
+          <option value="2">2 Stars - Fair</option>
+          <option value="1">1 Star - Poor</option>
         </select>
-        <label for="test_image">Author Image (jpg/png, max 2MB)</label> <input type="file" accept="image/*" name="image"
-          id="test_image">
+
+        <label for="test_image">Author Image (jpg/png, max 2MB)</label>
+        <input type="file" accept="image/*" name="image" id="test_image">
         <img class="image-preview" id="test_imagePreview" src="#" alt="Image Preview" />
+
         <div class="modal-actions">
-          <button type="button" class="btn" onclick="closeModal('testimonialModalBg')">Cancel</button>
+          <button type="button" class="btn" onclick="closeModal('testimonialModalBg')"
+            style="background: #6c757d; color: white;">Cancel</button>
           <button type="submit" class="btn btn-primary" id="testSubmitBtn">Save Testimonial</button>
         </div>
       </form>
@@ -519,9 +695,10 @@
   <div class="modal-bg" id="confirmModal">
     <div class="modal">
       <h2 id="confirmTitle" class="modal-header">Confirm Action</h2>
-      <p id="confirmMessage">Are you sure?</p>
+      <p id="confirmMessage">Are you sure you want to proceed?</p>
       <div class="modal-actions">
-        <button type="button" class="btn" id="confirmCancelBtn">Cancel</button>
+        <button type="button" class="btn" id="confirmCancelBtn"
+          style="background: #6c757d; color: white;">Cancel</button>
         <button type="button" class="btn btn-danger" id="confirmOkBtn">Confirm</button>
       </div>
     </div>
@@ -530,19 +707,49 @@
   <div class="toast" id="toast"></div>
 
   <script>
+    // --- MODAL SCROLL LOCK FUNCTIONALITY ---
+    const lockBodyScroll = () => {
+      document.body.classList.add('modal-open');
+    };
+
+    const unlockBodyScroll = () => {
+      document.body.classList.remove('modal-open');
+    };
+
     // --- GENERIC HELPERS ---
     const showToast = (message, type = 'info') => {
       const toast = document.getElementById('toast');
       toast.textContent = message;
       toast.className = `toast show ${type}`;
-      setTimeout(() => { toast.className = 'toast'; }, 3000);
+      setTimeout(() => { toast.className = 'toast'; }, 4000);
     };
 
-    const openModal = (modalId) => document.getElementById(modalId).classList.add('active');
-    const closeModal = (modalId) => document.getElementById(modalId).classList.remove('active');
+    const openModal = (modalId) => {
+      document.getElementById(modalId).classList.add('active');
+      lockBodyScroll();
+    };
 
+    const closeModal = (modalId) => {
+      document.getElementById(modalId).classList.remove('active');
+      unlockBodyScroll();
+    };
+
+    // Close modal when clicking outside
     document.querySelectorAll('.modal-bg').forEach(bg => {
-      bg.onclick = (e) => { if (e.target === bg) closeModal(bg.id); };
+      bg.onclick = (e) => {
+        if (e.target === bg) {
+          closeModal(bg.id);
+        }
+      };
+    });
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-bg.active').forEach(modal => {
+          closeModal(modal.id);
+        });
+      }
     });
 
     const setupImagePreview = (inputId, previewId) => {
@@ -553,6 +760,8 @@
         if (file) {
           preview.src = URL.createObjectURL(file);
           preview.style.display = 'block';
+        } else {
+          preview.style.display = 'none';
         }
       };
     };
@@ -562,9 +771,9 @@
     // --- UNIVERSAL DELETE ---
     const confirmDelete = (type, id) => {
       const messages = {
-        project: 'This will permanently delete this project and its image. Are you sure?',
-        testimonial: 'This will permanently delete this testimonial and its image. Are you sure?',
-        message: 'Are you sure you want to delete this message?',
+        project: 'This will permanently delete this project and its image. This action cannot be undone.',
+        testimonial: 'This will permanently delete this testimonial and its image. This action cannot be undone.',
+        message: 'Are you sure you want to delete this customer message? This action cannot be undone.',
       };
       openConfirmModal(`Delete ${type.charAt(0).toUpperCase() + type.slice(1)}`, messages[type], () => deleteItem(type, id));
     };
@@ -574,13 +783,13 @@
         const response = await fetch(`/admin/${type}/delete/${id}`, { method: "POST" });
         const data = await response.json();
         if (data.success) {
-          showToast(`${type.charAt(0).toUpperCase() + type.slice(1)} deleted.`, 'success');
+          showToast(`${type.charAt(0).toUpperCase() + type.slice(1)} deleted successfully.`, 'success');
           document.querySelector(`.card[data-id='${id}']`)?.remove();
         } else {
           showToast(data.message || `Error deleting ${type}.`, 'error');
         }
       } catch (err) {
-        showToast('Network error.', 'error');
+        showToast('Network error occurred.', 'error');
       }
     };
 
@@ -606,11 +815,11 @@
     };
 
     const createProjectCardHTML = (p) => `
-        <img class="card-img" src="${p.image ? `/static/uploads/${p.image}` : 'https://placehold.co/400x180/0D3B66/FFFFFF?text=No+Image'}" alt="${p.title}">
+        <img class="card-img" src="${p.image ? `/static/uploads/${p.image}` : 'https://placehold.co/400x200/0D3B66/FFFFFF?text=No+Image'}" alt="${p.title}">
         <div class="card-title">${p.title}</div>
         <div class="card-details">${p.description}</div>
-        <div class="card-details">${p.category.charAt(0).toUpperCase() + p.category.slice(1)} | ${p.status.charAt(0).toUpperCase() + p.status.slice(1)}</div>
-        <small class="card-details">Created: ${p.date_created}</small>
+        <div class="card-details"><strong>Category:</strong> ${p.category.charAt(0).toUpperCase() + p.category.slice(1)} | <strong>Status:</strong> ${p.status.charAt(0).toUpperCase() + p.status.slice(1)}</div>
+        <small class="card-details"><i class="fas fa-calendar"></i> Created: ${p.date_created}</small>
         <div class="card-actions">
             <button class="btn btn-primary" onclick="editProject('${p.id}')"><i class="fas fa-edit"></i> Edit</button>
             <button class="btn btn-danger" onclick="confirmDelete('project', '${p.id}')"><i class="fas fa-trash"></i> Delete</button>
@@ -630,11 +839,12 @@
         const response = await fetch(url, { method: "POST", body: formData });
         const data = await response.json();
         if (data.success) {
-          showToast(id ? 'Project updated!' : 'Project added!', 'success');
+          showToast(id ? 'Project updated successfully!' : 'Project added successfully!', 'success');
           const item = data.project;
           const card = document.querySelector(`#projectsList .card[data-id='${item.id}']`);
-          if (card) { card.innerHTML = createProjectCardHTML(item); }
-          else {
+          if (card) {
+            card.innerHTML = createProjectCardHTML(item);
+          } else {
             const newCard = document.createElement('div');
             newCard.className = 'card';
             newCard.dataset.id = item.id;
@@ -642,31 +852,44 @@
             document.getElementById('projectsList').prepend(newCard);
           }
           closeModal('projectModalBg');
-        } else { showToast(data.message || "An error occurred.", 'error'); }
-      } catch (err) { showToast('Network error.', 'error'); }
-      finally {
+        } else {
+          showToast(data.message || "An error occurred.", 'error');
+        }
+      } catch (err) {
+        showToast('Network error occurred.', 'error');
+      } finally {
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Save Project';
+        submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Project';
       }
     };
 
     const editProject = async (id) => {
-      const response = await fetch(`/api/project/${id}`);
-      const data = await response.json();
-      if (data.success) {
-        const p = data.project;
-        projectForm.reset();
-        document.getElementById('projectModalTitle').textContent = "Edit Project";
-        document.getElementById('proj_id').value = p.id;
-        document.getElementById('proj_title').value = p.title;
-        document.getElementById('proj_desc').value = p.description;
-        document.getElementById('proj_category').value = p.category;
-        document.getElementById('proj_status').value = p.status;
-        const preview = document.getElementById('proj_imagePreview');
-        preview.src = p.image ? `/static/uploads/${p.image}` : '#';
-        preview.style.display = p.image ? 'block' : 'none';
-        openModal('projectModalBg');
-      } else { showToast('Could not fetch project details.', 'error'); }
+      try {
+        const response = await fetch(`/api/project/${id}`);
+        const data = await response.json();
+        if (data.success) {
+          const p = data.project;
+          projectForm.reset();
+          document.getElementById('projectModalTitle').textContent = "Edit Project";
+          document.getElementById('proj_id').value = p.id;
+          document.getElementById('proj_title').value = p.title;
+          document.getElementById('proj_desc').value = p.description;
+          document.getElementById('proj_category').value = p.category;
+          document.getElementById('proj_status').value = p.status;
+          const preview = document.getElementById('proj_imagePreview');
+          if (p.image) {
+            preview.src = `/static/uploads/${p.image}`;
+            preview.style.display = 'block';
+          } else {
+            preview.style.display = 'none';
+          }
+          openModal('projectModalBg');
+        } else {
+          showToast('Could not fetch project details.', 'error');
+        }
+      } catch (err) {
+        showToast('Network error occurred.', 'error');
+      }
     };
 
     // --- TESTIMONIAL MANAGEMENT ---
@@ -682,18 +905,20 @@
 
     const createTestimonialCardHTML = (t) => {
       let stars = '';
-      for (let i = 0; i < 5; i++) { stars += `<i class="fas fa-star${i < t.rating ? '' : '-half-alt'}" style="opacity:${i < t.rating ? 1 : 0.3}"></i>`; }
+      for (let i = 0; i < 5; i++) {
+        stars += `<i class="fas fa-star${i < t.rating ? '' : ''}" style="opacity:${i < t.rating ? 1 : 0.3}"></i>`;
+      }
       return `
-            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-                <img class="card-author-img" src="${t.image ? `/static/uploads/${t.image}` : 'https://placehold.co/60x60/EFEFEF/333333?text=?'}" alt="${t.name}">
+            <div style="display: flex; align-items: center; gap: 1.2rem; margin-bottom: 1.5rem;">
+                <img class="card-author-img" src="${t.image ? `/static/uploads/${t.image}` : 'https://placehold.co/70x70/EFEFEF/333333?text=?'}" alt="${t.name}">
                 <div>
-                    <div class="card-title">${t.name}</div>
+                    <div class="card-title" style="margin-bottom: 0.2rem;">${t.name}</div>
                     <div class="card-details">${t.company}</div>
                 </div>
             </div>
-            <div class="rating-stars">${stars}</div>
+            <div class="rating-stars" data-rating="${t.rating}">${stars}</div>
             <div class="card-message">"${t.text}"</div>
-            <small class="card-details">Created: ${t.date_created}</small>
+            <small class="card-details"><i class="fas fa-calendar"></i> Created: ${t.date_created}</small>
             <div class="card-actions">
                 <button class="btn btn-primary" onclick="editTestimonial('${t.id}')"><i class="fas fa-edit"></i> Edit</button>
                 <button class="btn btn-danger" onclick="confirmDelete('testimonial', '${t.id}')"><i class="fas fa-trash"></i> Delete</button>
@@ -714,11 +939,12 @@
         const response = await fetch(url, { method: "POST", body: formData });
         const data = await response.json();
         if (data.success) {
-          showToast(id ? 'Testimonial updated!' : 'Testimonial added!', 'success');
+          showToast(id ? 'Testimonial updated successfully!' : 'Testimonial added successfully!', 'success');
           const item = data.testimonial;
           const card = document.querySelector(`#testimonialsList .card[data-id='${item.id}']`);
-          if (card) { card.innerHTML = createTestimonialCardHTML(item); }
-          else {
+          if (card) {
+            card.innerHTML = createTestimonialCardHTML(item);
+          } else {
             const newCard = document.createElement('div');
             newCard.className = 'card';
             newCard.dataset.id = item.id;
@@ -726,31 +952,44 @@
             document.getElementById('testimonialsList').prepend(newCard);
           }
           closeModal('testimonialModalBg');
-        } else { showToast(data.message || "An error occurred.", 'error'); }
-      } catch (err) { showToast('Network error.', 'error'); }
-      finally {
+        } else {
+          showToast(data.message || "An error occurred.", 'error');
+        }
+      } catch (err) {
+        showToast('Network error occurred.', 'error');
+      } finally {
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Save Testimonial';
+        submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Testimonial';
       }
     };
 
     const editTestimonial = async (id) => {
-      const response = await fetch(`/api/testimonial/${id}`);
-      const data = await response.json();
-      if (data.success) {
-        const t = data.testimonial;
-        testimonialForm.reset();
-        document.getElementById('testimonialModalTitle').textContent = "Edit Testimonial";
-        document.getElementById('test_id').value = t.id;
-        document.getElementById('test_name').value = t.name;
-        document.getElementById('test_company').value = t.company;
-        document.getElementById('test_text').value = t.text;
-        document.getElementById('test_rating').value = t.rating;
-        const preview = document.getElementById('test_imagePreview');
-        preview.src = t.image ? `/static/uploads/${t.image}` : '#';
-        preview.style.display = t.image ? 'block' : 'none';
-        openModal('testimonialModalBg');
-      } else { showToast('Could not fetch testimonial details.', 'error'); }
+      try {
+        const response = await fetch(`/api/testimonial/${id}`);
+        const data = await response.json();
+        if (data.success) {
+          const t = data.testimonial;
+          testimonialForm.reset();
+          document.getElementById('testimonialModalTitle').textContent = "Edit Testimonial";
+          document.getElementById('test_id').value = t.id;
+          document.getElementById('test_name').value = t.name;
+          document.getElementById('test_company').value = t.company;
+          document.getElementById('test_text').value = t.text;
+          document.getElementById('test_rating').value = t.rating;
+          const preview = document.getElementById('test_imagePreview');
+          if (t.image) {
+            preview.src = `/static/uploads/${t.image}`;
+            preview.style.display = 'block';
+          } else {
+            preview.style.display = 'none';
+          }
+          openModal('testimonialModalBg');
+        } else {
+          showToast('Could not fetch testimonial details.', 'error');
+        }
+      } catch (err) {
+        showToast('Network error occurred.', 'error');
+      }
     };
 
     // --- MESSAGE MANAGEMENT ---
@@ -763,33 +1002,36 @@
         });
         const data = await response.json();
         if (data.success) {
-          showToast('Status updated!', 'success');
+          showToast('Message status updated successfully!', 'success');
           const badge = document.querySelector(`#messagesList .card[data-id='${id}'] .status-badge`);
-          badge.className = `status-badge status-${status.replace(' ', '')}`;
-          badge.textContent = status;
-        } else { showToast(data.message || "Error updating status.", 'error'); }
-      } catch (err) { showToast('Network Error.', 'error'); }
+          if (badge) {
+            badge.className = `status-badge status-${status.replace(' ', '')}`;
+            badge.textContent = status;
+          }
+        } else {
+          showToast(data.message || "Error updating status.", 'error');
+        }
+      } catch (err) {
+        showToast('Network error occurred.', 'error');
+      }
     };
 
-    // Fill rating stars on load
-    document.querySelectorAll('#testimonialsList .card').forEach(card => {
-      // Get the rating from the testimonial data
-      const testimonialId = parseInt(card.dataset.id);
-      const testimonials = {{ testimonials | tojson | safe
-    }};
-    const testimonial = testimonials.find(t => t.id === testimonialId);
-    const rating = testimonial ? testimonial.rating : 0;
+    // --- POPULATE RATING STARS ---
+    const populateRatingStars = () => {
+      document.querySelectorAll('.rating-stars[data-rating]').forEach(container => {
+        const rating = parseInt(container.dataset.rating) || 0;
+        let starsHTML = '';
+        for (let i = 0; i < 5; i++) {
+          starsHTML += `<i class="fas fa-star" style="opacity:${i < rating ? 1 : 0.3}"></i>`;
+        }
+        container.innerHTML = starsHTML;
+      });
+    };
 
-    let starsHTML = '';
-    for (let i = 0; i < 5; i++) {
-      starsHTML += `<i class="fas fa-star${i < rating ? '' : '-half-alt'}" style="opacity:${i < rating ? 1 : 0.3}"></i>`;
-    }
-
-    const ratingContainer = card.querySelector('.rating-stars');
-    if (ratingContainer) {
-      ratingContainer.innerHTML = starsHTML;
-    }
-});
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function () {
+      populateRatingStars();
+    });
 
   </script>
 </body>

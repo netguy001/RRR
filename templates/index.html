@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>RRR Construction – Bring your vision, get your keys.</title>
+    <title>RRR Construction — Bring your vision, get your keys.</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description"
         content="RRR Construction: Premier construction company in Chennai for residential, commercial, and custom projects.">
@@ -419,17 +419,24 @@
             margin: 0 0 0.5rem 0;
         }
 
-        /* --- FIXED SWIPER CAROUSEL STYLES --- */
+        /* --- FIXED CAROUSEL STYLES --- */
         .carousel-container {
-            width: 100%;
-            padding: 1rem 0 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
             position: relative;
+            padding: 0 50px;
         }
 
         .swiper {
             width: 100%;
             height: auto;
-            padding-bottom: 3rem;
+            overflow: visible;
+            padding: 20px 0 60px 0;
+        }
+
+        .swiper-wrapper {
+            display: flex;
+            align-items: stretch;
         }
 
         .swiper-slide {
@@ -439,131 +446,92 @@
             align-items: stretch;
         }
 
-        /* Swiper navigation buttons */
+        /* Hide any loading indicators and progress bars */
+        .swiper-lazy-preloader,
+        .swiper-notification,
+        .swiper-button-lock,
+        ::-webkit-progress-bar,
+        ::-webkit-progress-value,
+        progress {
+            display: none !important;
+        }
+
+        /* Prevent browser loading indicators */
+        .swiper-wrapper,
+        .swiper-slide {
+            will-change: transform;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        /* Hide Navigation buttons */
         .swiper-button-next,
         .swiper-button-prev {
-            color: var(--primary-blue) !important;
-            background-color: rgba(255, 255, 255, 0.95);
-            border-radius: 50%;
-            width: 48px !important;
-            height: 48px !important;
-            margin-top: -24px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            transition: all 0.3s ease;
+            display: none !important;
         }
 
-        .swiper-button-next:hover,
-        .swiper-button-prev:hover {
-            background-color: #fff;
-            transform: scale(1.1);
-        }
-
-        .swiper-button-next:after,
-        .swiper-button-prev:after {
-            font-size: 18px !important;
-            font-weight: bold;
-        }
-
-        /* Swiper pagination */
+        /* Pagination dots - PROPERLY CENTERED */
         .swiper-pagination {
             position: static !important;
-            margin-top: 2rem;
+            text-align: center !important;
+            margin: 30px auto 0 auto !important;
+            width: 100% !important;
+            display: block !important;
+            padding: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
         }
 
         .swiper-pagination-bullet {
             width: 12px !important;
             height: 12px !important;
-            background: rgba(13, 59, 102, 0.3) !important;
+            background: #ccc !important;
             opacity: 1 !important;
+            margin: 0 6px !important;
+            transition: all 0.3s ease !important;
+            border-radius: 50% !important;
+            display: inline-block !important;
         }
 
         .swiper-pagination-bullet-active {
             background: var(--primary-blue) !important;
-            transform: scale(1.2);
+            transform: scale(1.3) !important;
         }
 
         /* --- Projects Section --- */
         .project-card {
             background: #fff;
-            border-radius: 16px;
-            box-shadow: 0 4px 18px rgba(13, 59, 102, 0.08);
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             width: 100%;
-            max-width: 380px;
-            height: 420px;
+            max-width: 350px;
+            height: 450px;
             display: flex;
             flex-direction: column;
+            margin: 0 auto;
+            position: relative;
         }
 
         .project-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 40px rgba(13, 59, 102, 0.15);
-        }
-
-        .project-image-wrapper {
-            position: relative;
-            overflow: hidden;
-            height: 200px;
-            flex-shrink: 0;
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
         }
 
         .project-image {
             width: 100%;
-            height: 100%;
+            height: 220px;
             object-fit: cover;
-            display: block;
-            transition: transform 0.3s ease;
+            transition: transform 0.4s ease;
         }
 
         .project-card:hover .project-image {
-            transform: scale(1.05);
-        }
-
-        .project-image-wrapper::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 60%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .project-card:hover .project-image-wrapper::after {
-            opacity: 1;
-        }
-
-        .project-tags {
-            position: absolute;
-            bottom: 1rem;
-            left: 1rem;
-            display: flex;
-            gap: 0.5rem;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.3s ease;
-        }
-
-        .project-card:hover .project-tags {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .project-tag {
-            background: rgba(255, 255, 255, 0.95);
-            color: var(--primary-blue);
-            padding: 0.4rem 0.9rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            backdrop-filter: blur(10px);
+            transform: scale(1.08);
         }
 
         .project-content {
-            padding: 1.5rem;
+            padding: 25px;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
@@ -572,20 +540,38 @@
 
         .project-content h3 {
             color: var(--primary-blue);
-            font-size: 1.3rem;
-            margin: 0 0 0.8rem 0;
+            font-size: 1.4rem;
+            margin: 0 0 15px 0;
             font-weight: 700;
             line-height: 1.3;
         }
 
         .project-content p {
             color: var(--text-light);
-            line-height: 1.5;
-            margin: 0;
-            overflow: hidden;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
+            line-height: 1.6;
+            margin: 0 0 20px 0;
+            flex-grow: 1;
+            font-size: 0.95rem;
+        }
+
+        .project-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .project-tag {
+            background: var(--primary-yellow);
+            color: var(--primary-blue);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .project-tag:nth-child(2) {
+            background: var(--primary-blue);
+            color: white;
         }
 
         /* --- Testimonials Section --- */
@@ -596,57 +582,54 @@
         .testimonial-card {
             background: #fff;
             border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 4px 20px rgba(13, 59, 102, 0.08);
+            padding: 30px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
             width: 100%;
-            max-width: 380px;
-            height: 420px;
+            max-width: 350px;
+            height: 450px;
             text-align: center;
             position: relative;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
+            margin: 0 auto;
         }
 
         .testimonial-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(13, 59, 102, 0.12);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
         }
 
         .rating {
             color: #ffc107;
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
             display: flex;
             justify-content: center;
-            gap: 2px;
+            gap: 3px;
         }
 
         .testimonial-text {
             font-style: italic;
             color: var(--text-light);
             flex-grow: 1;
-            margin: 0.5rem 0 1.5rem 0;
+            margin: 0 0 25px 0;
             position: relative;
             font-size: 1rem;
             line-height: 1.6;
-            padding-top: 1.5rem;
-            overflow: hidden;
-            display: -webkit-box;
-            -webkit-line-clamp: 4;
-            -webkit-box-orient: vertical;
+            display: flex;
+            align-items: center;
         }
 
         .testimonial-text::before {
             content: '"';
             font-family: Georgia, serif;
-            font-size: 3.5rem;
+            font-size: 4rem;
             color: var(--primary-yellow);
             position: absolute;
-            top: -0.5rem;
-            left: 50%;
-            transform: translateX(-50%);
-            opacity: 0.8;
+            top: -20px;
+            left: -10px;
+            opacity: 0.3;
             line-height: 1;
         }
 
@@ -654,15 +637,14 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0.8rem;
-            margin-top: auto;
-            padding-top: 1rem;
-            border-top: 1px solid #f0f0f0;
+            gap: 15px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
         }
 
         .author-photo {
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
             object-fit: cover;
             border: 3px solid var(--primary-yellow);
@@ -675,7 +657,7 @@
 
         .author-info h4 {
             margin: 0;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: var(--primary-blue);
             font-weight: 700;
         }
@@ -829,9 +811,140 @@
                 align-items: center;
             }
 
-            .swiper-button-next,
-            .swiper-button-prev {
-                display: none !important;
+            .carousel-container {
+                padding: 0 15px;
+            }
+
+            /* Mobile optimized cards */
+            .project-card,
+            .testimonial-card {
+                width: 100%;
+                max-width: 320px;
+                height: auto;
+                min-height: 420px;
+            }
+
+            .project-content,
+            .testimonial-card {
+                padding: 20px;
+            }
+
+            .project-content h3,
+            .author-info h4 {
+                font-size: 1.2rem;
+            }
+
+            .project-content p,
+            .testimonial-text {
+                font-size: 0.9rem;
+            }
+
+            .project-image {
+                height: 180px;
+            }
+
+            .testimonial-text::before {
+                font-size: 3rem;
+                top: -15px;
+                left: -5px;
+            }
+
+            .author-photo {
+                width: 60px;
+                height: 60px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .carousel-container {
+                padding: 0 10px;
+            }
+
+            .container {
+                padding: 0 16px;
+            }
+
+            .section {
+                padding: 3rem 0;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+
+            /* Smaller mobile cards */
+            .project-card,
+            .testimonial-card {
+                max-width: 280px;
+                min-height: 380px;
+            }
+
+            .project-content,
+            .testimonial-card {
+                padding: 16px;
+            }
+
+            .project-content h3,
+            .author-info h4 {
+                font-size: 1.1rem;
+            }
+
+            .project-content p,
+            .testimonial-text {
+                font-size: 0.85rem;
+                line-height: 1.5;
+            }
+
+            .project-image {
+                height: 160px;
+            }
+
+            .project-tag {
+                font-size: 0.75rem;
+                padding: 4px 8px;
+            }
+
+            .rating {
+                font-size: 1.1rem;
+                margin-bottom: 15px;
+            }
+
+            .testimonial-text::before {
+                font-size: 2.5rem;
+                top: -10px;
+                left: 0px;
+            }
+
+            .author-photo {
+                width: 50px;
+                height: 50px;
+            }
+
+            .author-info h4 {
+                font-size: 1rem;
+            }
+
+            .author-info p {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+
+            /* Very small phones */
+            .project-card,
+            .testimonial-card {
+                max-width: 260px;
+                min-height: 350px;
+            }
+
+            .project-content,
+            .testimonial-card {
+                padding: 12px;
+            }
+
+            .project-image {
+                height: 140px;
             }
         }
     </style>
@@ -949,7 +1062,7 @@
         </div>
     </section>
 
-    <!-- Projects Section -->
+    <!-- Projects Section - FIXED CAROUSEL -->
     <section id="projects" class="section">
         <div class="container">
             <div class="section-title fade-in-section">
@@ -962,39 +1075,96 @@
                     <div class="swiper-wrapper">
                         {% for p in projects %}
                         <div class="swiper-slide">
-                            <div class="project-card fade-in-section">
-                                <div class="project-image-wrapper">
-                                    <img class="project-image"
-                                        src="{{ url_for('uploaded_file', filename=p.image) if p.image else 'https://placehold.co/400x240/0D3B66/F4D35E?text=RRR+Construction' }}"
-                                        alt="{{ p.title }}">
+                            <div class="project-card">
+                                <img class="project-image"
+                                    src="{{ url_for('uploaded_file', filename=p.image) if p.image else 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=350&h=220&fit=crop' }}"
+                                    alt="{{ p.title }}">
+                                <div class="project-content">
+                                    <h3>{{ p.title }}</h3>
+                                    <p>{{ p.description }}</p>
                                     <div class="project-tags">
                                         <span class="project-tag">{{ p.category|capitalize }}</span>
                                         <span class="project-tag">{{ p.status|capitalize }}</span>
                                     </div>
                                 </div>
-                                <div class="project-content">
-                                    <h3>{{ p.title }}</h3>
-                                    <p>{{ p.description }}</p>
-                                </div>
                             </div>
                         </div>
                         {% else %}
+                        <!-- Default project cards when no projects exist -->
                         <div class="swiper-slide">
-                            <div style="text-align: center; padding: 2rem; color: var(--text-light);">
-                                <i class="fas fa-building"
-                                    style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
-                                <p>No projects to display at the moment. Check back soon!</p>
+                            <div class="project-card">
+                                <img class="project-image"
+                                    src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=350&h=220&fit=crop"
+                                    alt="Luxury Villa Project">
+                                <div class="project-content">
+                                    <h3>Modern Luxury Villa</h3>
+                                    <p>A stunning contemporary villa featuring state-of-the-art amenities and
+                                        exceptional architectural design in the heart of Chennai.</p>
+                                    <div class="project-tags">
+                                        <span class="project-tag">Residential</span>
+                                        <span class="project-tag">Completed</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="project-card">
+                                <img class="project-image"
+                                    src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=350&h=220&fit=crop"
+                                    alt="Commercial Office Complex">
+                                <div class="project-content">
+                                    <h3>Corporate Office Complex</h3>
+                                    <p>A premium office space designed for modern businesses, featuring glass facades
+                                        and energy-efficient systems.</p>
+                                    <div class="project-tags">
+                                        <span class="project-tag">Commercial</span>
+                                        <span class="project-tag">Ongoing</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="project-card">
+                                <img class="project-image"
+                                    src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=350&h=220&fit=crop"
+                                    alt="Apartment Complex">
+                                <div class="project-content">
+                                    <h3>Premium Apartments</h3>
+                                    <p>Luxury residential apartments with modern amenities, gardens, and recreational
+                                        facilities for families.</p>
+                                    <div class="project-tags">
+                                        <span class="project-tag">Residential</span>
+                                        <span class="project-tag">Completed</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="project-card">
+                                <img class="project-image"
+                                    src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=350&h=220&fit=crop"
+                                    alt="Heritage Renovation">
+                                <div class="project-content">
+                                    <h3>Heritage Home Renovation</h3>
+                                    <p>Careful restoration of a traditional Chennai home, blending heritage architecture
+                                        with modern convenience.</p>
+                                    <div class="project-tags">
+                                        <span class="project-tag">Renovation</span>
+                                        <span class="project-tag">Completed</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         {% endfor %}
                     </div>
+                    <!-- Pagination -->
                     <div class="swiper-pagination"></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Testimonials Section -->
+    <!-- Testimonials Section - FIXED CAROUSEL -->
     <section id="testimonials" class="section">
         <div class="container">
             <div class="section-title fade-in-section">
@@ -1008,13 +1178,13 @@
                         {% if testimonials %}
                         {% for t in testimonials %}
                         <div class="swiper-slide">
-                            <div class="testimonial-card fade-in-section" data-rating="{{ t.rating }}">
+                            <div class="testimonial-card" data-rating="{{ t.rating }}">
                                 <div class="rating">
                                     <!-- Stars will be populated by JavaScript -->
                                 </div>
-                                <p class="testimonial-text">{{ t.text }}</p>
+                                <div class="testimonial-text">{{ t.text }}</div>
                                 <div class="testimonial-author">
-                                    <img src="{{ url_for('uploaded_file', filename=t.image) if t.image else 'https://placehold.co/70x70/EFEFEF/333333?text=?' }}"
+                                    <img src="{{ url_for('uploaded_file', filename=t.image) if t.image else 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=70&h=70&fit=crop&crop=face' }}"
                                         alt="Photo of {{ t.name }}" class="author-photo">
                                     <div class="author-info">
                                         <h4>{{ t.name }}</h4>
@@ -1027,12 +1197,14 @@
                         {% else %}
                         <!-- Default testimonials when none exist -->
                         <div class="swiper-slide">
-                            <div class="testimonial-card fade-in-section" data-rating="5">
+                            <div class="testimonial-card" data-rating="5">
                                 <div class="rating"></div>
-                                <p class="testimonial-text">RRR Construction delivered our dream home on time and within
-                                    budget. Their attention to detail and commitment to quality is unmatched.</p>
+                                <div class="testimonial-text">RRR Construction delivered our dream home on time and
+                                    within
+                                    budget. Their attention to detail and commitment to quality is unmatched. We
+                                    couldn't be happier with the results!</div>
                                 <div class="testimonial-author">
-                                    <img src="https://placehold.co/70x70/EFEFEF/333333?text=SK"
+                                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=70&h=70&fit=crop&crop=face"
                                         alt="Photo of Suresh Kumar" class="author-photo">
                                     <div class="author-info">
                                         <h4>Suresh Kumar</h4>
@@ -1042,13 +1214,13 @@
                             </div>
                         </div>
                         <div class="swiper-slide">
-                            <div class="testimonial-card fade-in-section" data-rating="5">
+                            <div class="testimonial-card" data-rating="5">
                                 <div class="rating"></div>
-                                <p class="testimonial-text">We partnered with RRR for our new office space, and the
-                                    result
-                                    exceeded our expectations. Highly recommended for commercial projects.</p>
+                                <div class="testimonial-text">We partnered with RRR for our new office space, and the
+                                    result exceeded our expectations. Professional service and outstanding quality
+                                    throughout the project.</div>
                                 <div class="testimonial-author">
-                                    <img src="https://placehold.co/70x70/EFEFEF/333333?text=PR"
+                                    <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=70&h=70&fit=crop&crop=face"
                                         alt="Photo of Priya Rajan" class="author-photo">
                                     <div class="author-info">
                                         <h4>Priya Rajan</h4>
@@ -1058,13 +1230,14 @@
                             </div>
                         </div>
                         <div class="swiper-slide">
-                            <div class="testimonial-card fade-in-section" data-rating="4">
+                            <div class="testimonial-card" data-rating="4">
                                 <div class="rating"></div>
-                                <p class="testimonial-text">The renovation was complex, but the RRR team handled it with
+                                <div class="testimonial-text">The renovation was complex, but the RRR team handled it
+                                    with
                                     great care. They blended modern amenities with traditional architecture beautifully.
-                                </p>
+                                </div>
                                 <div class="testimonial-author">
-                                    <img src="https://placehold.co/70x70/EFEFEF/333333?text=AM"
+                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=70&h=70&fit=crop&crop=face"
                                         alt="Photo of Ananth Moorthy" class="author-photo">
                                     <div class="author-info">
                                         <h4>Ananth Moorthy</h4>
@@ -1073,8 +1246,25 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="swiper-slide">
+                            <div class="testimonial-card" data-rating="5">
+                                <div class="rating"></div>
+                                <div class="testimonial-text">From concept to completion, RRR Construction maintained
+                                    the highest standards. Their architectural team brought our vision to life
+                                    perfectly.</div>
+                                <div class="testimonial-author">
+                                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=70&h=70&fit=crop&crop=face"
+                                        alt="Photo of Meera Iyer" class="author-photo">
+                                    <div class="author-info">
+                                        <h4>Meera Iyer</h4>
+                                        <p>Custom Villa, ECR</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         {% endif %}
                     </div>
+                    <!-- Pagination -->
                     <div class="swiper-pagination"></div>
                 </div>
             </div>
@@ -1186,72 +1376,108 @@
                 });
             }
 
-            // Populate stars immediately
-            populateStars();
-
-            // --- CAROUSEL INITIALIZATION WITH AUTO-ADVANCE ---
+            // --- FIXED CAROUSEL INITIALIZATION ---
             const projectsSwiper = new Swiper('.projects-swiper', {
                 slidesPerView: 1,
-                spaceBetween: 30,
+                spaceBetween: 20,
                 loop: true,
                 centeredSlides: true,
+                preloadImages: false,
+                lazy: false,
+                watchSlidesProgress: false,
+                watchSlidesVisibility: false,
+                grabCursor: true,
+                touchRatio: 1,
+                touchAngle: 45,
+                longSwipesRatio: 0.5,
                 autoplay: {
-                    delay: 3500,
+                    delay: 3000,
                     disableOnInteraction: false,
-                    pauseOnMouseEnter: true
+                    pauseOnMouseEnter: true,
+                    stopOnLastSlide: false
                 },
-                speed: 800,
+                speed: 600,
+                runCallbacksOnInit: false,
                 pagination: {
                     el: '.projects-swiper .swiper-pagination',
-                    clickable: true,
-                    dynamicBullets: true
+                    clickable: true
                 },
                 breakpoints: {
+                    480: {
+                        slidesPerView: 1,
+                        spaceBetween: 15,
+                        centeredSlides: true
+                    },
                     640: {
-                        slidesPerView: 2,
+                        slidesPerView: 1.2,
                         spaceBetween: 20,
-                        centeredSlides: false
+                        centeredSlides: true
+                    },
+                    768: {
+                        slidesPerView: 1.5,
+                        spaceBetween: 25,
+                        centeredSlides: true
                     },
                     1024: {
+                        slidesPerView: 2.5,
+                        spaceBetween: 30,
+                        centeredSlides: true
+                    },
+                    1200: {
                         slidesPerView: 3,
                         spaceBetween: 30,
                         centeredSlides: false
-                    }
-                },
-                on: {
-                    init: function () {
-                        // Ensure fade-in animations work with carousel
-                        this.slides.forEach(slide => {
-                            const fadeElements = slide.querySelectorAll('.fade-in-section');
-                            fadeElements.forEach(el => el.classList.add('is-visible'));
-                        });
                     }
                 }
             });
 
             const testimonialsSwiper = new Swiper('.testimonials-swiper', {
                 slidesPerView: 1,
-                spaceBetween: 30,
+                spaceBetween: 20,
                 loop: true,
                 centeredSlides: true,
+                preloadImages: false,
+                lazy: false,
+                watchSlidesProgress: false,
+                watchSlidesVisibility: false,
+                grabCursor: true,
+                touchRatio: 1,
+                touchAngle: 45,
+                longSwipesRatio: 0.5,
                 autoplay: {
-                    delay: 4500,
+                    delay: 4000,
                     disableOnInteraction: false,
-                    pauseOnMouseEnter: true
+                    pauseOnMouseEnter: true,
+                    stopOnLastSlide: false
                 },
-                speed: 1000,
+                speed: 800,
+                runCallbacksOnInit: false,
                 pagination: {
                     el: '.testimonials-swiper .swiper-pagination',
-                    clickable: true,
-                    dynamicBullets: true
+                    clickable: true
                 },
                 breakpoints: {
+                    480: {
+                        slidesPerView: 1,
+                        spaceBetween: 15,
+                        centeredSlides: true
+                    },
                     640: {
-                        slidesPerView: 2,
+                        slidesPerView: 1.2,
                         spaceBetween: 20,
-                        centeredSlides: false
+                        centeredSlides: true
+                    },
+                    768: {
+                        slidesPerView: 1.5,
+                        spaceBetween: 25,
+                        centeredSlides: true
                     },
                     1024: {
+                        slidesPerView: 2.5,
+                        spaceBetween: 30,
+                        centeredSlides: true
+                    },
+                    1200: {
                         slidesPerView: 3,
                         spaceBetween: 30,
                         centeredSlides: false
@@ -1261,18 +1487,16 @@
                     init: function () {
                         // Populate stars after swiper initialization
                         setTimeout(populateStars, 100);
-                        // Ensure fade-in animations work
-                        this.slides.forEach(slide => {
-                            const fadeElements = slide.querySelectorAll('.fade-in-section');
-                            fadeElements.forEach(el => el.classList.add('is-visible'));
-                        });
                     },
                     slideChange: function () {
-                        // Re-populate stars when slides change (in case of dynamic content)
+                        // Re-populate stars when slides change
                         setTimeout(populateStars, 50);
                     }
                 }
             });
+
+            // Initial population of stars
+            populateStars();
 
             // --- DYNAMIC COPYRIGHT YEAR ---
             document.getElementById('copyrightYear').textContent = new Date().getFullYear();
