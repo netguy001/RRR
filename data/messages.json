@@ -1,0 +1,22 @@
+[
+    {
+        "id": 2,
+        "name": "Meganathan M",
+        "email": "meganath1025@gmail.com",
+        "phone": "+917305307785",
+        "service": "Residential Construction",
+        "message": "fff",
+        "timestamp": "2025-09-23T22:48:08.520339",
+        "status": "New"
+    },
+    {
+        "id": 1,
+        "name": "121",
+        "email": "meganath1025@gmail.com",
+        "phone": "7305307785",
+        "service": "Residential Construction",
+        "message": "1222222ww",
+        "timestamp": "2025-09-23T22:18:48.522045",
+        "status": "Answered"
+    }
+]

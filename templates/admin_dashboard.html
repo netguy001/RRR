@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>RRR Construction Admin Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-blue: #0D3B66;
+      --primary-yellow: #F4D35E;
+      --danger-red: #e74c3c;
+      --success-green: #2ecc71;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      background: #f4f7f9;
+      color: #333;
+    }
+
+    header {
+      background: #fff;
+      color: var(--primary-blue);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, .05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    .logo-icon {
+      background: var(--primary-yellow);
+      color: var(--primary-blue);
+      font-weight: bold;
+      border-radius: 10px;
+      padding: 0.5rem 1rem;
+      font-size: 1.2rem;
+    }
+
+    .user a {
+      color: var(--primary-yellow);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    main {
+      max-width: 1300px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+    }
+
+    h2 {
+      color: var(--primary-blue);
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #eee;
+    }
+
+    .section {
+      margin-bottom: 3.5rem;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .projects,
+    .messages {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(13, 59, 102, 0.06);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      transition: box-shadow .2s, transform .2s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 32px rgba(13, 59, 102, 0.1);
+    }
+
+    .project-img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 11px;
+      margin-bottom: .5rem;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 0.7rem;
+      margin-top: auto;
+      padding-top: 1rem;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 8px;
+      padding: 0.6rem 1.2rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: all .2s;
+    }
+
+    .btn-primary {
+      background: var(--primary-yellow);
+      color: var(--primary-blue);
+    }
+
+    .btn-primary:hover {
+      background: #fddc71;
+      box-shadow: 0 2px 10px rgba(244, 211, 94, 0.3);
+    }
+
+    .btn-danger {
+      background: var(--danger-red);
+      color: #fff;
+    }
+
+    .btn-danger:hover {
+      background: #c0392b;
+      box-shadow: 0 2px 10px rgba(231, 76, 60, 0.3);
+    }
+
+    .status-badge {
+      padding: 0.3rem 0.8rem;
+      border-radius: 18px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    .status-New {
+      background: #f39c12;
+      color: #fff;
+    }
+
+    .status-InProgress {
+      background: #3498db;
+      color: #fff;
+    }
+
+    .status-Answered {
+      background: var(--success-green);
+      color: #fff;
+    }
+
+    .status-Finished {
+      background: var(--primary-blue);
+      color: #fff;
+    }
+
+    /* Modal Styles */
+    .modal-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(13, 59, 102, 0.4);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+
+    .modal-bg.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 40px rgba(13, 59, 102, 0.13);
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 500px;
+      transform: scale(0.95);
+      transition: transform 0.3s;
+    }
+
+    .modal-bg.active .modal {
+      transform: scale(1);
+    }
+
+    .modal-header {
+      padding-bottom: 0.8rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid #eee;
+      color: var(--primary-blue);
+    }
+
+    .modal label {
+      font-weight: 600;
+      color: var(--primary-blue);
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .modal input,
+    .modal textarea,
+    .modal select {
+      width: 100%;
+      box-sizing: border-box;
+      margin-bottom: 1.2rem;
+      padding: 0.8rem 1rem;
+      border-radius: 8px;
+      border: 1px solid #dde6f1;
+      font-size: 1rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .modal input:focus,
+    .modal textarea:focus,
+    .modal select:focus {
+      outline: none;
+      border-color: var(--primary-blue);
+      box-shadow: 0 0 0 3px rgba(13, 59, 102, 0.1);
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.8rem;
+      margin-top: 1.5rem;
+    }
+
+    /* Custom Confirmation Modal */
+    #confirmModal .modal {
+      max-width: 400px;
+      text-align: center;
+    }
+
+    #confirmModal p {
+      font-size: 1.1rem;
+      margin: 0 0 1.5rem 0;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translate(-50%, 150%);
+      background: var(--primary-blue);
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      z-index: 2000;
+      transition: transform 0.4s ease-out;
+      font-weight: 600;
+    }
+
+    .toast.show {
+      transform: translate(-50%, 0);
+    }
+
+    .toast.error {
+      background-color: var(--danger-red);
+    }
+
+    .toast.success {
+      background-color: var(--success-green);
+    }
+
+
+    @media(max-width:600px) {
+
+      header,
+      main {
+        padding: 1rem;
+      }
+
+      .projects,
+      .messages {
+        grid-template-columns: 1fr;
+      }
+
+      .modal {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo">
+      <span class="logo-icon">RRR</span>
+      <span>Admin Panel</span>
+    </div>
+    <div class="user">Welcome, {{ admin }} | <a href="{{ url_for('admin_logout') }}">Logout</a>
+    </div>
+  </header>
+  <main>
+    <!-- Projects Section -->
+    <div class="section">
+      <div class="section-header">
+        <h2>Manage Projects</h2>
+        <button class="btn btn-primary" onclick="openProjectModal()">+ Add New Project</button>
+      </div>
+      <div class="projects" id="projectsList">
+        {% for p in projects %}
+        <div class="card" data-id="{{p.id}}">
+          <img class="project-img"
+            src="{{ url_for('uploaded_file', filename=p.image) if p.image else 'https://placehold.co/400x180/0D3B66/FFFFFF?text=No+Image' }}"
+            alt="{{ p.title }}">
+          <b>{{ p.title }}</b>
+          <span>{{ p.category|capitalize }} | {{ p.status|capitalize }}</span>
+          <small>Created: {{ p.date_created }}</small>
+          <div class="card-actions">
+            <button class="btn btn-primary" onclick="editProject('{{p.id}}')">Edit</button>
+            <button class="btn btn-danger" onclick="confirmDeleteProject('{{p.id}}')">Delete</button>
+          </div>
+        </div>
+        {% else %}
+        <div>No projects have been added yet.</div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Customer Messages Section -->
+    <div class="section">
+      <h2>Customer Queries</h2>
+      <div class="messages" id="messagesList">
+        {% for m in messages %}
+        <div class="card" data-id="{{m.id}}">
+          <b>{{ m.name }}</b>
+          <div><span class="status-badge status-{{m.status.replace(' ','') if m.status else 'New'}}">{{m.status}}</span>
+          </div>
+          <div><b>Service:</b> {{m.service or 'N/A'}}<br><b>Email:</b> {{m.email}}<br><b>Phone:</b> {{m.phone}}</div>
+          <div style="font-size:0.98rem; padding: 0.5rem; background: #f9f9f9; border-radius: 8px;">{{m.message}}</div>
+          <small>Received: {{m.timestamp.split('T')[0]}}</small>
+          <div class="card-actions">
+            <select onchange="updateMsgStatus('{{m.id}}', this.value)"
+              style="flex-grow:1; padding: 0.5rem; border-radius: 8px; border: 1px solid #ddd;">
+              {% for st in ['New','In Progress','Answered','Finished'] %}
+              <option value="{{st}}" {% if m.status==st %}selected{% endif %}>{{st}}</option>
+              {% endfor %}
+            </select>
+            <button class="btn btn-danger" onclick="confirmDeleteMessage('{{m.id}}')">Delete</button>
+          </div>
+        </div>
+        {% else %}
+        <div>No messages yet.</div>
+        {% endfor %}
+      </div>
+    </div>
+  </main>
+
+  <!-- Project Add/Edit Modal -->
+  <div class="modal-bg" id="projectModalBg">
+    <div class="modal">
+      <form id="projectForm" enctype="multipart/form-data" autocomplete="off">
+        <input type="hidden" name="id" id="proj_id">
+        <h2 id="modalTitle" class="modal-header">Add Project</h2>
+        <label for="proj_title">Title</label>
+        <input type="text" name="title" id="proj_title" required>
+        <label for="proj_desc">Description</label>
+        <textarea name="description" id="proj_desc" required rows="4"></textarea>
+        <label for="proj_category">Category</label>
+        <select name="category" id="proj_category" required>
+          <option value="residential">Residential</option>
+          <option value="commercial">Commercial</option>
+          <option value="renovation">Renovation</option>
+          <option value="architectural">Architectural</option>
+        </select>
+        <label for="proj_status">Status</label>
+        <select name="status" id="proj_status" required>
+          <option value="ongoing">Ongoing</option>
+          <option value="completed">Completed</option>
+          <option value="planned">Planned</option>
+        </select>
+        <label for="proj_image">Image (jpg/png, max 2MB)</label>
+        <input type="file" accept="image/*" name="image" id="proj_image">
+        <div class="modal-actions">
+          <button type="button" class="btn" onclick="closeProjectModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="projSubmitBtn">Save Project</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Custom Confirmation Modal -->
+  <div class="modal-bg" id="confirmModal">
+    <div class="modal">
+      <h2 id="confirmTitle" class="modal-header">Confirm Action</h2>
+      <p id="confirmMessage">Are you sure?</p>
+      <div class="modal-actions">
+        <button type="button" class="btn" id="confirmCancelBtn">Cancel</button>
+        <button type="button" class="btn btn-danger" id="confirmOkBtn">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Element -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const projectModalBg = document.getElementById('projectModalBg');
+    const projectForm = document.getElementById('projectForm');
+    const confirmModal = document.getElementById('confirmModal');
+
+    // --- GENERIC MODAL & NOTIFICATION HELPERS ---
+    function showToast(message, type = 'info') {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.className = `toast show ${type}`;
+      setTimeout(() => { toast.className = 'toast'; }, 3000);
+    }
+
+    function openConfirmModal(title, message, onConfirm) {
+      document.getElementById('confirmTitle').textContent = title;
+      document.getElementById('confirmMessage').textContent = message;
+      confirmModal.classList.add('active');
+
+      const okBtn = document.getElementById('confirmOkBtn');
+      const cancelBtn = document.getElementById('confirmCancelBtn');
+
+      const confirmHandler = () => {
+        onConfirm();
+        closeConfirmModal();
+        okBtn.removeEventListener('click', confirmHandler);
+      };
+
+      okBtn.addEventListener('click', confirmHandler);
+      cancelBtn.addEventListener('click', closeConfirmModal);
+    }
+
+    function closeConfirmModal() {
+      confirmModal.classList.remove('active');
+      // Clean up listeners if needed, though handled in openConfirmModal
+    }
+
+
+    // --- PROJECT MODAL ---
+    function openProjectModal(editModeData = null) {
+      projectForm.reset();
+      document.getElementById('modalTitle').textContent = editModeData ? "Edit Project" : "Add Project";
+      document.getElementById('proj_id').value = editModeData ? editModeData.id : "";
+
+      if (editModeData) {
+        // In a real app, you'd fetch this data via API.
+        // Here we simulate it based on what's available.
+        document.getElementById('proj_title').value = editModeData.title;
+        document.getElementById('proj_category').value = editModeData.category;
+        document.getElementById('proj_status').value = editModeData.status;
+        // Description is not available on the card, so user must re-enter it.
+      }
+
+      projectModalBg.classList.add('active');
+    }
+
+    function closeProjectModal() {
+      projectModalBg.classList.remove('active');
+    }
+
+    // --- ADD/EDIT PROJECT ---
+    projectForm.onsubmit = function (e) {
+      e.preventDefault();
+      let formData = new FormData(projectForm);
+      let isEdit = formData.get("id");
+      let url = isEdit ? `/admin/project/edit/${isEdit}` : "/admin/project/add";
+
+      fetch(url, { method: "POST", body: formData })
+        .then(resp => resp.json())
+        .then(data => {
+          if (data.success) {
+            showToast(isEdit ? 'Project updated successfully!' : 'Project added successfully!', 'success');
+            setTimeout(() => location.reload(), 1000);
+          } else {
+            showToast(data.message || "An error occurred.", 'error');
+          }
+        }).catch(() => showToast('Network Error.', 'error'));
+    };
+
+    function editProject(id) {
+      // Simulate fetching data. In a real app, this would be an API call.
+      const card = document.querySelector(`.card[data-id='${id}']`);
+      if (card) {
+        const title = card.querySelector('b').textContent.trim();
+        const [category, status] = card.querySelector('span').textContent.trim().split(' | ');
+        openProjectModal({
+          id,
+          title,
+          category: category.toLowerCase(),
+          status: status.toLowerCase(),
+        });
+      }
+    }
+
+    // --- DELETE PROJECT ---
+    function confirmDeleteProject(id) {
+      openConfirmModal(
+        'Delete Project',
+        'Are you sure you want to permanently delete this project?',
+        () => deleteProject(id)
+      );
+    }
+    function deleteProject(id) {
+      fetch(`/admin/project/delete/${id}`, { method: "POST" })
+        .then(r => r.json())
+        .then(data => {
+          if (data.success) {
+            showToast('Project deleted.', 'success');
+            document.querySelector(`.card[data-id='${id}']`).remove();
+          } else {
+            showToast(data.message || "Error deleting project.", 'error');
+          }
+        }).catch(() => showToast('Network Error.', 'error'));
+    }
+
+    // --- UPDATE MESSAGE STATUS ---
+    function updateMsgStatus(id, status) {
+      fetch(`/admin/message/status/${id}`, {
+        method: "POST",
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ status })
+      }).then(r => r.json()).then(data => {
+        if (data.success) {
+          showToast('Status updated!', 'success');
+          const badge = document.querySelector(`.card[data-id='${id}'] .status-badge`);
+          badge.className = `status-badge status-${status.replace(' ', '')}`;
+          badge.textContent = status;
+        } else {
+          showToast(data.message || "Error updating status.", 'error');
+        }
+      }).catch(() => showToast('Network Error.', 'error'));
+    }
+
+    // --- DELETE MESSAGE ---
+    function confirmDeleteMessage(id) {
+      openConfirmModal(
+        'Delete Message',
+        'Are you sure you want to delete this customer message?',
+        () => deleteMessage(id)
+      );
+    }
+    function deleteMessage(id) {
+      fetch(`/admin/message/delete/${id}`, { method: "POST" })
+        .then(r => r.json())
+        .then(data => {
+          if (data.success) {
+            showToast('Message deleted.', 'success');
+            document.querySelector(`.card[data-id='${id}']`).remove();
+          } else {
+            showToast(data.message || "Error deleting message.", 'error');
+          }
+        }).catch(() => showToast('Network Error.', 'error'));
+    }
+
+    // --- MODAL CLOSE ON BG CLICK ---
+    projectModalBg.onclick = function (e) {
+      if (e.target === this) closeProjectModal();
+    }
+    confirmModal.onclick = function (e) {
+      if (e.target === this) closeConfirmModal();
+    }
+  </script>
+</body>
+
+</html>
