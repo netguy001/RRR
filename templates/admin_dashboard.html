@@ -26,7 +26,6 @@
 
     header {
       background: #fff;
-      color: var(--primary-blue);
       padding: 1rem 2rem;
       display: flex;
       align-items: center;
@@ -102,7 +101,7 @@
       box-shadow: 0 8px 32px rgba(13, 59, 102, 0.1);
     }
 
-    .project-img {
+    .card-img {
       width: 100%;
       height: 180px;
       object-fit: cover;
@@ -111,11 +110,20 @@
       background-color: #eee;
     }
 
+    .card-author-img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 50%;
+      background-color: #eee;
+    }
+
     .card-actions {
       display: flex;
       gap: 0.7rem;
       margin-top: auto;
       padding-top: 1rem;
+      border-top: 1px solid #f0f0f0;
     }
 
     .card-title {
@@ -133,6 +141,7 @@
       background: #f9f9f9;
       border-radius: 8px;
       word-break: break-word;
+      flex-grow: 1;
     }
 
     .btn {
@@ -155,7 +164,6 @@
 
     .btn-primary:hover {
       background: #fddc71;
-      box-shadow: 0 2px 10px rgba(244, 211, 94, 0.3);
     }
 
     .btn-danger {
@@ -165,7 +173,6 @@
 
     .btn-danger:hover {
       background: #c0392b;
-      box-shadow: 0 2px 10px rgba(231, 76, 60, 0.3);
     }
 
     .btn:disabled {
@@ -197,6 +204,10 @@
 
     .status-Finished {
       background: var(--primary-blue);
+    }
+
+    .rating-stars {
+      color: #ffc107;
     }
 
     /* Modal Styles */
@@ -279,7 +290,7 @@
       margin-top: 1.5rem;
     }
 
-    #imagePreview {
+    .image-preview {
       max-width: 100%;
       height: auto;
       border-radius: 8px;
@@ -287,7 +298,6 @@
       display: none;
     }
 
-    /* Custom Confirmation Modal */
     #confirmModal .modal {
       max-width: 400px;
       text-align: center;
@@ -298,7 +308,6 @@
       margin: 0 0 1.5rem 0;
     }
 
-    /* Toast Notification */
     .toast {
       position: fixed;
       bottom: 20px;
@@ -346,13 +355,10 @@
 
 <body>
   <header>
-    <div class="logo">
-      <span class="logo-icon">RRR</span>
-      <span>Admin Panel</span>
-    </div>
-    <div class="user">Welcome, <strong>{{ admin }}</strong> | <a href="{{ url_for('admin_logout') }}">Logout</a>
-    </div>
+    <div class="logo"><span class="logo-icon">RRR</span><span>Admin Panel</span></div>
+    <div class="user">Welcome, <strong>{{ admin }}</strong> | <a href="{{ url_for('admin_logout') }}">Logout</a></div>
   </header>
+
   <main>
     <!-- Projects Section -->
     <div class="section">
@@ -364,21 +370,55 @@
       <div class="grid-container" id="projectsList">
         {% for p in projects %}
         <div class="card" data-id="{{p.id}}">
-          <img class="project-img"
+          <img class="card-img"
             src="{{ url_for('uploaded_file', filename=p.image) if p.image else 'https://placehold.co/400x180/0D3B66/FFFFFF?text=No+Image' }}"
             alt="{{ p.title }}">
           <div class="card-title">{{ p.title }}</div>
+          <div class="card-details">{{ p.description }}</div>
           <div class="card-details">{{ p.category|capitalize }} | {{ p.status|capitalize }}</div>
           <small class="card-details">Created: {{ p.date_created }}</small>
           <div class="card-actions">
             <button class="btn btn-primary" onclick="editProject('{{p.id}}')"><i class="fas fa-edit"></i> Edit</button>
-            <button class="btn btn-danger" onclick="confirmDeleteProject('{{p.id}}')"><i class="fas fa-trash"></i>
+            <button class="btn btn-danger" onclick="confirmDelete('project', '{{p.id}}')"><i class="fas fa-trash"></i>
               Delete</button>
           </div>
         </div>
-        {% else %}
-        <div>No projects have been added yet.</div>
-        {% endfor %}
+        {% else %} <div>No projects have been added yet.</div> {% endfor %}
+      </div>
+    </div>
+
+    <!-- Testimonials Section -->
+    <div class="section">
+      <div class="section-header">
+        <h2>Manage Testimonials</h2>
+        <button class="btn btn-primary" onclick="openTestimonialModal()"><i class="fas fa-plus"></i> Add New
+          Testimonial</button>
+      </div>
+      <div class="grid-container" id="testimonialsList">
+        {% for t in testimonials %}
+        <div class="card" data-id="{{t.id}}">
+          <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+            <img class="card-author-img"
+              src="{{ url_for('uploaded_file', filename=t.image) if t.image else 'https://placehold.co/60x60/EFEFEF/333333?text=?' }}"
+              alt="{{ t.name }}">
+            <div>
+              <div class="card-title">{{ t.name }}</div>
+              <div class="card-details">{{ t.company }}</div>
+            </div>
+          </div>
+          <div class="rating-stars">
+            <!-- Logic to display stars based on rating -->
+          </div>
+          <div class="card-message">"{{t.text}}"</div>
+          <small class="card-details">Created: {{ t.date_created }}</small>
+          <div class="card-actions">
+            <button class="btn btn-primary" onclick="editTestimonial('{{t.id}}')"><i class="fas fa-edit"></i>
+              Edit</button>
+            <button class="btn btn-danger" onclick="confirmDelete('testimonial', '{{t.id}}')"><i
+                class="fas fa-trash"></i> Delete</button>
+          </div>
+        </div>
+        {% else %} <div>No testimonials have been added yet.</div> {% endfor %}
       </div>
     </div>
 
@@ -405,27 +445,24 @@
               <option value="{{st}}" {% if m.status==st %}selected{% endif %}>{{st}}</option>
               {% endfor %}
             </select>
-            <button class="btn btn-danger" onclick="confirmDeleteMessage('{{m.id}}')"><i class="fas fa-trash"></i>
+            <button class="btn btn-danger" onclick="confirmDelete('message', '{{m.id}}')"><i class="fas fa-trash"></i>
               Delete</button>
           </div>
         </div>
-        {% else %}
-        <div>No messages yet.</div>
-        {% endfor %}
+        {% else %} <div>No messages yet.</div> {% endfor %}
       </div>
     </div>
   </main>
 
-  <!-- Project Add/Edit Modal -->
+  <!-- Modals -->
   <div class="modal-bg" id="projectModalBg">
     <div class="modal">
-      <form id="projectForm" enctype="multipart/form-data" autocomplete="off">
+      <form id="projectForm" autocomplete="off">
         <input type="hidden" name="id" id="proj_id">
-        <h2 id="modalTitle" class="modal-header">Add Project</h2>
-        <label for="proj_title">Title</label>
-        <input type="text" name="title" id="proj_title" required>
-        <label for="proj_desc">Description</label>
-        <textarea name="description" id="proj_desc" required rows="4"></textarea>
+        <h2 id="projectModalTitle" class="modal-header">Add Project</h2>
+        <label for="proj_title">Title</label> <input type="text" name="title" id="proj_title" required>
+        <label for="proj_desc">Description</label> <textarea name="description" id="proj_desc" required
+          rows="4"></textarea>
         <label for="proj_category">Category</label>
         <select name="category" id="proj_category" required>
           <option value="residential">Residential</option>
@@ -439,18 +476,46 @@
           <option value="completed">Completed</option>
           <option value="planned">Planned</option>
         </select>
-        <label for="proj_image">Image (jpg/png, max 2MB)</label>
-        <input type="file" accept="image/*" name="image" id="proj_image">
-        <img id="imagePreview" src="#" alt="Image Preview" />
+        <label for="proj_image">Image (jpg/png, max 2MB)</label> <input type="file" accept="image/*" name="image"
+          id="proj_image">
+        <img class="image-preview" id="proj_imagePreview" src="#" alt="Image Preview" />
         <div class="modal-actions">
-          <button type="button" class="btn" onclick="closeProjectModal()">Cancel</button>
+          <button type="button" class="btn" onclick="closeModal('projectModalBg')">Cancel</button>
           <button type="submit" class="btn btn-primary" id="projSubmitBtn">Save Project</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Custom Confirmation Modal -->
+  <div class="modal-bg" id="testimonialModalBg">
+    <div class="modal">
+      <form id="testimonialForm" autocomplete="off">
+        <input type="hidden" name="id" id="test_id">
+        <h2 id="testimonialModalTitle" class="modal-header">Add Testimonial</h2>
+        <label for="test_name">Author Name</label> <input type="text" name="name" id="test_name" required>
+        <label for="test_company">Company / Location</label> <input type="text" name="company" id="test_company"
+          required>
+        <label for="test_text">Testimonial Text</label> <textarea name="text" id="test_text" required
+          rows="4"></textarea>
+        <label for="test_rating">Rating</label>
+        <select name="rating" id="test_rating" required>
+          <option value="5">5 Stars</option>
+          <option value="4">4 Stars</option>
+          <option value="3">3 Stars</option>
+          <option value="2">2 Stars</option>
+          <option value="1">1 Star</option>
+        </select>
+        <label for="test_image">Author Image (jpg/png, max 2MB)</label> <input type="file" accept="image/*" name="image"
+          id="test_image">
+        <img class="image-preview" id="test_imagePreview" src="#" alt="Image Preview" />
+        <div class="modal-actions">
+          <button type="button" class="btn" onclick="closeModal('testimonialModalBg')">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="testSubmitBtn">Save Testimonial</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <div class="modal-bg" id="confirmModal">
     <div class="modal">
       <h2 id="confirmTitle" class="modal-header">Confirm Action</h2>
@@ -462,7 +527,6 @@
     </div>
   </div>
 
-  <!-- Toast Notification Element -->
   <div class="toast" id="toast"></div>
 
   <script>
@@ -474,46 +538,82 @@
       setTimeout(() => { toast.className = 'toast'; }, 3000);
     };
 
+    const openModal = (modalId) => document.getElementById(modalId).classList.add('active');
+    const closeModal = (modalId) => document.getElementById(modalId).classList.remove('active');
+
+    document.querySelectorAll('.modal-bg').forEach(bg => {
+      bg.onclick = (e) => { if (e.target === bg) closeModal(bg.id); };
+    });
+
+    const setupImagePreview = (inputId, previewId) => {
+      const input = document.getElementById(inputId);
+      const preview = document.getElementById(previewId);
+      input.onchange = () => {
+        const [file] = input.files;
+        if (file) {
+          preview.src = URL.createObjectURL(file);
+          preview.style.display = 'block';
+        }
+      };
+    };
+    setupImagePreview('proj_image', 'proj_imagePreview');
+    setupImagePreview('test_image', 'test_imagePreview');
+
+    // --- UNIVERSAL DELETE ---
+    const confirmDelete = (type, id) => {
+      const messages = {
+        project: 'This will permanently delete this project and its image. Are you sure?',
+        testimonial: 'This will permanently delete this testimonial and its image. Are you sure?',
+        message: 'Are you sure you want to delete this message?',
+      };
+      openConfirmModal(`Delete ${type.charAt(0).toUpperCase() + type.slice(1)}`, messages[type], () => deleteItem(type, id));
+    };
+
+    const deleteItem = async (type, id) => {
+      try {
+        const response = await fetch(`/admin/${type}/delete/${id}`, { method: "POST" });
+        const data = await response.json();
+        if (data.success) {
+          showToast(`${type.charAt(0).toUpperCase() + type.slice(1)} deleted.`, 'success');
+          document.querySelector(`.card[data-id='${id}']`)?.remove();
+        } else {
+          showToast(data.message || `Error deleting ${type}.`, 'error');
+        }
+      } catch (err) {
+        showToast('Network error.', 'error');
+      }
+    };
+
     const openConfirmModal = (title, message, onConfirm) => {
       document.getElementById('confirmTitle').textContent = title;
       document.getElementById('confirmMessage').textContent = message;
-      const confirmModal = document.getElementById('confirmModal');
-      confirmModal.classList.add('active');
       const okBtn = document.getElementById('confirmOkBtn');
       const cancelBtn = document.getElementById('confirmCancelBtn');
-      const close = () => confirmModal.classList.remove('active');
-
-      const confirmHandler = () => { onConfirm(); close(); };
-      okBtn.onclick = confirmHandler;
-      cancelBtn.onclick = close;
-      confirmModal.onclick = (e) => { if (e.target === confirmModal) close(); };
+      okBtn.onclick = () => { onConfirm(); closeModal('confirmModal'); };
+      cancelBtn.onclick = () => closeModal('confirmModal');
+      openModal('confirmModal');
     };
 
     // --- PROJECT MANAGEMENT ---
-    const projectModalBg = document.getElementById('projectModalBg');
     const projectForm = document.getElementById('projectForm');
-    const imageInput = document.getElementById('proj_image');
-    const imagePreview = document.getElementById('imagePreview');
 
     const openProjectModal = () => {
       projectForm.reset();
-      document.getElementById('modalTitle').textContent = "Add Project";
+      document.getElementById('projectModalTitle').textContent = "Add Project";
       document.getElementById('proj_id').value = "";
-      imagePreview.style.display = 'none';
-      imagePreview.src = '#';
-      projectModalBg.classList.add('active');
+      document.getElementById('proj_imagePreview').style.display = 'none';
+      openModal('projectModalBg');
     };
 
-    const closeProjectModal = () => projectModalBg.classList.remove('active');
-
     const createProjectCardHTML = (p) => `
-        <img class="project-img" src="/static/uploads/${p.image || ''}" alt="${p.title}">
+        <img class="card-img" src="${p.image ? `/static/uploads/${p.image}` : 'https://placehold.co/400x180/0D3B66/FFFFFF?text=No+Image'}" alt="${p.title}">
         <div class="card-title">${p.title}</div>
+        <div class="card-details">${p.description}</div>
         <div class="card-details">${p.category.charAt(0).toUpperCase() + p.category.slice(1)} | ${p.status.charAt(0).toUpperCase() + p.status.slice(1)}</div>
         <small class="card-details">Created: ${p.date_created}</small>
         <div class="card-actions">
             <button class="btn btn-primary" onclick="editProject('${p.id}')"><i class="fas fa-edit"></i> Edit</button>
-            <button class="btn btn-danger" onclick="confirmDeleteProject('${p.id}')"><i class="fas fa-trash"></i> Delete</button>
+            <button class="btn btn-danger" onclick="confirmDelete('project', '${p.id}')"><i class="fas fa-trash"></i> Delete</button>
         </div>`;
 
     projectForm.onsubmit = async (e) => {
@@ -522,91 +622,135 @@
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
 
-      let formData = new FormData(projectForm);
-      let id = formData.get("id");
-      let url = id ? `/admin/project/edit/${id}` : "/admin/project/add";
+      const formData = new FormData(projectForm);
+      const id = formData.get("id");
+      const url = id ? `/admin/project/edit/${id}` : "/admin/project/add";
 
       try {
         const response = await fetch(url, { method: "POST", body: formData });
         const data = await response.json();
         if (data.success) {
           showToast(id ? 'Project updated!' : 'Project added!', 'success');
-          const project = data.project;
-          const card = document.querySelector(`.card[data-id='${project.id}']`);
-          if (card) { // Update existing card
-            card.innerHTML = createProjectCardHTML(project);
-          } else { // Add new card
+          const item = data.project;
+          const card = document.querySelector(`#projectsList .card[data-id='${item.id}']`);
+          if (card) { card.innerHTML = createProjectCardHTML(item); }
+          else {
             const newCard = document.createElement('div');
             newCard.className = 'card';
-            newCard.dataset.id = project.id;
-            newCard.innerHTML = createProjectCardHTML(project);
+            newCard.dataset.id = item.id;
+            newCard.innerHTML = createProjectCardHTML(item);
             document.getElementById('projectsList').prepend(newCard);
           }
-          closeProjectModal();
-        } else {
-          showToast(data.message || "An error occurred.", 'error');
-        }
-      } catch (err) {
-        showToast('Network error.', 'error');
-      } finally {
+          closeModal('projectModalBg');
+        } else { showToast(data.message || "An error occurred.", 'error'); }
+      } catch (err) { showToast('Network error.', 'error'); }
+      finally {
         submitBtn.disabled = false;
         submitBtn.textContent = 'Save Project';
       }
     };
 
     const editProject = async (id) => {
+      const response = await fetch(`/api/project/${id}`);
+      const data = await response.json();
+      if (data.success) {
+        const p = data.project;
+        projectForm.reset();
+        document.getElementById('projectModalTitle').textContent = "Edit Project";
+        document.getElementById('proj_id').value = p.id;
+        document.getElementById('proj_title').value = p.title;
+        document.getElementById('proj_desc').value = p.description;
+        document.getElementById('proj_category').value = p.category;
+        document.getElementById('proj_status').value = p.status;
+        const preview = document.getElementById('proj_imagePreview');
+        preview.src = p.image ? `/static/uploads/${p.image}` : '#';
+        preview.style.display = p.image ? 'block' : 'none';
+        openModal('projectModalBg');
+      } else { showToast('Could not fetch project details.', 'error'); }
+    };
+
+    // --- TESTIMONIAL MANAGEMENT ---
+    const testimonialForm = document.getElementById('testimonialForm');
+
+    const openTestimonialModal = () => {
+      testimonialForm.reset();
+      document.getElementById('testimonialModalTitle').textContent = "Add Testimonial";
+      document.getElementById('test_id').value = "";
+      document.getElementById('test_imagePreview').style.display = 'none';
+      openModal('testimonialModalBg');
+    };
+
+    const createTestimonialCardHTML = (t) => {
+      let stars = '';
+      for (let i = 0; i < 5; i++) { stars += `<i class="fas fa-star${i < t.rating ? '' : '-half-alt'}" style="opacity:${i < t.rating ? 1 : 0.3}"></i>`; }
+      return `
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                <img class="card-author-img" src="${t.image ? `/static/uploads/${t.image}` : 'https://placehold.co/60x60/EFEFEF/333333?text=?'}" alt="${t.name}">
+                <div>
+                    <div class="card-title">${t.name}</div>
+                    <div class="card-details">${t.company}</div>
+                </div>
+            </div>
+            <div class="rating-stars">${stars}</div>
+            <div class="card-message">"${t.text}"</div>
+            <small class="card-details">Created: ${t.date_created}</small>
+            <div class="card-actions">
+                <button class="btn btn-primary" onclick="editTestimonial('${t.id}')"><i class="fas fa-edit"></i> Edit</button>
+                <button class="btn btn-danger" onclick="confirmDelete('testimonial', '${t.id}')"><i class="fas fa-trash"></i> Delete</button>
+            </div>`;
+    };
+
+    testimonialForm.onsubmit = async (e) => {
+      e.preventDefault();
+      const submitBtn = document.getElementById('testSubmitBtn');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+      const formData = new FormData(testimonialForm);
+      const id = formData.get("id");
+      const url = id ? `/admin/testimonial/edit/${id}` : "/admin/testimonial/add";
+
       try {
-        const response = await fetch(`/api/project/${id}`);
+        const response = await fetch(url, { method: "POST", body: formData });
         const data = await response.json();
         if (data.success) {
-          const p = data.project;
-          projectForm.reset();
-          document.getElementById('modalTitle').textContent = "Edit Project";
-          document.getElementById('proj_id').value = p.id;
-          document.getElementById('proj_title').value = p.title;
-          document.getElementById('proj_desc').value = p.description;
-          document.getElementById('proj_category').value = p.category;
-          document.getElementById('proj_status').value = p.status;
-          if (p.image) {
-            imagePreview.src = `/static/uploads/${p.image}`;
-            imagePreview.style.display = 'block';
-          } else {
-            imagePreview.style.display = 'none';
+          showToast(id ? 'Testimonial updated!' : 'Testimonial added!', 'success');
+          const item = data.testimonial;
+          const card = document.querySelector(`#testimonialsList .card[data-id='${item.id}']`);
+          if (card) { card.innerHTML = createTestimonialCardHTML(item); }
+          else {
+            const newCard = document.createElement('div');
+            newCard.className = 'card';
+            newCard.dataset.id = item.id;
+            newCard.innerHTML = createTestimonialCardHTML(item);
+            document.getElementById('testimonialsList').prepend(newCard);
           }
-          projectModalBg.classList.add('active');
-        } else {
-          showToast(data.message || 'Could not fetch project details.', 'error');
-        }
-      } catch (err) {
-        showToast('Network error.', 'error');
+          closeModal('testimonialModalBg');
+        } else { showToast(data.message || "An error occurred.", 'error'); }
+      } catch (err) { showToast('Network error.', 'error'); }
+      finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Save Testimonial';
       }
     };
 
-    imageInput.onchange = () => {
-      const [file] = imageInput.files;
-      if (file) {
-        imagePreview.src = URL.createObjectURL(file);
-        imagePreview.style.display = 'block';
-      }
-    };
-
-    const confirmDeleteProject = (id) => {
-      openConfirmModal('Delete Project', 'This will permanently delete this project. Are you sure?', () => deleteProject(id));
-    };
-
-    const deleteProject = async (id) => {
-      try {
-        const response = await fetch(`/admin/project/delete/${id}`, { method: "POST" });
-        const data = await response.json();
-        if (data.success) {
-          showToast('Project deleted.', 'success');
-          document.querySelector(`.card[data-id='${id}']`)?.remove();
-        } else {
-          showToast(data.message || "Error deleting project.", 'error');
-        }
-      } catch (err) {
-        showToast('Network error.', 'error');
-      }
+    const editTestimonial = async (id) => {
+      const response = await fetch(`/api/testimonial/${id}`);
+      const data = await response.json();
+      if (data.success) {
+        const t = data.testimonial;
+        testimonialForm.reset();
+        document.getElementById('testimonialModalTitle').textContent = "Edit Testimonial";
+        document.getElementById('test_id').value = t.id;
+        document.getElementById('test_name').value = t.name;
+        document.getElementById('test_company').value = t.company;
+        document.getElementById('test_text').value = t.text;
+        document.getElementById('test_rating').value = t.rating;
+        const preview = document.getElementById('test_imagePreview');
+        preview.src = t.image ? `/static/uploads/${t.image}` : '#';
+        preview.style.display = t.image ? 'block' : 'none';
+        openModal('testimonialModalBg');
+      } else { showToast('Could not fetch testimonial details.', 'error'); }
     };
 
     // --- MESSAGE MANAGEMENT ---
@@ -620,37 +764,33 @@
         const data = await response.json();
         if (data.success) {
           showToast('Status updated!', 'success');
-          const badge = document.querySelector(`.card[data-id='${id}'] .status-badge`);
+          const badge = document.querySelector(`#messagesList .card[data-id='${id}'] .status-badge`);
           badge.className = `status-badge status-${status.replace(' ', '')}`;
           badge.textContent = status;
-        } else {
-          showToast(data.message || "Error updating status.", 'error');
-        }
-      } catch (err) {
-        showToast('Network Error.', 'error');
-      }
+        } else { showToast(data.message || "Error updating status.", 'error'); }
+      } catch (err) { showToast('Network Error.', 'error'); }
     };
 
-    const confirmDeleteMessage = (id) => {
-      openConfirmModal('Delete Message', 'Are you sure you want to delete this message?', () => deleteMessage(id));
-    };
+    // Fill rating stars on load
+    document.querySelectorAll('#testimonialsList .card').forEach(card => {
+      // Get the rating from the testimonial data
+      const testimonialId = parseInt(card.dataset.id);
+      const testimonials = {{ testimonials | tojson | safe
+    }};
+    const testimonial = testimonials.find(t => t.id === testimonialId);
+    const rating = testimonial ? testimonial.rating : 0;
 
-    const deleteMessage = async (id) => {
-      try {
-        const response = await fetch(`/admin/message/delete/${id}`, { method: "POST" });
-        const data = await response.json();
-        if (data.success) {
-          showToast('Message deleted.', 'success');
-          document.querySelector(`.card[data-id='${id}']`)?.remove();
-        } else {
-          showToast(data.message || "Error deleting message.", 'error');
-        }
-      } catch (err) {
-        showToast('Network Error.', 'error');
-      }
-    };
+    let starsHTML = '';
+    for (let i = 0; i < 5; i++) {
+      starsHTML += `<i class="fas fa-star${i < rating ? '' : '-half-alt'}" style="opacity:${i < rating ? 1 : 0.3}"></i>`;
+    }
 
-    projectModalBg.onclick = (e) => { if (e.target === projectModalBg) closeProjectModal(); };
+    const ratingContainer = card.querySelector('.rating-stars');
+    if (ratingContainer) {
+      ratingContainer.innerHTML = starsHTML;
+    }
+});
+
   </script>
 </body>
 

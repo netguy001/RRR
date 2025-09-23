@@ -6,18 +6,22 @@
     <title>RRR Construction – Bring your vision, get your keys.</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description"
-        content="RRR Construction: Premier construction company in Chennai for residential, commercial, and custom projects. Bring your vision, get your keys.">
+        content="RRR Construction: Premier construction company in Chennai for residential, commercial, and custom projects.">
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏗️</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-        xintegrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Swiper.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <style>
         :root {
             --primary-blue: #0D3B66;
             --primary-yellow: #F4D35E;
             --light-bg: #f7f9fc;
+            --text-dark: #333;
+            --text-light: #555;
         }
 
         html {
@@ -28,12 +32,12 @@
             font-family: 'Inter', sans-serif;
             margin: 0;
             padding: 0;
-            color: #333;
+            color: var(--text-dark);
             background: #fff;
             line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* --- Reusable Components --- */
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -58,7 +62,7 @@
 
         .section-title p {
             font-size: 1.1rem;
-            color: #555;
+            color: var(--text-light);
             max-width: 600px;
             margin: 0 auto;
         }
@@ -109,18 +113,6 @@
             transform: translateY(0);
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
         /* --- Navbar --- */
         .navbar {
             position: fixed;
@@ -131,20 +123,6 @@
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             box-shadow: 0 2px 14px rgba(13, 59, 102, 0.08);
-            transition: box-shadow 0.3s, transform 0.3s;
-            animation: fadeInDown 1s ease-out;
-        }
-
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-100%);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         .nav-content {
@@ -188,7 +166,7 @@
 
         .logo-text p {
             font-size: 0.9rem;
-            color: #555;
+            color: var(--text-light);
             margin: 0;
             font-weight: 500;
         }
@@ -202,7 +180,7 @@
 
         .nav-links a {
             text-decoration: none;
-            color: #333;
+            color: var(--text-dark);
             font-weight: 600;
             position: relative;
             padding: 4px 0;
@@ -286,24 +264,73 @@
             background-color: var(--light-bg);
         }
 
-        /* --- Hero Section --- */
+        /* --- Hero Section with Auto-sliding Background --- */
         .hero {
             padding-top: 72px;
             min-height: 95vh;
-            background: linear-gradient(rgba(13, 59, 102, 0.85), rgba(13, 59, 102, 0.7)), url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2070&auto=format&fit=crop') no-repeat center center;
-            background-size: cover;
-            background-attachment: fixed;
+            position: relative;
             color: #fff;
             display: flex;
             align-items: center;
             text-align: center;
+            overflow: hidden;
+        }
+
+        .hero-slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+
+        .hero-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+        }
+
+        .hero-slide.active {
+            opacity: 1;
+        }
+
+        .hero-slide:nth-child(1) {
+            background-image: url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2070&auto=format&fit=crop');
+        }
+
+        .hero-slide:nth-child(2) {
+            background-image: url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=2076&auto=format&fit=crop');
+        }
+
+        .hero-slide:nth-child(3) {
+            background-image: url('https://images.unsplash.com/photo-1590725140246-20acdee442be?q=80&w=2066&auto=format&fit=crop');
+        }
+
+        .hero-slide:nth-child(4) {
+            background-image: url('https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=2070&auto=format&fit=crop');
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(13, 59, 102, 0.85), rgba(13, 59, 102, 0.7));
+            z-index: -1;
         }
 
         .hero-content h1 {
             font-size: 3.5rem;
             font-weight: 800;
             margin-bottom: 0.6rem;
-            animation: fadeInUp 1s ease-out 0.2s backwards;
         }
 
         .hero-content .highlight {
@@ -314,33 +341,15 @@
             font-size: 1.35rem;
             color: #faf0ca;
             margin-bottom: 2.2rem;
-            animation: fadeInUp 1s ease-out 0.4s backwards;
         }
 
         .hero-buttons {
             display: flex;
             gap: 1rem;
             justify-content: center;
-            animation: fadeInUp 1s ease-out 0.6s backwards;
         }
 
-        .hero-stats {
-            display: flex;
-            justify-content: center;
-            gap: 3rem;
-            padding-top: 2.5rem;
-            margin-top: 3rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.15);
-            animation: fadeInUp 1s ease-out 0.8s backwards;
-        }
-
-        .stat h3 {
-            font-size: 2.5rem;
-            color: var(--primary-yellow);
-            margin: 0 0 0.5rem 0;
-        }
-
-        /* --- About Section --- */
+        /* --- About & Services --- */
         .about-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -362,7 +371,6 @@
             box-shadow: 0 8px 40px rgba(13, 59, 102, 0.15);
         }
 
-        /* --- Services Section --- */
         #services {
             background: var(--light-bg);
         }
@@ -411,67 +419,271 @@
             margin: 0 0 0.5rem 0;
         }
 
-        /* --- Projects Section --- */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
+        /* --- FIXED SWIPER CAROUSEL STYLES --- */
+        .carousel-container {
+            width: 100%;
+            padding: 1rem 0 4rem;
+            position: relative;
         }
 
+        .swiper {
+            width: 100%;
+            height: auto;
+            padding-bottom: 3rem;
+        }
+
+        .swiper-slide {
+            height: auto;
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+        }
+
+        /* Swiper navigation buttons */
+        .swiper-button-next,
+        .swiper-button-prev {
+            color: var(--primary-blue) !important;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 50%;
+            width: 48px !important;
+            height: 48px !important;
+            margin-top: -24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .swiper-button-next:hover,
+        .swiper-button-prev:hover {
+            background-color: #fff;
+            transform: scale(1.1);
+        }
+
+        .swiper-button-next:after,
+        .swiper-button-prev:after {
+            font-size: 18px !important;
+            font-weight: bold;
+        }
+
+        /* Swiper pagination */
+        .swiper-pagination {
+            position: static !important;
+            margin-top: 2rem;
+        }
+
+        .swiper-pagination-bullet {
+            width: 12px !important;
+            height: 12px !important;
+            background: rgba(13, 59, 102, 0.3) !important;
+            opacity: 1 !important;
+        }
+
+        .swiper-pagination-bullet-active {
+            background: var(--primary-blue) !important;
+            transform: scale(1.2);
+        }
+
+        /* --- Projects Section --- */
         .project-card {
             background: #fff;
             border-radius: 16px;
-            box-shadow: 0 4px 18px rgba(13, 59, 102, 0.07);
+            box-shadow: 0 4px 18px rgba(13, 59, 102, 0.08);
             overflow: hidden;
             transition: all 0.3s ease;
+            width: 100%;
+            max-width: 380px;
+            height: 420px;
+            display: flex;
+            flex-direction: column;
         }
 
         .project-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 10px 40px rgba(13, 59, 102, 0.12);
+            box-shadow: 0 12px 40px rgba(13, 59, 102, 0.15);
+        }
+
+        .project-image-wrapper {
+            position: relative;
+            overflow: hidden;
+            height: 200px;
+            flex-shrink: 0;
         }
 
         .project-image {
             width: 100%;
-            height: 220px;
+            height: 100%;
             object-fit: cover;
             display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover .project-image {
+            transform: scale(1.05);
+        }
+
+        .project-image-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 60%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-card:hover .project-image-wrapper::after {
+            opacity: 1;
+        }
+
+        .project-tags {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover .project-tags {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .project-tag {
+            background: rgba(255, 255, 255, 0.95);
+            color: var(--primary-blue);
+            padding: 0.4rem 0.9rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
         }
 
         .project-content {
             padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .project-content h3 {
             color: var(--primary-blue);
             font-size: 1.3rem;
-            margin: 0 0 0.5rem 0;
+            margin: 0 0 0.8rem 0;
+            font-weight: 700;
+            line-height: 1.3;
         }
 
-        /* --- Clients Section --- */
-        #clients {
+        .project-content p {
+            color: var(--text-light);
+            line-height: 1.5;
+            margin: 0;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        /* --- Testimonials Section --- */
+        #testimonials {
             background: var(--light-bg);
         }
 
-        .clients-grid {
+        .testimonial-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(13, 59, 102, 0.08);
             display: flex;
-            flex-wrap: wrap;
+            flex-direction: column;
+            width: 100%;
+            max-width: 380px;
+            height: 420px;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(13, 59, 102, 0.12);
+        }
+
+        .rating {
+            color: #ffc107;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            display: flex;
             justify-content: center;
+            gap: 2px;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            color: var(--text-light);
+            flex-grow: 1;
+            margin: 0.5rem 0 1.5rem 0;
+            position: relative;
+            font-size: 1rem;
+            line-height: 1.6;
+            padding-top: 1.5rem;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+        }
+
+        .testimonial-text::before {
+            content: '"';
+            font-family: Georgia, serif;
+            font-size: 3.5rem;
+            color: var(--primary-yellow);
+            position: absolute;
+            top: -0.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0.8;
+            line-height: 1;
+        }
+
+        .testimonial-author {
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 3rem;
+            gap: 0.8rem;
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid #f0f0f0;
         }
 
-        .client-logo img {
-            max-width: 140px;
-            filter: grayscale(100%);
-            opacity: 0.6;
-            transition: all 0.3s;
+        .author-photo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary-yellow);
+            transition: transform 0.3s ease;
         }
 
-        .client-logo:hover img {
-            filter: grayscale(0%);
-            opacity: 1;
+        .testimonial-card:hover .author-photo {
             transform: scale(1.1);
+        }
+
+        .author-info h4 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: var(--primary-blue);
+            font-weight: 700;
+        }
+
+        .author-info p {
+            margin: 0;
+            color: #777;
+            font-size: 0.9rem;
         }
 
         /* --- Contact Section --- */
@@ -490,17 +702,13 @@
             gap: 1.5rem;
         }
 
-        .form-field {
-            position: relative;
-        }
-
         .form-field input,
         .form-field textarea,
         .form-field select {
             width: 100%;
             box-sizing: border-box;
             font-size: 1rem;
-            padding: 1rem 1.2rem 1rem 3.2rem;
+            padding: 1rem;
             border-radius: 10px;
             border: 1.5px solid #dde6f1;
             background: var(--light-bg);
@@ -509,31 +717,12 @@
             font-family: inherit;
         }
 
-        .form-field textarea {
-            padding-left: 1.2rem;
-        }
-
         .form-field input:focus,
         .form-field textarea:focus,
         .form-field select:focus {
             border-color: var(--primary-blue);
             background: #fff;
             box-shadow: 0 0 0 3px rgba(13, 59, 102, 0.1);
-        }
-
-        .form-field .form-icon {
-            position: absolute;
-            left: 1.2rem;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 1.2rem;
-            color: var(--primary-blue);
-            opacity: .7;
-        }
-
-        .form-field textarea {
-            resize: vertical;
-            min-height: 100px;
         }
 
         .form-submit-btn {
@@ -592,10 +781,6 @@
             padding: 0;
         }
 
-        .footer-section ul li {
-            margin-bottom: 0.6rem;
-        }
-
         .footer-section a {
             color: #eee;
             text-decoration: none;
@@ -615,19 +800,10 @@
             color: #ccc;
         }
 
-        /* --- Responsive Design --- */
         @media (max-width: 950px) {
             .about-content {
                 grid-template-columns: 1fr;
                 text-align: center;
-            }
-
-            .hero-content h1 {
-                font-size: 2.8rem;
-            }
-
-            .hero-content p {
-                font-size: 1.2rem;
             }
         }
 
@@ -640,33 +816,12 @@
                 display: block;
             }
 
-            .container,
-            .footer-content {
-                padding: 0 16px;
-            }
-
             .hero-content h1 {
                 font-size: 2.2rem;
             }
 
-            .contact-section {
-                padding: 2rem 1.5rem;
-            }
-
             .section {
                 padding: 4rem 0;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero-stats {
-                gap: 1.5rem;
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .stat h3 {
-                font-size: 2.2rem;
             }
 
             .hero-buttons {
@@ -674,9 +829,9 @@
                 align-items: center;
             }
 
-            .btn {
-                width: 80%;
-                justify-content: center;
+            .swiper-button-next,
+            .swiper-button-prev {
+                display: none !important;
             }
         }
     </style>
@@ -685,29 +840,24 @@
 <body>
     <!-- Header & Navigation -->
     <nav class="navbar" id="navbar">
-        <div class="container">
-            <div class="nav-content">
-                <a href="#home" class="logo">
-                    <div class="logo-icon">RRR</div>
-                    <div class="logo-text">
-                        <h1>RRR Construction</h1>
-                        <p>Bring your vision, get your keys.</p>
-                    </div>
-                </a>
-                <ul class="nav-links">
-                    <li><a href="#home" class="active">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#services">Services</a></li>
-                    <li><a href="#projects">Projects</a></li>
-                    <li><a href="#clients">Our Clients</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                    <li><a href="tel:+917305307785" class="btn btn-primary"><i class="fas fa-phone"></i> Call Now</a>
-                    </li>
-                </ul>
-                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu" aria-expanded="false">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
+        <div class="container nav-content">
+            <a href="#home" class="logo">
+                <div class="logo-icon">RRR</div>
+                <div class="logo-text">
+                    <h1>RRR Construction</h1>
+                    <p>Bring your vision, get your keys.</p>
+                </div>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="tel:+917305307785" class="btn btn-primary"><i class="fas fa-phone"></i> Call Now</a></li>
+            </ul>
+            <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fas fa-bars"></i></button>
         </div>
         <div class="mobile-nav" id="mobileNav">
             <ul>
@@ -715,15 +865,21 @@
                 <li><a href="#about">About</a></li>
                 <li><a href="#services">Services</a></li>
                 <li><a href="#projects">Projects</a></li>
-                <li><a href="#clients">Our Clients</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
                 <li><a href="#contact">Contact</a></li>
-                <li><a href="tel:+917305307785" class="btn btn-primary"><i class="fas fa-phone"></i> Call Now</a></li>
             </ul>
         </div>
     </nav>
 
     <!-- Hero Section -->
     <section id="home" class="hero">
+        <div class="hero-slider">
+            <div class="hero-slide active"></div>
+            <div class="hero-slide"></div>
+            <div class="hero-slide"></div>
+            <div class="hero-slide"></div>
+        </div>
+        <div class="hero-overlay"></div>
         <div class="container">
             <div class="hero-content">
                 <h1>RRR <span class="highlight">Construction</span></h1>
@@ -731,20 +887,6 @@
                 <div class="hero-buttons">
                     <a href="#contact" class="btn btn-primary"><i class="fas fa-clipboard-list"></i> Get Free Quote</a>
                     <a href="#projects" class="btn btn-secondary"><i class="fas fa-eye"></i> View Projects</a>
-                </div>
-                <div class="hero-stats">
-                    <div class="stat">
-                        <h3>100+</h3>
-                        <p>Projects Completed</p>
-                    </div>
-                    <div class="stat">
-                        <h3>15+</h3>
-                        <p>Years Experience</p>
-                    </div>
-                    <div class="stat">
-                        <h3>500+</h3>
-                        <p>Happy Clients</p>
-                    </div>
                 </div>
             </div>
         </div>
@@ -811,56 +953,130 @@
     <section id="projects" class="section">
         <div class="container">
             <div class="section-title fade-in-section">
-                <h2>Our Projects</h2>
-                <p>Discover our portfolio of successfully completed projects.</p>
+                <h2>Our Flagship Projects</h2>
+                <p>Discover our portfolio of successfully completed projects that stand as a testament to our quality
+                    and commitment.</p>
             </div>
-            <div class="projects-grid">
-                {% for p in projects %}
-                <div class="project-card fade-in-section">
-                    <img class="project-image"
-                        src="{{ url_for('uploaded_file', filename=p.image) if p.image else 'https://placehold.co/400x220/0D3B66/F4D35E?text=RRR+Construction' }}"
-                        alt="{{ p.title }}">
-                    <div class="project-content">
-                        <h3>{{ p.title }}</h3>
-                        <p>{{ p.description }}</p>
+            <div class="carousel-container">
+                <div class="swiper projects-swiper">
+                    <div class="swiper-wrapper">
+                        {% for p in projects %}
+                        <div class="swiper-slide">
+                            <div class="project-card fade-in-section">
+                                <div class="project-image-wrapper">
+                                    <img class="project-image"
+                                        src="{{ url_for('uploaded_file', filename=p.image) if p.image else 'https://placehold.co/400x240/0D3B66/F4D35E?text=RRR+Construction' }}"
+                                        alt="{{ p.title }}">
+                                    <div class="project-tags">
+                                        <span class="project-tag">{{ p.category|capitalize }}</span>
+                                        <span class="project-tag">{{ p.status|capitalize }}</span>
+                                    </div>
+                                </div>
+                                <div class="project-content">
+                                    <h3>{{ p.title }}</h3>
+                                    <p>{{ p.description }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="swiper-slide">
+                            <div style="text-align: center; padding: 2rem; color: var(--text-light);">
+                                <i class="fas fa-building"
+                                    style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                                <p>No projects to display at the moment. Check back soon!</p>
+                            </div>
+                        </div>
+                        {% endfor %}
                     </div>
+                    <div class="swiper-pagination"></div>
                 </div>
-                {% else %}
-                <div>No projects to display at the moment. Check back soon!</div>
-                {% endfor %}
             </div>
         </div>
     </section>
 
-    <!-- Client Logos Section -->
-    <section id="clients" class="section">
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="section">
         <div class="container">
             <div class="section-title fade-in-section">
-                <h2>Our Trusted Clients</h2>
-                <p>We are proud to have worked with a diverse range of industry leaders.</p>
+                <h2>What Our Clients Say</h2>
+                <p>We take pride in building lasting relationships with our clients, forged on trust and exceptional
+                    results.</p>
             </div>
-            <!-- 
-                How to add your client logos:
-                1. Upload your logo images (e.g., 'my_client_logo.png') to the 'static/uploads/' folder.
-                2. Replace the 'src' value in the <img> tag below with the correct path.
-                   Example: src="{{ url_for('uploaded_file', filename='my_client_logo.png') }}"
-            -->
-            <div class="clients-grid">
-                <a href="#" class="client-logo fade-in-section" title="Client One">
-                    <img src="https://placehold.co/150x80/transparent/0D3B66?text=Client+1" alt="Logo of Client One">
-                </a>
-                <a href="#" class="client-logo fade-in-section" title="Client Two">
-                    <img src="https://placehold.co/150x80/transparent/0D3B66?text=Client+2" alt="Logo of Client Two">
-                </a>
-                <a href="#" class="client-logo fade-in-section" title="Client Three">
-                    <img src="https://placehold.co/150x80/transparent/0D3B66?text=Client+3" alt="Logo of Client Three">
-                </a>
-                <a href="#" class="client-logo fade-in-section" title="Client Four">
-                    <img src="https://placehold.co/150x80/transparent/0D3B66?text=Client+4" alt="Logo of Client Four">
-                </a>
-                <a href="#" class="client-logo fade-in-section" title="Client Five">
-                    <img src="https://placehold.co/150x80/transparent/0D3B66?text=Client+5" alt="Logo of Client Five">
-                </a>
+            <div class="carousel-container">
+                <div class="swiper testimonials-swiper">
+                    <div class="swiper-wrapper">
+                        {% if testimonials %}
+                        {% for t in testimonials %}
+                        <div class="swiper-slide">
+                            <div class="testimonial-card fade-in-section" data-rating="{{ t.rating }}">
+                                <div class="rating">
+                                    <!-- Stars will be populated by JavaScript -->
+                                </div>
+                                <p class="testimonial-text">{{ t.text }}</p>
+                                <div class="testimonial-author">
+                                    <img src="{{ url_for('uploaded_file', filename=t.image) if t.image else 'https://placehold.co/70x70/EFEFEF/333333?text=?' }}"
+                                        alt="Photo of {{ t.name }}" class="author-photo">
+                                    <div class="author-info">
+                                        <h4>{{ t.name }}</h4>
+                                        <p>{{ t.company }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <!-- Default testimonials when none exist -->
+                        <div class="swiper-slide">
+                            <div class="testimonial-card fade-in-section" data-rating="5">
+                                <div class="rating"></div>
+                                <p class="testimonial-text">RRR Construction delivered our dream home on time and within
+                                    budget. Their attention to detail and commitment to quality is unmatched.</p>
+                                <div class="testimonial-author">
+                                    <img src="https://placehold.co/70x70/EFEFEF/333333?text=SK"
+                                        alt="Photo of Suresh Kumar" class="author-photo">
+                                    <div class="author-info">
+                                        <h4>Suresh Kumar</h4>
+                                        <p>Residential Home, Adyar</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="testimonial-card fade-in-section" data-rating="5">
+                                <div class="rating"></div>
+                                <p class="testimonial-text">We partnered with RRR for our new office space, and the
+                                    result
+                                    exceeded our expectations. Highly recommended for commercial projects.</p>
+                                <div class="testimonial-author">
+                                    <img src="https://placehold.co/70x70/EFEFEF/333333?text=PR"
+                                        alt="Photo of Priya Rajan" class="author-photo">
+                                    <div class="author-info">
+                                        <h4>Priya Rajan</h4>
+                                        <p>Commercial Project, OMR</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="testimonial-card fade-in-section" data-rating="4">
+                                <div class="rating"></div>
+                                <p class="testimonial-text">The renovation was complex, but the RRR team handled it with
+                                    great care. They blended modern amenities with traditional architecture beautifully.
+                                </p>
+                                <div class="testimonial-author">
+                                    <img src="https://placehold.co/70x70/EFEFEF/333333?text=AM"
+                                        alt="Photo of Ananth Moorthy" class="author-photo">
+                                    <div class="author-info">
+                                        <h4>Ananth Moorthy</h4>
+                                        <p>Home Renovation, Mylapore</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
             </div>
         </div>
     </section>
@@ -870,27 +1086,17 @@
         <div class="container">
             <div class="contact-section fade-in-section">
                 <div class="section-title">
-                    <h2><i class="fas fa-paper-plane" style="color:var(--primary-yellow)"></i> Get a Quote</h2>
-                    <p>Send us your requirements and our team will get in touch within 24 hours.</p>
+                    <h2>Get a Quote</h2>
+                    <p>Send us your requirements for a free estimate.</p>
                 </div>
                 <form class="contact-form" id="customerQueryForm" autocomplete="off" novalidate>
-                    <div class="form-field">
-                        <span class="form-icon"><i class="fas fa-user"></i></span>
-                        <input type="text" required name="name" id="name" placeholder="Full Name" autocomplete="name" />
+                    <div class="form-field"><input type="text" required name="name" placeholder="Full Name" /></div>
+                    <div class="form-field"><input type="email" required name="email" placeholder="Email Address" />
                     </div>
+                    <div class="form-field"><input type="tel" required name="phone" placeholder="Phone Number"
+                            pattern="^(?:\+91)?[6-9]\d{9}$" /></div>
                     <div class="form-field">
-                        <span class="form-icon"><i class="fas fa-envelope"></i></span>
-                        <input type="email" required name="email" id="email" placeholder="Email Address"
-                            autocomplete="email" />
-                    </div>
-                    <div class="form-field">
-                        <span class="form-icon"><i class="fas fa-phone"></i></span>
-                        <input type="tel" required name="phone" id="phone" placeholder="Phone Number" autocomplete="tel"
-                            pattern="^(?:\+91)?[6-9]\d{9}$" title="Valid Indian phone number (+91 optional)" />
-                    </div>
-                    <div class="form-field">
-                        <span class="form-icon"><i class="fas fa-concierge-bell"></i></span>
-                        <select name="service" id="service" required>
+                        <select name="service" required>
                             <option value="" selected disabled>Select Service Required</option>
                             <option value="Residential Construction">Residential Construction</option>
                             <option value="Commercial Projects">Commercial Projects</option>
@@ -898,9 +1104,8 @@
                             <option value="Architectural Design">Architectural Design</option>
                         </select>
                     </div>
-                    <div class="form-field">
-                        <textarea name="message" id="message" rows="3" placeholder="Your Message" required></textarea>
-                    </div>
+                    <div class="form-field"><textarea name="message" rows="3" placeholder="Your Message"
+                            required></textarea></div>
                     <button type="submit" class="btn btn-secondary form-submit-btn" id="submitBtn">Send Query <i
                             class="fas fa-paper-plane"></i></button>
                     <div id="formMsg" class="form-msg-box"></div>
@@ -914,7 +1119,7 @@
         <div class="footer-content container">
             <div class="footer-section">
                 <h3>About RRR</h3>
-                <p>Building dreams, one brick at a time. RRR Construction – Bring your vision, get your keys.</p>
+                <p>Building dreams, one brick at a time.</p>
             </div>
             <div class="footer-section">
                 <h3>Quick Links</h3>
@@ -935,76 +1140,176 @@
                 </ul>
             </div>
         </div>
-        <div class="footer-bottom">
-            &copy; <span id="copyrightYear"></span> RRR Construction. All rights reserved.
-        </div>
+        <div class="footer-bottom">&copy; <span id="copyrightYear"></span> RRR Construction. All rights reserved.</div>
     </footer>
 
+    <!-- Swiper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // --- HERO IMAGE SLIDER ---
+            function initHeroSlider() {
+                const slides = document.querySelectorAll('.hero-slide');
+                let currentSlide = 0;
+
+                function nextSlide() {
+                    slides[currentSlide].classList.remove('active');
+                    currentSlide = (currentSlide + 1) % slides.length;
+                    slides[currentSlide].classList.add('active');
+                }
+
+                // Auto-advance slides every 5 seconds
+                setInterval(nextSlide, 5000);
+            }
+
+            // Initialize hero slider
+            initHeroSlider();
+
+            // --- POPULATE TESTIMONIAL RATINGS ---
+            function populateStars() {
+                document.querySelectorAll('.testimonial-card').forEach(card => {
+                    const rating = parseInt(card.dataset.rating) || 5;
+                    const ratingContainer = card.querySelector('.rating');
+                    let starsHTML = '';
+
+                    for (let i = 0; i < 5; i++) {
+                        if (i < rating) {
+                            starsHTML += '<i class="fas fa-star"></i>';
+                        } else {
+                            starsHTML += '<i class="fas fa-star" style="opacity: 0.3;"></i>';
+                        }
+                    }
+
+                    if (ratingContainer) {
+                        ratingContainer.innerHTML = starsHTML;
+                    }
+                });
+            }
+
+            // Populate stars immediately
+            populateStars();
+
+            // --- CAROUSEL INITIALIZATION WITH AUTO-ADVANCE ---
+            const projectsSwiper = new Swiper('.projects-swiper', {
+                slidesPerView: 1,
+                spaceBetween: 30,
+                loop: true,
+                centeredSlides: true,
+                autoplay: {
+                    delay: 3500,
+                    disableOnInteraction: false,
+                    pauseOnMouseEnter: true
+                },
+                speed: 800,
+                pagination: {
+                    el: '.projects-swiper .swiper-pagination',
+                    clickable: true,
+                    dynamicBullets: true
+                },
+                breakpoints: {
+                    640: {
+                        slidesPerView: 2,
+                        spaceBetween: 20,
+                        centeredSlides: false
+                    },
+                    1024: {
+                        slidesPerView: 3,
+                        spaceBetween: 30,
+                        centeredSlides: false
+                    }
+                },
+                on: {
+                    init: function () {
+                        // Ensure fade-in animations work with carousel
+                        this.slides.forEach(slide => {
+                            const fadeElements = slide.querySelectorAll('.fade-in-section');
+                            fadeElements.forEach(el => el.classList.add('is-visible'));
+                        });
+                    }
+                }
+            });
+
+            const testimonialsSwiper = new Swiper('.testimonials-swiper', {
+                slidesPerView: 1,
+                spaceBetween: 30,
+                loop: true,
+                centeredSlides: true,
+                autoplay: {
+                    delay: 4500,
+                    disableOnInteraction: false,
+                    pauseOnMouseEnter: true
+                },
+                speed: 1000,
+                pagination: {
+                    el: '.testimonials-swiper .swiper-pagination',
+                    clickable: true,
+                    dynamicBullets: true
+                },
+                breakpoints: {
+                    640: {
+                        slidesPerView: 2,
+                        spaceBetween: 20,
+                        centeredSlides: false
+                    },
+                    1024: {
+                        slidesPerView: 3,
+                        spaceBetween: 30,
+                        centeredSlides: false
+                    }
+                },
+                on: {
+                    init: function () {
+                        // Populate stars after swiper initialization
+                        setTimeout(populateStars, 100);
+                        // Ensure fade-in animations work
+                        this.slides.forEach(slide => {
+                            const fadeElements = slide.querySelectorAll('.fade-in-section');
+                            fadeElements.forEach(el => el.classList.add('is-visible'));
+                        });
+                    },
+                    slideChange: function () {
+                        // Re-populate stars when slides change (in case of dynamic content)
+                        setTimeout(populateStars, 50);
+                    }
+                }
+            });
+
             // --- DYNAMIC COPYRIGHT YEAR ---
             document.getElementById('copyrightYear').textContent = new Date().getFullYear();
 
             // --- MOBILE MENU TOGGLE ---
             const mobileMenuBtn = document.getElementById('mobileMenuBtn');
             const mobileNav = document.getElementById('mobileNav');
-            mobileMenuBtn.addEventListener('click', () => {
-                const isExpanded = mobileMenuBtn.getAttribute('aria-expanded') === 'true';
-                mobileMenuBtn.setAttribute('aria-expanded', !isExpanded);
-                mobileNav.classList.toggle('active');
-            });
+            mobileMenuBtn.addEventListener('click', () => mobileNav.classList.toggle('active'));
             document.querySelectorAll('.mobile-nav a').forEach(link => {
-                link.addEventListener('click', () => {
-                    mobileNav.classList.remove('active');
-                    mobileMenuBtn.setAttribute('aria-expanded', 'false');
-                });
+                link.addEventListener('click', () => mobileNav.classList.remove('active'));
             });
 
             // --- CONTACT FORM AJAX SUBMISSION ---
             const queryForm = document.getElementById('customerQueryForm');
             const formMsg = document.getElementById('formMsg');
             const submitBtn = document.getElementById('submitBtn');
-            if (queryForm) {
-                queryForm.addEventListener('submit', function (e) {
-                    e.preventDefault();
-                    if (!this.checkValidity()) {
-                        showFormMessage('Please fill out all fields correctly.', 'error');
-                        return;
-                    }
-                    showFormMessage('Sending...', 'success');
-                    submitBtn.disabled = true;
-                    submitBtn.innerHTML = 'Sending... <i class="fas fa-spinner fa-spin"></i>';
-
-                    const formData = new FormData(queryForm);
-                    const payload = Object.fromEntries(formData.entries());
-
-                    fetch('/api/contact', {
-                        method: 'POST',
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(payload)
+            queryForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = 'Sending... <i class="fas fa-spinner fa-spin"></i>';
+                fetch('/api/contact', {
+                    method: 'POST',
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(Object.fromEntries(new FormData(queryForm).entries()))
+                })
+                    .then(resp => resp.json())
+                    .then(res => {
+                        showFormMessage(res.message, res.success ? 'success' : 'error');
+                        if (res.success) queryForm.reset();
                     })
-                        .then(resp => {
-                            if (!resp.ok) throw new Error(`Server error: ${resp.status}`);
-                            return resp.json();
-                        })
-                        .then(res => {
-                            if (res.success) {
-                                showFormMessage(res.message, 'success');
-                                queryForm.reset();
-                            } else {
-                                showFormMessage(res.message || 'Submission failed. Try again.', 'error');
-                            }
-                        })
-                        .catch((err) => {
-                            showFormMessage('A network error occurred. Please try again.', 'error');
-                            console.error("Form submission error:", err);
-                        })
-                        .finally(() => {
-                            submitBtn.disabled = false;
-                            submitBtn.innerHTML = 'Send Query <i class="fas fa-paper-plane"></i>';
-                        });
-                });
-            }
+                    .catch(() => showFormMessage('A network error occurred.', 'error'))
+                    .finally(() => {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = 'Send Query <i class="fas fa-paper-plane"></i>';
+                    });
+            });
+
             function showFormMessage(message, type) {
                 formMsg.textContent = message;
                 formMsg.className = `form-msg-box ${type}`;
@@ -1017,29 +1322,39 @@
                         entry.target.classList.add('is-visible');
                     }
                 });
-            }, { threshold: 0.1 });
+            }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
             document.querySelectorAll('.fade-in-section').forEach(section => {
                 observer.observe(section);
             });
 
             // --- ACTIVE NAV LINK ON SCROLL ---
-            const navLinks = document.querySelectorAll('.nav-links a');
+            const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
             const sections = document.querySelectorAll('section[id]');
-            window.addEventListener('scroll', () => {
+
+            function updateActiveNav() {
                 let current = '';
+                const scrollY = window.pageYOffset;
+
                 sections.forEach(section => {
-                    const sectionTop = section.offsetTop;
-                    if (pageYOffset >= sectionTop - 100) {
+                    const sectionTop = section.offsetTop - 100;
+                    const sectionHeight = section.offsetHeight;
+
+                    if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
                         current = section.getAttribute('id');
                     }
                 });
+
                 navLinks.forEach(link => {
                     link.classList.remove('active');
-                    if (link.getAttribute('href').includes(current)) {
+                    if (link.getAttribute('href') === `#${current}`) {
                         link.classList.add('active');
                     }
                 });
-            });
+            }
+
+            window.addEventListener('scroll', updateActiveNav);
+            updateActiveNav(); // Run once on load
         });
     </script>
 </body>
