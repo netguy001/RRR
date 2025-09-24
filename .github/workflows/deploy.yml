@@ -48,6 +48,25 @@ jobs:
             # Create directories
             mkdir -p /home/ec2-user/data /home/ec2-user/uploads
             
+            # Initialize admin.json if it doesnt exist
+            if [ ! -f /home/ec2-user/data/admin.json ]; then
+              echo "Creating admin.json..."
+              cat > /home/ec2-user/data/admin.json << '"'"'EOF'"'"'
+{
+    "username": "admin",
+    "password": "pbkdf2:sha256:600000$MXtHyJWq0KqsEph6$e729a956a5914e3ac596da37da542aae4d53ab32635f975ef6b453a739401502",
+    "email": "admin@rrrconstruction.com"
+}
+EOF
+            fi
+            
+            # Initialize other JSON files if they dont exist
+            for file in projects.json messages.json testimonials.json; do
+              if [ ! -f /home/ec2-user/data/$file ]; then
+                echo "[]" > /home/ec2-user/data/$file
+              fi
+            done
+            
             # Stop existing container
             docker stop flaskapp 2>/dev/null || echo "No container to stop"
             docker rm flaskapp 2>/dev/null || echo "No container to remove"
@@ -69,6 +88,8 @@ jobs:
             sleep 10
             if docker ps | grep flaskapp; then
               echo "SUCCESS: Container running!"
+              echo "Checking if admin.json exists in container..."
+              docker exec flaskapp ls -la /app/data/
             else
               echo "ERROR: Container failed"
               docker logs flaskapp
