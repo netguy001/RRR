@@ -26,32 +26,33 @@ jobs:
       - name: Push image
         run: docker push mega001/flaskapp:latest
 
-      # Deploy (assuming Docker is already installed)
+      # Manual SSH deployment
       - name: Deploy to EC2
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ec2-user
-          key: ${{ secrets.EC2_SSH_KEY }}
-          port: 22
-          timeout: 60s
-          command_timeout: 5m
-          script: |
+        run: |
+          # Create SSH key
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/ec2_key
+          chmod 600 ~/.ssh/ec2_key
+          
+          # Add host to known_hosts
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+          
+          # Deploy
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/ec2_key ec2-user@${{ secrets.EC2_HOST }} '
             echo "Starting deployment..."
             
             # Create directories
             mkdir -p /home/ec2-user/data /home/ec2-user/uploads
             
             # Stop existing container
-            docker stop flaskapp 2>/dev/null || echo "No existing container to stop"
-            docker rm flaskapp 2>/dev/null || echo "No existing container to remove"
+            docker stop flaskapp 2>/dev/null || echo "No container to stop"
+            docker rm flaskapp 2>/dev/null || echo "No container to remove"
             
-            # Pull latest image
-            echo "Pulling Docker image..."
+            # Pull and run
+            echo "Pulling image..."
             docker pull mega001/flaskapp:latest
             
-            # Run new container
-            echo "Starting new container..."
+            echo "Starting container..."
             docker run -d \
               --name flaskapp \
               -p 8080:5003 \
@@ -61,13 +62,14 @@ jobs:
               --restart unless-stopped \
               mega001/flaskapp:latest
             
-            # Verify
             sleep 10
             if docker ps | grep flaskapp; then
-              echo "SUCCESS: Container is running!"
-              echo "App accessible at: http://$(curl -s ifconfig.me):8080"
+              echo "SUCCESS: Container running!"
             else
-              echo "ERROR: Container failed to start"
+              echo "ERROR: Container failed"
               docker logs flaskapp
               exit 1
             fi
+          '
+          
+          rm -f ~/.ssh/ec2_key
