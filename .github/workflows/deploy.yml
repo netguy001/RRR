@@ -26,7 +26,20 @@ jobs:
       - name: Push image
         run: docker push mega001/flaskapp:latest
 
-      # Deploy on EC2
+      # Test SSH connection first
+      - name: Test SSH Connection
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            echo "SSH connection successful!"
+            whoami
+            pwd
+            docker --version
+
+      # Deploy on EC2 (only if SSH test passes)
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -34,27 +47,10 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            # Create directories
-            mkdir -p /home/ubuntu/data
-            mkdir -p /home/ubuntu/uploads
-            
-            # Pull latest image
+            mkdir -p /home/ubuntu/data /home/ubuntu/uploads
             docker pull mega001/flaskapp:latest
-            
-            # Stop existing container
             docker stop flaskapp || true
             docker rm flaskapp || true
-            
-            # Run new container
-            docker run -d \
-              --name flaskapp \
-              -p 8080:5003 \
-              -e FLASK_SECRET_KEY="${{ secrets.FLASK_SECRET_KEY }}" \
-              -v /home/ubuntu/data:/app/data \
-              -v /home/ubuntu/uploads:/app/static/uploads \
-              --restart unless-stopped \
-              mega001/flaskapp:latest
-            
-            # Wait and check
-            sleep 10
+            docker run -d --name flaskapp -p 8080:5003 -e FLASK_SECRET_KEY="${{ secrets.FLASK_SECRET_KEY }}" -v /home/ubuntu/data:/app/data -v /home/ubuntu/uploads:/app/static/uploads --restart unless-stopped mega001/flaskapp:latest
+            sleep 5
             docker ps | grep flaskapp
