@@ -26,7 +26,7 @@ jobs:
       - name: Push image
         run: docker push mega001/flaskapp:latest
 
-      # Deploy using SSH action (more reliable)
+      # Simple deployment test
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -34,43 +34,29 @@ jobs:
           username: ec2-user
           key: ${{ secrets.EC2_SSH_KEY }}
           port: 22
-          timeout: 60s
-          command_timeout: 10m
+          timeout: 300s
+          command_timeout: 20m
           script: |
-            echo "Starting deployment as $(whoami)..."
+            echo "=== Starting deployment ==="
+            whoami
+            pwd
             
-            # Install Docker if not present
-            if ! command -v docker &> /dev/null; then
-                echo "Installing Docker..."
-                sudo yum update -y
-                sudo yum install -y docker
-                sudo systemctl start docker
-                sudo systemctl enable docker
-                sudo usermod -a -G docker ec2-user
-            fi
+            # Ensure Docker is running
+            sudo systemctl start docker
             
-            # Start Docker service if not running
-            if ! sudo systemctl is-active --quiet docker; then
-                echo "Starting Docker service..."
-                sudo systemctl start docker
-            fi
+            # Stop existing container if running
+            sudo docker stop flaskapp 2>/dev/null || echo "No container to stop"
+            sudo docker rm flaskapp 2>/dev/null || echo "No container to remove"
+            
+            # Pull image with progress
+            echo "Pulling image..."
+            sudo docker pull mega001/flaskapp:latest
             
             # Create directories
             mkdir -p /home/ec2-user/data /home/ec2-user/uploads
-            echo "Directories created"
             
-            # Pull latest image
-            echo "Pulling Docker image..."
-            sudo docker pull mega001/flaskapp:latest
-            echo "Image pulled successfully"
-            
-            # Stop existing container
-            echo "Stopping existing container..."
-            sudo docker stop flaskapp 2>/dev/null || echo "No existing container to stop"
-            sudo docker rm flaskapp 2>/dev/null || echo "No existing container to remove"
-            
-            # Run new container
-            echo "Starting new container..."
+            # Run container
+            echo "Starting container..."
             sudo docker run -d \
               --name flaskapp \
               -p 8080:5003 \
@@ -80,17 +66,16 @@ jobs:
               --restart unless-stopped \
               mega001/flaskapp:latest
             
-            # Wait and verify
-            echo "Waiting for container to start..."
-            sleep 15
+            # Check status
+            sleep 10
+            echo "=== Container status ==="
+            sudo docker ps -a | grep flaskapp
             
             if sudo docker ps | grep flaskapp; then
-              echo "SUCCESS: Container is running!"
-              echo "Flask app is accessible on port 8080"
-              echo "Container logs:"
-              sudo docker logs flaskapp --tail 10
+              echo "✅ SUCCESS: Container is running!"
+              echo "🌐 App accessible at: http://$(curl -s ifconfig.me):8080"
             else
-              echo "ERROR: Container failed to start"
-              sudo docker logs flaskapp 2>/dev/null || echo "No logs available"
+              echo "❌ ERROR: Container not running"
+              sudo docker logs flaskapp
               exit 1
             fi
