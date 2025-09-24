@@ -51,13 +51,7 @@ jobs:
             # Initialize admin.json if it doesnt exist
             if [ ! -f /home/ec2-user/data/admin.json ]; then
               echo "Creating admin.json..."
-              cat > /home/ec2-user/data/admin.json << '"'"'EOF'"'"'
-{
-    "username": "admin",
-    "password": "pbkdf2:sha256:600000$MXtHyJWq0KqsEph6$e729a956a5914e3ac596da37da542aae4d53ab32635f975ef6b453a739401502",
-    "email": "admin@rrrconstruction.com"
-}
-EOF
+              echo '"'"'{"username": "admin", "password": "pbkdf2:sha256:600000$MXtHyJWq0KqsEph6$e729a956a5914e3ac596da37da542aae4d53ab32635f975ef6b453a739401502", "email": "admin@rrrconstruction.com"}'"'"' > /home/ec2-user/data/admin.json
             fi
             
             # Initialize other JSON files if they dont exist
