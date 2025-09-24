@@ -26,16 +26,18 @@ jobs:
       - name: Push image
         run: docker push mega001/flaskapp:latest
 
-      # Single SSH deployment step
+      # Deploy using native SSH
       - name: Deploy to EC2
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ubuntu
-          key: ${{ secrets.EC2_SSH_KEY }}
-          timeout: 60s
-          command_timeout: 300s
-          script: |
+        run: |
+          # Create SSH key file
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/ec2_key
+          chmod 600 ~/.ssh/ec2_key
+          
+          # Add EC2 host to known hosts
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+          
+          # Deploy via SSH
+          ssh -i ~/.ssh/ec2_key -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
             set -e
             echo "Starting deployment..."
             
@@ -70,9 +72,13 @@ jobs:
             
             if docker ps | grep flaskapp; then
               echo "SUCCESS: Container is running!"
-              echo "Your Flask app is now accessible at port 8080"
+              echo "Flask app is accessible on port 8080"
             else
               echo "ERROR: Container failed to start"
               docker logs flaskapp 2>/dev/null || echo "No logs available"
               exit 1
             fi
+          EOF
+          
+          # Cleanup
+          rm -f ~/.ssh/ec2_key
