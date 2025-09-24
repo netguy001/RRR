@@ -41,6 +41,10 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/ec2_key ec2-user@${{ secrets.EC2_HOST }} '
             echo "Starting deployment..."
             
+            # Login to Docker Hub
+            echo "Logging into Docker Hub..."
+            echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u mega001 --password-stdin
+            
             # Create directories
             mkdir -p /home/ec2-user/data /home/ec2-user/uploads
             
