@@ -26,15 +26,20 @@ jobs:
       - name: Push image
         run: docker push mega001/flaskapp:latest
 
-      # Deploy using native SSH
+      # Deploy using native SSH with proper setup
       - name: Deploy to EC2
         run: |
-          # Create SSH key file
+          # Create SSH directory and key file
+          mkdir -p ~/.ssh
           echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/ec2_key
           chmod 600 ~/.ssh/ec2_key
           
           # Add EC2 host to known hosts
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+          
+          # Test SSH connection first
+          echo "Testing SSH connection..."
+          ssh -i ~/.ssh/ec2_key -o StrictHostKeyChecking=no -o ConnectTimeout=10 ubuntu@${{ secrets.EC2_HOST }} "echo 'SSH connection successful'"
           
           # Deploy via SSH
           ssh -i ~/.ssh/ec2_key -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
