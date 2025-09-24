@@ -430,13 +430,14 @@
         .swiper {
             width: 100%;
             height: auto;
-            overflow: visible;
+            overflow: hidden;
             padding: 20px 0 60px 0;
         }
 
         .swiper-wrapper {
             display: flex;
             align-items: stretch;
+
         }
 
         .swiper-slide {
@@ -1174,7 +1175,7 @@
             </div>
             <div class="carousel-container">
                 <div class="swiper testimonials-swiper">
-                    <div class="swiper-wrapper">
+                    <div class="swiper-wrapper" >
                         {% if testimonials %}
                         {% for t in testimonials %}
                         <div class="swiper-slide">
