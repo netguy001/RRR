@@ -1,89 +1,28 @@
-name: Deploy Flask App to EC2
+name: Debug SSH Connection
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch: # Manual trigger only
 
 jobs:
-  build-deploy:
+  test-ssh:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      # Build & push Docker image
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: mega001
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Build image
-        run: docker build -t mega001/flaskapp:latest .
-
-      - name: Push image
-        run: docker push mega001/flaskapp:latest
-
-      # Deploy using native SSH with proper setup
-      - name: Deploy to EC2
+      - name: Test SSH Connection
         run: |
           # Create SSH directory and key file
           mkdir -p ~/.ssh
           echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/ec2_key
           chmod 600 ~/.ssh/ec2_key
           
-          # Add EC2 host to known hosts
+          # Show key info (first and last lines only for security)
+          echo "Key file info:"
+          head -1 ~/.ssh/ec2_key
+          echo "..."
+          tail -1 ~/.ssh/ec2_key
+          
+          # Test SSH connection
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
-          
-          # Test SSH connection first
-          echo "Testing SSH connection..."
-          ssh -i ~/.ssh/ec2_key -o StrictHostKeyChecking=no -o ConnectTimeout=10 ubuntu@${{ secrets.EC2_HOST }} "echo 'SSH connection successful'"
-          
-          # Deploy via SSH
-          ssh -i ~/.ssh/ec2_key -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
-            set -e
-            echo "Starting deployment..."
-            
-            # Create directories
-            mkdir -p /home/ubuntu/data /home/ubuntu/uploads
-            echo "Directories created"
-            
-            # Pull latest image
-            echo "Pulling Docker image..."
-            docker pull mega001/flaskapp:latest
-            echo "Image pulled successfully"
-            
-            # Stop existing container
-            echo "Stopping existing container..."
-            docker stop flaskapp 2>/dev/null || echo "No existing container to stop"
-            docker rm flaskapp 2>/dev/null || echo "No existing container to remove"
-            
-            # Run new container
-            echo "Starting new container..."
-            docker run -d \
-              --name flaskapp \
-              -p 8080:5003 \
-              -e FLASK_SECRET_KEY="${{ secrets.FLASK_SECRET_KEY }}" \
-              -v /home/ubuntu/data:/app/data \
-              -v /home/ubuntu/uploads:/app/static/uploads \
-              --restart unless-stopped \
-              mega001/flaskapp:latest
-            
-            # Wait and verify
-            echo "Waiting for container to start..."
-            sleep 10
-            
-            if docker ps | grep flaskapp; then
-              echo "SUCCESS: Container is running!"
-              echo "Flask app is accessible on port 8080"
-            else
-              echo "ERROR: Container failed to start"
-              docker logs flaskapp 2>/dev/null || echo "No logs available"
-              exit 1
-            fi
-          EOF
+          ssh -v -i ~/.ssh/ec2_key -o StrictHostKeyChecking=no -o ConnectTimeout=10 ubuntu@${{ secrets.EC2_HOST }} "whoami" || echo "SSH failed"
           
           # Cleanup
           rm -f ~/.ssh/ec2_key
