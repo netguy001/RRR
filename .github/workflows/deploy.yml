@@ -34,28 +34,18 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            set -e
-            
-            # Create required directories if they don't exist
-            mkdir -p /home/ubuntu/data /home/ubuntu/uploads
-            
-            # Set proper ownership (if needed)
-            chown -R ubuntu:ubuntu /home/ubuntu/data /home/ubuntu/uploads 2>/dev/null || true
+            # Create directories
+            mkdir -p /home/ubuntu/data
+            mkdir -p /home/ubuntu/uploads
             
             # Pull latest image
-            echo "Pulling latest Docker image..."
             docker pull mega001/flaskapp:latest
             
-            # Stop and remove existing container gracefully
-            echo "Stopping existing container..."
-            docker stop flaskapp 2>/dev/null || echo "No existing container to stop"
-            docker rm flaskapp 2>/dev/null || echo "No existing container to remove"
+            # Stop existing container
+            docker stop flaskapp || true
+            docker rm flaskapp || true
             
-            # Clean up dangling images
-            docker image prune -f || true
-            
-            # Run new container on port 8080 (external) -> 5003 (internal)
-            echo "Starting new container..."
+            # Run new container
             docker run -d \
               --name flaskapp \
               -p 8080:5003 \
@@ -63,42 +53,8 @@ jobs:
               -v /home/ubuntu/data:/app/data \
               -v /home/ubuntu/uploads:/app/static/uploads \
               --restart unless-stopped \
-              --memory="512m" \
-              --cpus="0.5" \
               mega001/flaskapp:latest
             
-            # Wait for container to start
-            echo "Waiting for container to start..."
-            sleep 15
-            
-            # Check if container is running
-            if docker ps | grep -q flaskapp; then
-                echo "Container is running successfully"
-                docker ps | grep flaskapp
-            else
-                echo "Container failed to start"
-                docker logs flaskapp || echo "No logs available"
-                exit 1
-            fi
-            
-            # Test application health (try multiple times)
-            echo "Testing application health..."
-            for i in {1..6}; do
-                if curl -f -s -m 10 http://localhost:8080/ > /dev/null 2>&1; then
-                    echo "Application is responding on port 8080"
-                    echo "Deployment successful! Access your app at port 8080"
-                    exit 0
-                else
-                    echo "Health check $i/6 failed, retrying in 10 seconds..."
-                    sleep 10
-                fi
-            done
-            
-            # If we reach here, health checks failed
-            echo "Application health checks failed"
-            echo "Container status:"
-            docker ps -a | grep flaskapp || echo "Container not found"
-            echo "Container logs:"
-            docker logs flaskapp 2>/dev/null || echo "No logs available"
-            echo "Port check:"
-            netstat -tuln | grep :8080 || echo "Port 8080 not listening"
+            # Wait and check
+            sleep 10
+            docker ps | grep flaskapp
