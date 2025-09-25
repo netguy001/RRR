@@ -25,12 +25,14 @@ jobs:
       - name: Build image
         run: |
           IMAGE_TAG=${{ github.sha }}
+          echo "Building image with tags: $IMAGE_TAG and latest"
           docker build --no-cache -t mega001/flaskapp:$IMAGE_TAG -t mega001/flaskapp:latest .
 
       # Push both tags
       - name: Push image
         run: |
           IMAGE_TAG=${{ github.sha }}
+          echo "Pushing image with tags: $IMAGE_TAG and latest"
           docker push mega001/flaskapp:$IMAGE_TAG
           docker push mega001/flaskapp:latest
 
@@ -43,6 +45,7 @@ jobs:
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/ec2_key ec2-user@${{ secrets.EC2_HOST }} "
+            set -e
             echo 'Starting deployment...'
 
             # Login to Docker Hub
@@ -51,6 +54,9 @@ jobs:
             # Stop and remove old container
             docker stop flaskapp 2>/dev/null || true
             docker rm flaskapp 2>/dev/null || true
+
+            # Remove old images (optional cleanup)
+            docker image prune -af || true
 
             # Pull latest image
             docker pull mega001/flaskapp:latest
@@ -65,7 +71,8 @@ jobs:
               --restart unless-stopped \
               mega001/flaskapp:latest
 
-            docker ps | grep flaskapp && echo 'SUCCESS: New container running!'
+            echo 'Container status:'
+            docker ps | grep flaskapp || (echo 'ERROR: Container not running' && exit 1)
           "
 
           rm -f ~/.ssh/ec2_key
