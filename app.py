@@ -15,6 +15,8 @@ import json
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 
+
+
 # --- Configuration ---
 SECRET_KEY = os.environ.get("FLASK_SECRET_KEY", "a_strong_default_secret_key_for_dev")
 UPLOAD_FOLDER = "static/uploads"
