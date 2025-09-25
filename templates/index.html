@@ -1222,6 +1222,38 @@
                 font-size: 24px;
             }
         }
+
+        /* Mobile Menu States */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 72px;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            padding: 1.5rem 2rem;
+            z-index: 999;
+            transform: translateY(-100%);
+            transition: transform 0.4s ease, opacity 0.4s ease;
+            opacity: 0;
+        }
+
+        .mobile-nav.active {
+            display: block;
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
     </style>
 </head>
 
@@ -1880,13 +1912,47 @@
             // --- DYNAMIC COPYRIGHT YEAR ---
             document.getElementById('copyrightYear').textContent = new Date().getFullYear();
 
-            // --- MOBILE MENU TOGGLE ---
+            // --- MOBILE MENU TOGGLE (Fixed Version) ---
             const mobileMenuBtn = document.getElementById('mobileMenuBtn');
             const mobileNav = document.getElementById('mobileNav');
-            mobileMenuBtn.addEventListener('click', () => mobileNav.classList.toggle('active'));
-            document.querySelectorAll('.mobile-nav a').forEach(link => {
-                link.addEventListener('click', () => mobileNav.classList.remove('active'));
-            });
+
+            if (mobileMenuBtn && mobileNav) {
+                // Toggle mobile menu
+                mobileMenuBtn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    mobileNav.classList.toggle('active');
+
+                    // Change hamburger icon to X when open
+                    const icon = mobileMenuBtn.querySelector('i');
+                    if (mobileNav.classList.contains('active')) {
+                        icon.classList.remove('fa-bars');
+                        icon.classList.add('fa-times');
+                    } else {
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+
+                // Close mobile menu when clicking on links
+                document.querySelectorAll('.mobile-nav a').forEach(link => {
+                    link.addEventListener('click', function () {
+                        mobileNav.classList.remove('active');
+                        const icon = mobileMenuBtn.querySelector('i');
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    });
+                });
+
+                // Close mobile menu when clicking outside
+                document.addEventListener('click', function (e) {
+                    if (!mobileMenuBtn.contains(e.target) && !mobileNav.contains(e.target)) {
+                        mobileNav.classList.remove('active');
+                        const icon = mobileMenuBtn.querySelector('i');
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+            }
 
             // --- CONTACT FORM AJAX SUBMISSION ---
             const queryForm = document.getElementById('customerQueryForm');
