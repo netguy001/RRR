@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - dev   # optional: add more branches if needed
 
 jobs:
   build-deploy:
@@ -13,82 +14,58 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Build & push Docker image
+      # Log in to Docker Hub
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
           username: mega001
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      # Build image with both commit SHA + latest
       - name: Build image
-        run: docker build -t mega001/flaskapp:latest .
+        run: |
+          IMAGE_TAG=${{ github.sha }}
+          docker build --no-cache -t mega001/flaskapp:$IMAGE_TAG -t mega001/flaskapp:latest .
 
+      # Push both tags
       - name: Push image
-        run: docker push mega001/flaskapp:latest
+        run: |
+          IMAGE_TAG=${{ github.sha }}
+          docker push mega001/flaskapp:$IMAGE_TAG
+          docker push mega001/flaskapp:latest
 
-      # Manual SSH deployment
+      # Deploy to EC2
       - name: Deploy to EC2
         run: |
-          # Create SSH key
           mkdir -p ~/.ssh
           echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/ec2_key
           chmod 600 ~/.ssh/ec2_key
-          
-          # Add host to known_hosts
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
-          
-          # Deploy
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/ec2_key ec2-user@${{ secrets.EC2_HOST }} '
-            echo "Starting deployment..."
-            
+
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/ec2_key ec2-user@${{ secrets.EC2_HOST }} "
+            echo 'Starting deployment...'
+
             # Login to Docker Hub
-            echo "Logging into Docker Hub..."
-            echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u mega001 --password-stdin
-            
-            # Create directories
-            mkdir -p /home/ec2-user/data /home/ec2-user/uploads
-            
-            # Initialize admin.json if it doesnt exist
-            if [ ! -f /home/ec2-user/data/admin.json ]; then
-              echo "Creating admin.json..."
-              echo '"'"'{"username": "admin", "password": "pbkdf2:sha256:600000$MXtHyJWq0KqsEph6$e729a956a5914e3ac596da37da542aae4d53ab32635f975ef6b453a739401502", "email": "admin@rrrconstruction.com"}'"'"' > /home/ec2-user/data/admin.json
-            fi
-            
-            # Initialize other JSON files if they dont exist
-            for file in projects.json messages.json testimonials.json; do
-              if [ ! -f /home/ec2-user/data/$file ]; then
-                echo "[]" > /home/ec2-user/data/$file
-              fi
-            done
-            
-            # Stop existing container
-            docker stop flaskapp 2>/dev/null || echo "No container to stop"
-            docker rm flaskapp 2>/dev/null || echo "No container to remove"
-            
-            # Pull and run
-            echo "Pulling image..."
+            echo '${{ secrets.DOCKER_PASSWORD }}' | docker login -u mega001 --password-stdin
+
+            # Stop and remove old container
+            docker stop flaskapp 2>/dev/null || true
+            docker rm flaskapp 2>/dev/null || true
+
+            # Pull latest image
             docker pull mega001/flaskapp:latest
-            
-            echo "Starting container..."
+
+            # Run container
             docker run -d \
               --name flaskapp \
               -p 8080:5003 \
-              -e FLASK_SECRET_KEY="${{ secrets.FLASK_SECRET_KEY }}" \
+              -e FLASK_SECRET_KEY='${{ secrets.FLASK_SECRET_KEY }}' \
               -v /home/ec2-user/data:/app/data \
               -v /home/ec2-user/uploads:/app/static/uploads \
               --restart unless-stopped \
               mega001/flaskapp:latest
-            
-            sleep 10
-            if docker ps | grep flaskapp; then
-              echo "SUCCESS: Container running!"
-              echo "Checking if admin.json exists in container..."
-              docker exec flaskapp ls -la /app/data/
-            else
-              echo "ERROR: Container failed"
-              docker logs flaskapp
-              exit 1
-            fi
-          '
-          
+
+            docker ps | grep flaskapp && echo 'SUCCESS: New container running!'
+          "
+
           rm -f ~/.ssh/ec2_key
