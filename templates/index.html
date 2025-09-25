@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>RRR Construction — Bring your vision, get your keys.</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description"
         content="RRR Construction: Premier construction company in Chennai for residential, commercial, and custom projects.">
     <link rel="icon"
@@ -12,9 +12,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer">
-    <link rel="stylesheet" href="https://unpkg.com/swiper@11/swiper-bundle.min.css">
-
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Swiper.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <style>
         :root {
             --primary-blue: #0D3B66;
@@ -22,13 +22,6 @@
             --light-bg: #f7f9fc;
             --text-dark: #333;
             --text-light: #555;
-            --navbar-height: 80px;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
         }
 
         html {
@@ -37,11 +30,12 @@
 
         body {
             font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
             color: var(--text-dark);
             background: #fff;
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
         }
 
         .container {
@@ -50,262 +44,20 @@
             padding: 0 24px;
         }
 
-        /* Loading Screen */
-        .loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--primary-blue);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            opacity: 1;
-            transition: opacity 0.5s ease;
-        }
-
-        .loading-screen.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .loader {
-            width: 50px;
-            height: 50px;
-            border: 4px solid rgba(244, 211, 94, 0.3);
-            border-left: 4px solid var(--primary-yellow);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        /* Fixed Navbar */
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(13, 59, 102, 0.1);
-            padding: 0;
-            z-index: 1000;
-            transition: all 0.3s ease;
-            height: var(--navbar-height);
-        }
-
-        .navbar.scrolled {
-            background: rgba(255, 255, 255, 0.98);
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .nav-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: var(--navbar-height);
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .logo-img {
-            width: 45px;
-            height: 45px;
-            border-radius: 8px;
-        }
-
-        .logo-text h1 {
-            font-size: 1.4rem;
-            font-weight: 800;
-            color: var(--primary-blue);
-            margin: 0;
-            line-height: 1.2;
-        }
-
-        .logo-text p {
-            font-size: 0.75rem;
-            color: var(--text-light);
-            margin: 0;
-            line-height: 1;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-            align-items: center;
-            margin: 0;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-dark);
-            font-weight: 500;
-            transition: color 0.3s ease;
-            position: relative;
-        }
-
-        .nav-links a.active,
-        .nav-links a:hover {
-            color: var(--primary-blue);
-        }
-
-        .nav-links a.active::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--primary-yellow);
-            border-radius: 1px;
-        }
-
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-            gap: 4px;
-        }
-
-        .hamburger span {
-            width: 24px;
-            height: 3px;
-            background: var(--primary-blue);
-            transition: all 0.3s ease;
-        }
-
-        .hamburger.active span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
-        }
-
-        .hamburger.active span:nth-child(2) {
-            opacity: 0;
-        }
-
-        .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(7px, -6px);
-        }
-
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            background: linear-gradient(135deg, var(--primary-blue) 0%, #1e5f8b 100%);
-            display: flex;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-            padding-top: var(--navbar-height);
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" patternUnits="userSpaceOnUse" width="100" height="100"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            color: white;
-            max-width: 600px;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-            line-height: 1.1;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-        }
-
-        .hero-cta {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        /* Buttons */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 14px 28px;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 1rem;
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn-primary {
-            background: var(--primary-yellow);
-            color: var(--primary-blue);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(244, 211, 94, 0.4);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: white;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.5);
-        }
-
-        /* Sections */
         .section {
-            padding: 6rem 0;
+            padding: 5rem 0;
         }
 
         .section-title {
             text-align: center;
-            margin-bottom: 4rem;
+            margin-bottom: 3.5rem;
         }
 
         .section-title h2 {
+            color: var(--primary-blue);
             font-size: 2.5rem;
             font-weight: 800;
-            color: var(--primary-blue);
-            margin-bottom: 1rem;
+            margin: 0 0 0.5rem;
         }
 
         .section-title p {
@@ -315,7 +67,289 @@
             margin: 0 auto;
         }
 
-        /* About Section */
+        .btn {
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-yellow);
+            color: var(--primary-blue);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(244, 211, 94, 0.25);
+        }
+
+        .btn-secondary {
+            background: var(--primary-blue);
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(13, 59, 102, 0.25);
+        }
+
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- Navbar --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 2px 14px rgba(13, 59, 102, 0.08);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 72px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            background: var(--primary-yellow);
+            color: var(--primary-blue);
+            font-weight: 800;
+            font-size: 1.2rem;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover .logo-icon {
+            transform: rotate(-10deg) scale(1.1);
+        }
+
+        .logo-text h1 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin: 0;
+            color: var(--primary-blue);
+        }
+
+        .logo-text p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            position: relative;
+            padding: 4px 0;
+            transition: color 0.2s;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary-yellow);
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--primary-blue);
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            color: var(--primary-blue);
+            cursor: pointer;
+        }
+
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 72px;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            padding: 1.5rem 2rem;
+            z-index: 999;
+            transform: translateY(-110%);
+            transition: transform 0.4s ease, opacity 0.4s ease;
+            opacity: 0;
+        }
+
+        .mobile-nav.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .mobile-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .mobile-nav a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 600;
+            padding: 0.8rem;
+            display: block;
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        .mobile-nav a:hover {
+            background-color: var(--light-bg);
+        }
+
+        /* --- Hero Section with Auto-sliding Background --- */
+        .hero {
+            padding-top: 72px;
+            min-height: 95vh;
+            position: relative;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .hero-slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+
+        .hero-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+        }
+
+        .hero-slide.active {
+            opacity: 1;
+        }
+
+        .hero-slide:nth-child(1) {
+            background-image: url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2070&auto=format&fit=crop');
+        }
+
+        .hero-slide:nth-child(2) {
+            background-image: url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=2076&auto=format&fit=crop');
+        }
+
+        .hero-slide:nth-child(3) {
+            background-image: url('https://images.unsplash.com/photo-1590725140246-20acdee442be?q=80&w=2066&auto=format&fit=crop');
+        }
+
+        .hero-slide:nth-child(4) {
+            background-image: url('https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=2070&auto=format&fit=crop');
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(13, 59, 102, 0.85), rgba(13, 59, 102, 0.7));
+            z-index: -1;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 0.6rem;
+        }
+
+        .hero-content .highlight {
+            color: var(--primary-yellow);
+        }
+
+        .hero-content p {
+            font-size: 1.35rem;
+            color: #faf0ca;
+            margin-bottom: 2.2rem;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        /* --- About & Services --- */
         .about-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -324,289 +358,832 @@
         }
 
         .about-text h3 {
-            font-size: 1.5rem;
             color: var(--primary-blue);
+            font-size: 1.8rem;
             margin-bottom: 1rem;
         }
 
-        .about-text p {
-            color: var(--text-light);
-            margin-bottom: 1.5rem;
+        .about-image img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border-radius: 16px;
+            box-shadow: 0 8px 40px rgba(13, 59, 102, 0.15);
         }
 
-        .about-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
+        #services {
+            background: var(--light-bg);
         }
 
-        .stat {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--primary-blue);
-            display: block;
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            color: var(--text-light);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Services Grid */
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 2rem;
-            margin-top: 3rem;
         }
 
         .service-card {
-            background: white;
-            padding: 2.5rem;
+            background: #fff;
             border-radius: 16px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            padding: 2.5rem 1.5rem;
+            box-shadow: 0 4px 20px rgba(13, 59, 102, 0.06);
+            text-align: center;
             transition: all 0.3s ease;
-            border: 1px solid rgba(13, 59, 102, 0.05);
         }
 
         .service-card:hover {
+            box-shadow: 0 10px 40px rgba(13, 59, 102, 0.12);
             transform: translateY(-8px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
         }
 
         .service-icon {
-            width: 60px;
-            height: 60px;
-            background: var(--light-bg);
-            border-radius: 12px;
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 1.5rem;
+            background: var(--primary-yellow);
+            color: var(--primary-blue);
+            border-radius: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 1.5rem;
-            font-size: 1.5rem;
-            color: var(--primary-blue);
+            font-size: 2.2rem;
+            transition: transform 0.3s;
+        }
+
+        .service-card:hover .service-icon {
+            transform: scale(1.1) rotate(-10deg);
         }
 
         .service-card h3 {
-            font-size: 1.3rem;
-            font-weight: 600;
             color: var(--primary-blue);
-            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            margin: 0 0 0.5rem 0;
         }
 
-        .service-card p {
-            color: var(--text-light);
-            line-height: 1.6;
+        /* --- FIXED CAROUSEL STYLES --- */
+        .carousel-container {
+            max-width: 100vw;
+            margin: 0 auto;
+            position: relative;
+            padding: 0 50px;
         }
 
-        /* Projects Section */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .project-card {
-            background: white;
-            border-radius: 16px;
+        .swiper {
+            width: 100%;
+            height: auto;
             overflow: hidden;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
+            padding: 20px 0 60px 0;
+        }
+
+        .swiper-wrapper {
+            display: flex;
+            align-items: stretch;
+
+        }
+
+        .swiper-slide {
+            height: auto;
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+        }
+
+        /* Hide any loading indicators and progress bars */
+        .swiper-lazy-preloader,
+        .swiper-notification,
+        .swiper-button-lock,
+        ::-webkit-progress-bar,
+        ::-webkit-progress-value,
+        progress {
+            display: none !important;
+        }
+
+        /* Prevent browser loading indicators */
+        .swiper-wrapper,
+        .swiper-slide {
+            will-change: transform;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        /* Hide Navigation buttons */
+        .swiper-button-next,
+        .swiper-button-prev {
+            display: none !important;
+        }
+
+        /* Pagination dots - PROPERLY CENTERED */
+        .swiper-pagination {
+            position: static !important;
+            text-align: center !important;
+            margin: 30px auto 0 auto !important;
+            width: 100% !important;
+            display: block !important;
+            padding: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+        }
+
+        .swiper-pagination-bullet {
+            width: 8px !important;
+            height: 8px !important;
+            background: #ccc !important;
+            opacity: 1 !important;
+            margin: 0 6px !important;
+            transition: all 0.3s ease !important;
+            border-radius: 50% !important;
+            display: inline-block !important;
+        }
+
+        .swiper-pagination-bullet-active {
+            background: var(--primary-blue) !important;
+            transform: scale(1.3) !important;
+        }
+
+        /* --- Projects Section --- */
+        .project-card {
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: all 0.4s ease;
+            width: 100%;
+            max-width: 350px;
+            height: 450px;
+            display: flex;
+            flex-direction: column;
+            margin: 0 auto;
+            position: relative;
         }
 
         .project-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
         }
 
         .project-image {
             width: 100%;
-            height: 240px;
-            background: var(--light-bg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-light);
-            font-size: 3rem;
+            height: 220px;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .project-card:hover .project-image {
+            transform: scale(1.08);
         }
 
         .project-content {
-            padding: 2rem;
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .project-content h3 {
-            font-size: 1.3rem;
-            font-weight: 600;
             color: var(--primary-blue);
-            margin-bottom: 1rem;
+            font-size: 1.4rem;
+            margin: 0 0 15px 0;
+            font-weight: 700;
+            line-height: 1.3;
         }
 
         .project-content p {
             color: var(--text-light);
             line-height: 1.6;
+            margin: 0 0 20px 0;
+            flex-grow: 1;
+            font-size: 0.95rem;
         }
 
-        /* Testimonials */
-        .testimonials-slider {
-            max-width: 800px;
-            margin: 0 auto;
+        .project-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
-        .testimonial-card {
-            background: white;
-            padding: 3rem;
-            border-radius: 16px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-            text-align: center;
-        }
-
-        .testimonial-text {
-            font-size: 1.1rem;
-            font-style: italic;
-            color: var(--text-light);
-            margin-bottom: 2rem;
-            line-height: 1.6;
-        }
-
-        .testimonial-author {
-            font-weight: 600;
+        .project-tag {
+            background: var(--primary-yellow);
             color: var(--primary-blue);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
         }
 
-        /* Contact Section */
-        .contact {
+        .project-tag:nth-child(2) {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        /* --- Testimonials Section --- */
+        #testimonials {
             background: var(--light-bg);
         }
 
-        .contact-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: start;
-        }
-
-        .contact-form {
-            background: white;
-            padding: 2.5rem;
-            border-radius: 16px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--text-dark);
-        }
-
-        .form-control {
+        .testimonial-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
             width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #e1e5e9;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
+            max-width: 350px;
+            height: 450px;
+            text-align: center;
+            position: relative;
+            transition: all 0.4s ease;
+            margin: 0 auto;
         }
 
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary-blue);
+        .testimonial-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .rating {
+            color: #ffc107;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 3px;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            color: var(--text-light);
+            flex-grow: 1;
+            margin: 0 0 25px 0;
+            position: relative;
+            font-size: 1rem;
+            line-height: 1.6;
+            display: flex;
+            align-items: center;
+        }
+
+        .testimonial-text::before {
+            content: '"';
+            font-family: Georgia, serif;
+            font-size: 4rem;
+            color: var(--primary-yellow);
+            position: absolute;
+            top: -20px;
+            left: -10px;
+            opacity: 0.3;
+            line-height: 1;
+        }
+
+        .testimonial-author {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .author-photo {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary-yellow);
+            transition: transform 0.3s ease;
+        }
+
+        .testimonial-card:hover .author-photo {
+            transform: scale(1.1);
+        }
+
+        .author-info h4 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: var(--primary-blue);
+            font-weight: 700;
+        }
+
+        .author-info p {
+            margin: 0;
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        /* --- Contact Section --- */
+        .contact-section {
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 8px 40px rgba(13, 59, 102, 0.1);
+            margin: 0 auto;
+            max-width: 700px;
+            padding: 3rem;
         }
 
         .contact-info h3 {
             font-size: 1.5rem;
             color: var(--primary-blue);
-            margin-bottom: 2rem;
+            margin-bottom: 0rem;
         }
 
         .contact-item {
             display: flex;
             align-items: center;
             gap: 1rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 0rem;
+        }
+
+        .contact-item h4,
+        p {
+            margin-bottom: 0rem;
         }
 
         .contact-icon {
             width: 50px;
             height: 50px;
-            background: var(--primary-blue);
-            color: white;
-            border-radius: 50%;
+            background: var(--primary-yellow);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
+            color: var(--primary-blue);
+            font-size: 1.2rem;
         }
 
-        /* Footer */
+        .map-container {
+            margin-top: 2rem;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 300px;
+            border: none;
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .contact-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-field input,
+        .form-field textarea,
+        .form-field select {
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            border: 1.5px solid #dde6f1;
+            background: var(--light-bg);
+            outline: none;
+            transition: all 0.23s;
+            font-family: inherit;
+            margin-bottom: 2rem;
+        }
+
+        .form-field input:focus,
+        .form-field textarea:focus,
+        .form-field select:focus {
+            border-color: var(--primary-blue);
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(13, 59, 102, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--primary-blue);
+        }
+
+        .form-submit-btn {
+            width: 100%;
+            font-size: 1.1rem;
+            padding: 1rem;
+            margin-top: 0.6rem;
+            display: block;
+            align-items: center;
+        }
+
+        .form-submit-btn:disabled {
+            background-color: #a0a0a0;
+            cursor: wait;
+        }
+
+        .form-msg-box {
+            text-align: center;
+            margin-top: 1rem;
+            padding: 0.8rem;
+            border-radius: 7px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .form-msg-box.success {
+            background: #e7ffe9;
+            color: #28853e;
+            display: block;
+        }
+
+        .form-msg-box.error {
+            background: #fff2f0;
+            color: #aa2d2d;
+            display: block;
+        }
+
+        /* --- Simple Clean Footer --- */
         .footer {
             background: var(--primary-blue);
-            color: white;
-            padding: 3rem 0 2rem;
+            color: #fff;
+            padding: 3rem 0 1rem;
         }
 
         .footer-content {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: 2fr 1fr 1fr 1fr;
             gap: 3rem;
             margin-bottom: 2rem;
         }
 
-        .footer-section h3 {
-            margin-bottom: 1.5rem;
+        /* Company Info Section */
+        .company-info {
+            max-width: 350px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-logo .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--primary-yellow);
+            color: var(--primary-blue);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+        }
+
+        .footer-logo h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
             color: var(--primary-yellow);
         }
 
-        .footer-section p,
-        .footer-section a {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
+        .company-description {
+            color: #cbd5e0;
             line-height: 1.6;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
         }
 
-        .footer-section a:hover {
+        .social-links {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-yellow);
+            color: var(--primary-blue);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(244, 211, 94, 0.3);
+        }
+
+        /* Footer Sections */
+        .footer-section h3 {
+            color: var(--primary-yellow);
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.6rem;
+        }
+
+        .footer-links a {
+            color: #cbd5e0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
             color: var(--primary-yellow);
         }
 
+        /* Contact Section */
+        .contact-section {
+            background: none !important;
+            padding: 0 !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+        }
+
+        .contact-section h3 {
+            color: var(--primary-yellow);
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .contact-section .contact-info p {
+            color: #cbd5e0;
+            margin: 0 0 0.8rem 0;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: none;
+            padding: 0;
+        }
+
+        .contact-section .contact-info i {
+            color: var(--primary-yellow);
+            width: 16px;
+            font-size: 1rem;
+        }
+
+        /* Footer Bottom */
         .footer-bottom {
             text-align: center;
-            padding-top: 2rem;
+            padding-top: 1.5rem;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.6);
         }
 
-        /* WhatsApp Float */
+        .footer-bottom p {
+            margin: 0;
+            color: #cbd5e0;
+            font-size: 0.85rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                text-align: center;
+            }
+
+            .footer-logo {
+                justify-content: center;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+
+            .contact-section .contact-info p {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 950px) {
+            .about-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero-content h1 {
+                font-size: 2.2rem;
+            }
+
+            .section {
+                padding: 4rem 0;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .carousel-container {
+                padding: 0 15px;
+            }
+
+            .contact-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            /* Mobile optimized cards */
+            .project-card,
+            .testimonial-card {
+                width: 100%;
+                max-width: 320px;
+                height: auto;
+                min-height: 420px;
+            }
+
+            .project-content,
+            .testimonial-card {
+                padding: 20px;
+            }
+
+            .project-content h3,
+            .author-info h4 {
+                font-size: 1.2rem;
+            }
+
+            .project-content p,
+            .testimonial-text {
+                font-size: 0.9rem;
+            }
+
+            .project-image {
+                height: 180px;
+            }
+
+            .testimonial-text::before {
+                font-size: 3rem;
+                top: -15px;
+                left: -5px;
+            }
+
+            .author-photo {
+                width: 60px;
+                height: 60px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .carousel-container {
+                padding: 0 10px;
+            }
+
+            .container {
+                padding: 0 16px;
+            }
+
+            .section {
+                padding: 3rem 0;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+
+            /* Smaller mobile cards */
+            .project-card,
+            .testimonial-card {
+                max-width: 280px;
+                min-height: 380px;
+            }
+
+            .project-content,
+            .testimonial-card {
+                padding: 16px;
+            }
+
+            .project-content h3,
+            .author-info h4 {
+                font-size: 1.1rem;
+            }
+
+            .project-content p,
+            .testimonial-text {
+                font-size: 0.85rem;
+                line-height: 1.5;
+            }
+
+            .project-image {
+                height: 160px;
+            }
+
+            .project-tag {
+                font-size: 0.75rem;
+                padding: 4px 8px;
+            }
+
+            .rating {
+                font-size: 1.1rem;
+                margin-bottom: 15px;
+            }
+
+            .testimonial-text::before {
+                font-size: 2.5rem;
+                top: -10px;
+                left: 0px;
+            }
+
+            .author-photo {
+                width: 50px;
+                height: 50px;
+            }
+
+            .author-info h4 {
+                font-size: 1rem;
+            }
+
+            .author-info p {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+
+            /* Very small phones */
+            .project-card,
+            .testimonial-card {
+                max-width: 260px;
+                min-height: 350px;
+            }
+
+            .project-content,
+            .testimonial-card {
+                padding: 12px;
+            }
+
+            .project-image {
+                height: 140px;
+            }
+        }
+
+        .logo-img {
+            height: 70px;
+            /* this makes the logo fit the navbar */
+            width: auto;
+            /* keeps proportions */
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        /* Floating WhatsApp Button */
         .whatsapp-float {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 999;
+            bottom: 25px;
+            right: 25px;
+            z-index: 1000;
         }
 
         .whatsapp-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             width: 60px;
             height: 60px;
             background: #25d366;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-            text-decoration: none;
             box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            text-decoration: none;
             transition: all 0.3s ease;
+            animation: whatsapp-pulse 2s infinite;
+        }
+
+        .whatsapp-btn i {
+            font-size: 28px;
+            color: white;
         }
 
         .whatsapp-btn:hover {
@@ -614,82 +1191,23 @@
             box-shadow: 0 6px 25px rgba(37, 211, 102, 0.6);
         }
 
+        /* Pulse Animation */
+        @keyframes whatsapp-pulse {
+            0% {
+                box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4), 0 0 0 0 rgba(37, 211, 102, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4), 0 0 0 10px rgba(37, 211, 102, 0);
+            }
+
+            100% {
+                box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4), 0 0 0 0 rgba(37, 211, 102, 0);
+            }
+        }
+
         /* Mobile Responsive */
         @media (max-width: 768px) {
-            .container {
-                padding: 0 20px;
-            }
-
-            .nav-content {
-                padding: 0 20px;
-            }
-
-            .nav-links {
-                position: fixed;
-                top: var(--navbar-height);
-                left: -100%;
-                width: 100%;
-                height: calc(100vh - var(--navbar-height));
-                background: rgba(255, 255, 255, 0.98);
-                backdrop-filter: blur(10px);
-                flex-direction: column;
-                justify-content: start;
-                padding-top: 2rem;
-                gap: 1.5rem;
-                transition: left 0.3s ease;
-            }
-
-            .nav-links.active {
-                left: 0;
-            }
-
-            .hamburger {
-                display: flex;
-            }
-
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .hero p {
-                font-size: 1rem;
-            }
-
-            .hero-cta {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .section {
-                padding: 4rem 0;
-            }
-
-            .section-title h2 {
-                font-size: 2rem;
-            }
-
-            .about-content {
-                grid-template-columns: 1fr;
-                gap: 3rem;
-            }
-
-            .about-stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .contact-content {
-                grid-template-columns: 1fr;
-                gap: 3rem;
-            }
-
             .whatsapp-float {
                 bottom: 20px;
                 right: 20px;
@@ -698,95 +1216,51 @@
             .whatsapp-btn {
                 width: 55px;
                 height: 55px;
-                font-size: 1.3rem;
+            }
+
+            .whatsapp-btn i {
+                font-size: 24px;
             }
         }
 
-        @media (max-width: 480px) {
-            .container {
-                padding: 0 16px;
-            }
-
-            .nav-content {
-                padding: 0 16px;
-            }
-
-            .logo-text h1 {
-                font-size: 1.2rem;
-            }
-
-            .logo-text p {
-                font-size: 0.7rem;
-            }
-
-            .hero {
-                padding-top: calc(var(--navbar-height) + 2rem);
-            }
-
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .section-title h2 {
-                font-size: 1.8rem;
-            }
-
-            .service-card,
-            .contact-form {
-                padding: 2rem;
-            }
-
-            .btn {
-                padding: 12px 20px;
-                font-size: 0.9rem;
-            }
-        }
-
-        /* Animation Classes */
-        .fade-in {
+        /* Mobile Menu States */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 72px;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            padding: 1.5rem 2rem;
+            z-index: 999;
+            transform: translateY(-100%);
+            transition: transform 0.4s ease, opacity 0.4s ease;
             opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease;
         }
 
-        .fade-in.visible {
-            opacity: 1;
+        .mobile-nav.active {
+            display: block;
             transform: translateY(0);
-        }
-
-        .slide-in-left {
-            opacity: 0;
-            transform: translateX(-30px);
-            transition: all 0.6s ease;
-        }
-
-        .slide-in-left.visible {
             opacity: 1;
-            transform: translateX(0);
         }
 
-        .slide-in-right {
-            opacity: 0;
-            transform: translateX(30px);
-            transition: all 0.6s ease;
-        }
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
 
-        .slide-in-right.visible {
-            opacity: 1;
-            transform: translateX(0);
+            .mobile-menu-btn {
+                display: block;
+            }
         }
     </style>
 </head>
 
 <body>
-    <!-- Loading Screen -->
-    <div class="loading-screen" id="loadingScreen">
-        <div class="loader"></div>
-    </div>
-
-    <!-- Navigation -->
+    <!-- Header & Navigation -->
     <nav class="navbar" id="navbar">
-        <div class="nav-content">
+        <div class="container nav-content" style="max-width: 100vw;">
             <a href="#home" class="logo">
                 <img src="{{ url_for('static', filename='images/logo.png') }}" alt="RRR Construction Logo"
                     class="logo-img">
@@ -795,272 +1269,404 @@
                     <p>Bring your vision, get your keys.</p>
                 </div>
             </a>
-            <ul class="nav-links" id="navLinks">
+            <ul class="nav-links">
                 <li><a href="#home" class="active">Home</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#services">Services</a></li>
                 <li><a href="#projects">Projects</a></li>
                 <li><a href="#testimonials">Testimonials</a></li>
                 <li><a href="#contact">Contact</a></li>
-                <li><a href="tel:+917305307785" class="btn btn-primary">Call Now</a></li>
+                <li><a href="tel:+917305307785" class="btn btn-primary" style="padding: 6px 8px;"><i
+                            class="fas fa-phone"></i> Call Now</a></li>
             </ul>
-            <div class="hamburger" id="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fas fa-bars"></i></button>
+        </div>
+        <div class="mobile-nav" id="mobileNav">
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero" id="home">
+    <section id="home" class="hero">
+        <div class="hero-slider">
+            <div class="hero-slide active"></div>
+            <div class="hero-slide"></div>
+            <div class="hero-slide"></div>
+            <div class="hero-slide"></div>
+        </div>
+        <div class="hero-overlay"></div>
         <div class="container">
-            <div class="hero-content fade-in">
-                <h1>Bring your vision, get your keys.</h1>
-                <p>A leading construction company with over 15 years of excellence in building quality homes and
-                    commercial spaces.</p>
-                <div class="hero-cta">
-                    <a href="#contact" class="btn btn-primary">
-                        <i class="fas fa-rocket"></i>
-                        Get Started
-                    </a>
-                    <a href="#projects" class="btn btn-secondary">
-                        <i class="fas fa-eye"></i>
-                        View Projects
-                    </a>
+            <div class="hero-content">
+                <h1>RRR <span class="highlight">Construction</span></h1>
+                <p>Bring your vision, get your keys.</p>
+                <div class="hero-buttons">
+                    <a href="#contact" class="btn btn-primary"><i class="fas fa-clipboard-list"></i> Get Free Quote</a>
+                    <a href="#projects" class="btn btn-secondary"><i class="fas fa-eye"></i> View Projects</a>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- About Section -->
-    <section class="section" id="about">
+    <section id="about" class="section">
         <div class="container">
-            <div class="section-title fade-in">
+            <div class="section-title fade-in-section">
                 <h2>About RRR Construction</h2>
-                <p>Since 2008, RRR Construction has been a leader in delivering exceptional residential and commercial
-                    spaces that stand the test of time.</p>
+                <p>A leading construction company with over 15 years of excellence in building quality homes and
+                    commercial spaces.</p>
             </div>
             <div class="about-content">
-                <div class="about-text slide-in-left">
-                    <h3>Excellence in Every Detail</h3>
+                <div class="about-text fade-in-section">
+                    <h3>Your Trusted Construction Partner</h3>
+                    <p>Since 2008, RRR Construction has been a leader in delivering exceptional residential and
+                        commercial spaces that stand the test of time.</p>
                     <p>Our team of skilled professionals, architects, and engineers work together to exceed
                         expectations, maintaining the highest standards of quality, safety, and sustainability.</p>
-                    <p>We believe in building lasting relationships with our clients, forged on trust, transparency, and
-                        exceptional results that speak for themselves.</p>
-                    <div class="about-stats">
-                        <div class="stat">
-                            <span class="stat-number">15+</span>
-                            <span class="stat-label">Years</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number">500+</span>
-                            <span class="stat-label">Projects</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number">100%</span>
-                            <span class="stat-label">Satisfied</span>
-                        </div>
-                    </div>
+                    <a href="#contact" class="btn btn-primary"><i class="fas fa-arrow-right"></i> Get Started</a>
                 </div>
-                <div class="about-image slide-in-right">
-                    <div
-                        style="width: 100%; height: 400px; background: var(--light-bg); border-radius: 16px; display: flex; align-items: center; justify-content: center; color: var(--text-light); font-size: 4rem;">
-                        🏗️
-                    </div>
+                <div class="about-image fade-in-section">
+                    <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&q=80"
+                        alt="A modern architectural building designed by RRR Construction">
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Services Section -->
-    <section class="section" style="background: var(--light-bg);" id="services">
+    <section id="services" class="section">
         <div class="container">
-            <div class="section-title fade-in">
+            <div class="section-title fade-in-section">
                 <h2>Our Services</h2>
                 <p>Comprehensive construction solutions tailored to your needs.</p>
             </div>
             <div class="services-grid">
-                <div class="service-card fade-in">
-                    <div class="service-icon">
-                        <i class="fas fa-home"></i>
-                    </div>
+                <div class="service-card fade-in-section">
+                    <div class="service-icon"><i class="fas fa-home"></i></div>
                     <h3>Residential Construction</h3>
                     <p>Custom homes, luxury villas, and apartments with superior craftsmanship for modern living.</p>
                 </div>
-                <div class="service-card fade-in">
-                    <div class="service-icon">
-                        <i class="fas fa-building"></i>
-                    </div>
-                    <h3>Commercial Construction</h3>
+                <div class="service-card fade-in-section">
+                    <div class="service-icon"><i class="fas fa-building"></i></div>
+                    <h3>Commercial Projects</h3>
                     <p>Office buildings, retail spaces, and industrial facilities for modern business needs.</p>
                 </div>
-                <div class="service-card fade-in">
-                    <div class="service-icon">
-                        <i class="fas fa-tools"></i>
-                    </div>
-                    <h3>Renovation Services</h3>
+                <div class="service-card fade-in-section">
+                    <div class="service-icon"><i class="fas fa-tools"></i></div>
+                    <h3>Renovation & Remodeling</h3>
                     <p>Transform your spaces with our comprehensive renovation services and modern upgrades.</p>
                 </div>
-                <div class="service-card fade-in">
-                    <div class="service-icon">
-                        <i class="fas fa-drafting-compass"></i>
-                    </div>
-                    <h3>Design & Planning</h3>
+                <div class="service-card fade-in-section">
+                    <div class="service-icon"><i class="fas fa-drafting-compass"></i></div>
+                    <h3>Architectural Design</h3>
                     <p>Complete design and planning from concept to construction, with 3D visualization.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Projects Section -->
-    <section class="section" id="projects">
+    <!-- Projects Section - FIXED CAROUSEL -->
+    <section id="projects" class="section">
         <div class="container">
-            <div class="section-title fade-in">
-                <h2>Our Projects</h2>
+            <div class="section-title fade-in-section">
+                <h2>Our Flagship Projects</h2>
                 <p>Discover our portfolio of successfully completed projects that stand as a testament to our quality
                     and commitment.</p>
             </div>
-            <div class="projects-grid">
-                <div class="project-card fade-in">
-                    <div class="project-image">🏡</div>
-                    <div class="project-content">
-                        <h3>Modern Villa - Chennai</h3>
-                        <p>A stunning contemporary villa featuring state-of-the-art amenities and exceptional
-                            architectural design in the heart of Chennai.</p>
+            <div class="carousel-container">
+                <div class="swiper projects-swiper">
+                    <div class="swiper-wrapper">
+                        {% for p in projects %}
+                        <div class="swiper-slide">
+                            <div class="project-card">
+                                <img class="project-image"
+                                    src="{{ url_for('uploaded_file', filename=p.image) if p.image else 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=350&h=220&fit=crop' }}"
+                                    alt="{{ p.title }}">
+                                <div class="project-content">
+                                    <h3>{{ p.title }}</h3>
+                                    <p>{{ p.description }}</p>
+                                    <div class="project-tags">
+                                        <span class="project-tag">{{ p.category|capitalize }}</span>
+                                        <span class="project-tag">{{ p.status|capitalize }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% else %}
+                        <!-- Default project cards when no projects exist -->
+                        <div class="swiper-slide">
+                            <div class="project-card">
+                                <img class="project-image"
+                                    src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=350&h=220&fit=crop"
+                                    alt="Luxury Villa Project">
+                                <div class="project-content">
+                                    <h3>Modern Luxury Villa</h3>
+                                    <p>A stunning contemporary villa featuring state-of-the-art amenities and
+                                        exceptional architectural design in the heart of Chennai.</p>
+                                    <div class="project-tags">
+                                        <span class="project-tag">Residential</span>
+                                        <span class="project-tag">Completed</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="project-card">
+                                <img class="project-image"
+                                    src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=350&h=220&fit=crop"
+                                    alt="Commercial Office Complex">
+                                <div class="project-content">
+                                    <h3>Corporate Office Complex</h3>
+                                    <p>A premium office space designed for modern businesses, featuring glass facades
+                                        and energy-efficient systems.</p>
+                                    <div class="project-tags">
+                                        <span class="project-tag">Commercial</span>
+                                        <span class="project-tag">Ongoing</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="project-card">
+                                <img class="project-image"
+                                    src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=350&h=220&fit=crop"
+                                    alt="Apartment Complex">
+                                <div class="project-content">
+                                    <h3>Premium Apartments</h3>
+                                    <p>Luxury residential apartments with modern amenities, gardens, and recreational
+                                        facilities for families.</p>
+                                    <div class="project-tags">
+                                        <span class="project-tag">Residential</span>
+                                        <span class="project-tag">Completed</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="project-card">
+                                <img class="project-image"
+                                    src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=350&h=220&fit=crop"
+                                    alt="Heritage Renovation">
+                                <div class="project-content">
+                                    <h3>Heritage Home Renovation</h3>
+                                    <p>Careful restoration of a traditional Chennai home, blending heritage architecture
+                                        with modern convenience.</p>
+                                    <div class="project-tags">
+                                        <span class="project-tag">Renovation</span>
+                                        <span class="project-tag">Completed</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
                     </div>
-                </div>
-                <div class="project-card fade-in">
-                    <div class="project-image">🏢</div>
-                    <div class="project-content">
-                        <h3>Corporate Office Complex</h3>
-                        <p>A premium office space designed for modern businesses, featuring glass facades and
-                            energy-efficient systems.</p>
-                    </div>
-                </div>
-                <div class="project-card fade-in">
-                    <div class="project-image">🏘️</div>
-                    <div class="project-content">
-                        <h3>Residential Apartments</h3>
-                        <p>Luxury residential apartments with modern amenities, gardens, and recreational facilities for
-                            families.</p>
-                    </div>
-                </div>
-                <div class="project-card fade-in">
-                    <div class="project-image">🏛️</div>
-                    <div class="project-content">
-                        <h3>Heritage Restoration</h3>
-                        <p>Careful restoration of a traditional Chennai home, blending heritage architecture with modern
-                            convenience.</p>
-                    </div>
+                    <!-- Pagination -->
+                    <div class="swiper-pagination"></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Testimonials Section -->
-    <section class="section" style="background: var(--light-bg);" id="testimonials">
+    <!-- Testimonials Section - FIXED CAROUSEL -->
+    <section id="testimonials" class="section">
         <div class="container">
-            <div class="section-title fade-in">
-                <h2>Client Testimonials</h2>
+            <div class="section-title fade-in-section">
+                <h2>What Our Clients Say</h2>
                 <p>We take pride in building lasting relationships with our clients, forged on trust and exceptional
                     results.</p>
             </div>
-            <div class="testimonials-slider fade-in">
-                <div class="testimonial-card">
-                    <div class="testimonial-text">
-                        "RRR Construction delivered beyond our expectations. The attention to detail and quality of work
-                        was exceptional. Our dream home became a reality with their expertise."
+            <div class="carousel-container">
+                <div class="swiper testimonials-swiper">
+                    <div class="swiper-wrapper">
+                        {% if testimonials %}
+                        {% for t in testimonials %}
+                        <div class="swiper-slide">
+                            <div class="testimonial-card" data-rating="{{ t.rating }}">
+                                <div class="rating">
+                                    <!-- Stars will be populated by JavaScript -->
+                                </div>
+                                <div class="testimonial-text">{{ t.text }}</div>
+                                <div class="testimonial-author">
+                                    <img src="{{ url_for('uploaded_file', filename=t.image) if t.image else 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=70&h=70&fit=crop&crop=face' }}"
+                                        alt="Photo of {{ t.name }}" class="author-photo">
+                                    <div class="author-info">
+                                        <h4>{{ t.name }}</h4>
+                                        <p>{{ t.company }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <!-- Default testimonials when none exist -->
+                        <div class="swiper-slide">
+                            <div class="testimonial-card" data-rating="5">
+                                <div class="rating"></div>
+                                <div class="testimonial-text">RRR Construction delivered our dream home on time and
+                                    within
+                                    budget. Their attention to detail and commitment to quality is unmatched. We
+                                    couldn't be happier with the results!</div>
+                                <div class="testimonial-author">
+                                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=70&h=70&fit=crop&crop=face"
+                                        alt="Photo of Suresh Kumar" class="author-photo">
+                                    <div class="author-info">
+                                        <h4>Suresh Kumar</h4>
+                                        <p>Residential Home, Adyar</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="testimonial-card" data-rating="5">
+                                <div class="rating"></div>
+                                <div class="testimonial-text">We partnered with RRR for our new office space, and the
+                                    result exceeded our expectations. Professional service and outstanding quality
+                                    throughout the project.</div>
+                                <div class="testimonial-author">
+                                    <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=70&h=70&fit=crop&crop=face"
+                                        alt="Photo of Priya Rajan" class="author-photo">
+                                    <div class="author-info">
+                                        <h4>Priya Rajan</h4>
+                                        <p>Commercial Project, OMR</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="testimonial-card" data-rating="4">
+                                <div class="rating"></div>
+                                <div class="testimonial-text">The renovation was complex, but the RRR team handled it
+                                    with
+                                    great care. They blended modern amenities with traditional architecture beautifully.
+                                </div>
+                                <div class="testimonial-author">
+                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=70&h=70&fit=crop&crop=face"
+                                        alt="Photo of Ananth Moorthy" class="author-photo">
+                                    <div class="author-info">
+                                        <h4>Ananth Moorthy</h4>
+                                        <p>Home Renovation, Mylapore</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="testimonial-card" data-rating="5">
+                                <div class="rating"></div>
+                                <div class="testimonial-text">From concept to completion, RRR Construction maintained
+                                    the highest standards. Their architectural team brought our vision to life
+                                    perfectly.</div>
+                                <div class="testimonial-author">
+                                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=70&h=70&fit=crop&crop=face"
+                                        alt="Photo of Meera Iyer" class="author-photo">
+                                    <div class="author-info">
+                                        <h4>Meera Iyer</h4>
+                                        <p>Custom Villa, ECR</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
                     </div>
-                    <div class="testimonial-author">— Rajesh Kumar, Chennai</div>
+                    <!-- Pagination -->
+                    <div class="swiper-pagination"></div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Contact Section -->
-    <section class="section contact" id="contact">
+    <section id="contact" class="section">
         <div class="container">
-            <div class="section-title fade-in">
+            <div class="section-title">
                 <h2>Get In Touch</h2>
                 <p>Ready to start your construction project? Contact us today for a free consultation and quote.</p>
             </div>
             <div class="contact-content">
-                <div class="contact-form slide-in-left">
-                    <form method="POST" action="/contact">
-                        <div class="form-group">
-                            <label for="name">Full Name</label>
-                            <input type="text" class="form-control" id="name" name="name" required>
+                <div class="contact-form animate-fadeInLeft">
+                    <form id="customerQueryForm" autocomplete="off" novalidate>
+                        <label for="name">Full Name *</label>
+                        <div class="form-field"><input type="text" required name="name" placeholder="Full Name" /></div>
+                        <label for="name">Email Address *</label>
+                        <div class="form-field"><input type="email" required name="email" placeholder="Email Address" />
                         </div>
-                        <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <input type="email" class="form-control" id="email" name="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">Phone Number</label>
-                            <input type="tel" class="form-control" id="phone" name="phone" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="project_type">Project Type</label>
-                            <select class="form-control" id="project_type" name="project_type" required>
-                                <option value="">Select Project Type</option>
-                                <option value="residential">Residential</option>
-                                <option value="commercial">Commercial</option>
-                                <option value="renovation">Renovation</option>
-                                <option value="design">Design & Planning</option>
+                        <label for="name">Phone Number *</label>
+                        <div class="form-field"><input type="tel" required name="phone" placeholder="Phone Number"
+                                pattern="^(?:\+91)?[6-9]\d{9}$" /></div>
+                        <label for="name">Select service *</label>
+                        <div class="form-field">
+                            <select name="service" required>
+                                <option value="" selected disabled>Select Service Required</option>
+                                <option value="Residential Construction">Residential Construction</option>
+                                <option value="Commercial Projects">Commercial Projects</option>
+                                <option value="Renovation">Renovation & Remodeling</option>
+                                <option value="Architectural Design">Architectural Design</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label for="message">Message</label>
-                            <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary" style="width: 100%;">
-                            <i class="fas fa-paper-plane"></i>
-                            Send Message
-                        </button>
+                        <label for="name">Enter Message *</label>
+                        <div class="form-field"><textarea name="message" rows="3" placeholder="Your Message"
+                                required></textarea></div>
+                        <button type="submit" class="btn btn-secondary form-submit-btn" id="submitBtn"><i
+                                class="fas fa-paper-plane"></i> send essage</button>
+                        <div id="formMsg" class="form-msg-box"></div>
                     </form>
                 </div>
-                <div class="contact-info slide-in-right">
+                <div class="contact-info animate-fadeInUp">
                     <h3>Contact Information</h3>
+
                     <div class="contact-item">
                         <div class="contact-icon">
                             <i class="fas fa-map-marker-alt"></i>
                         </div>
                         <div>
-                            <strong>RRR Construction</strong><br>
-                            58, Satya Moorthy Street, Kalpalayam,<br>
-                            Kolathur, Chennai, Tamil Nadu 600017
+                            <h4>Office Address</h4>
+                            <p>RRR Construction.<br>
+                                58, Satya Moorthy Street, Kalpalayam,<br>
+                                Kolathur, Chennai, Tamil Nadu 600017</p>
                         </div>
                     </div>
+
                     <div class="contact-item">
                         <div class="contact-icon">
                             <i class="fas fa-phone"></i>
                         </div>
                         <div>
-                            <strong>Phone:</strong><br>
-                            +91 73053 07785<br>
-                            +91 73586 33124
+                            <h4>Phone Number</h4>
+                            <p><a href="tel:+917358633124">+91 7358633124</a></p>
                         </div>
                     </div>
+
                     <div class="contact-item">
                         <div class="contact-icon">
                             <i class="fas fa-envelope"></i>
                         </div>
                         <div>
-                            <strong>Email:</strong><br>
-                            info@rrrconstruction.com<br>
-                            projects@rrrconstruction.com
+                            <h4>Email Address</h4>
+                            <p><a href="mailto:info@buildwellconstructions.in">info@rrrconstruction.in</a></p>
                         </div>
                     </div>
+
                     <div class="contact-item">
                         <div class="contact-icon">
                             <i class="fas fa-clock"></i>
                         </div>
                         <div>
-                            <strong>Hours:</strong><br>
-                            Mon - Sat: 9:00 AM - 6:00 PM<br>
-                            Sunday: 10:00 AM - 4:00 PM
+                            <h4>Business Hours</h4>
+                            <p>Mon - Sat: 9:00 AM - 6:00 PM<br>
+                                Sunday: 10:00 AM - 4:00 PM</p>
                         </div>
+                    </div>
+
+                    <div class="map-container">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d242.83816298876357!2d80.20609170027784!3d13.136479978635904!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTPCsDA4JzExLjMiTiA4MMKwMTInMjIuNSJF!5e0!3m2!1sen!2sin!4v1758629477166!5m2!1sen!2sin"
+                            width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                 </div>
             </div>
@@ -1071,116 +1677,362 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <div class="footer-section">
-                    <h3>RRR Construction</h3>
-                    <p>Building dreams, delivering excellence. Your trusted partner for quality construction solutions
-                        in Chennai and beyond.</p>
+                <!-- Company Info Section -->
+                <div class="footer-section company-info">
+                    <div class="footer-logo">
+                        <div class="logo-icon">RRR</div>
+                        <h2>RRR Construction</h2>
+                    </div>
+                    <p class="company-description">
+                        Building Chennai's future with quality construction, innovative designs, and unwavering
+                        commitment to excellence.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook" class="social-link">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" aria-label="Instagram" class="social-link">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" aria-label="LinkedIn" class="social-link">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" aria-label="Twitter" class="social-link">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
                 </div>
+
+                <!-- Quick Links Section -->
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#projects">Projects</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Services Section -->
                 <div class="footer-section">
                     <h3>Services</h3>
-                    <p><a href="#services">Residential Construction</a></p>
-                    <p><a href="#services">Commercial Construction</a></p>
-                    <p><a href="#services">Renovation Services</a></p>
-                    <p><a href="#services">Design & Planning</a></p>
+                    <ul class="footer-links">
+                        <li><a href="#services">Residential Construction</a></li>
+                        <li><a href="#services">Commercial Projects</a></li>
+                        <li><a href="#services">Renovation & Remodeling</a></li>
+                        <li><a href="#services">Architectural Design</a></li>
+                    </ul>
                 </div>
-                <div class="footer-section">
-                    <h3>Contact</h3>
-                    <p>58, Satya Moorthy Street, Kalpalayam, Kolathur, Chennai, Tamil Nadu 600017</p>
-                    <p>Phone: +91 73053 07785</p>
-                    <p>Email: info@rrrconstruction.com</p>
+
+                <!-- Contact Info Section -->
+                <div class="footer-section contact-section">
+                    <h3>Contact Info</h3>
+                    <div class="contact-info">
+                        <p><i class="fas fa-map-marker-alt"></i> Kolathur, Chennai</p>
+                        <p><i class="fas fa-phone"></i> +91 7358633124</p>
+                        <p><i class="fas fa-envelope"></i> info@rrrconstruction.in</p>
+                    </div>
                 </div>
             </div>
+
+            <!-- Footer Bottom -->
             <div class="footer-bottom">
-                <p>&copy; 2024 RRR Construction. All rights reserved.</p>
+                <p>&copy; <span id="copyrightYear"></span> RRR Construction. All rights reserved. | Designed with ❤️ for
+                    Chennai</p>
             </div>
         </div>
     </footer>
+    <!-- Swiper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- HERO IMAGE SLIDER ---
+            function initHeroSlider() {
+                const slides = document.querySelectorAll('.hero-slide');
+                let currentSlide = 0;
 
-    <!-- WhatsApp Float -->
+                function nextSlide() {
+                    slides[currentSlide].classList.remove('active');
+                    currentSlide = (currentSlide + 1) % slides.length;
+                    slides[currentSlide].classList.add('active');
+                }
+
+                // Auto-advance slides every 5 seconds
+                setInterval(nextSlide, 5000);
+            }
+
+            // Initialize hero slider
+            initHeroSlider();
+
+            // --- POPULATE TESTIMONIAL RATINGS ---
+            function populateStars() {
+                document.querySelectorAll('.testimonial-card').forEach(card => {
+                    const rating = parseInt(card.dataset.rating) || 5;
+                    const ratingContainer = card.querySelector('.rating');
+                    let starsHTML = '';
+
+                    for (let i = 0; i < 5; i++) {
+                        if (i < rating) {
+                            starsHTML += '<i class="fas fa-star"></i>';
+                        } else {
+                            starsHTML += '<i class="fas fa-star" style="opacity: 0.3;"></i>';
+                        }
+                    }
+
+                    if (ratingContainer) {
+                        ratingContainer.innerHTML = starsHTML;
+                    }
+                });
+            }
+
+            // --- FIXED CAROUSEL INITIALIZATION ---
+            const projectsSwiper = new Swiper('.projects-swiper', {
+                slidesPerView: 1,
+                spaceBetween: 20,
+                loop: true,
+                centeredSlides: true,
+                preloadImages: false,
+                lazy: false,
+                watchSlidesProgress: false,
+                watchSlidesVisibility: false,
+                grabCursor: true,
+                touchRatio: 1,
+                touchAngle: 45,
+                longSwipesRatio: 0.5,
+                autoplay: {
+                    delay: 3000,
+                    disableOnInteraction: false,
+                    pauseOnMouseEnter: true,
+                    stopOnLastSlide: false
+                },
+                speed: 600,
+                runCallbacksOnInit: false,
+                pagination: {
+                    el: '.projects-swiper .swiper-pagination',
+                    clickable: true
+                },
+                breakpoints: {
+                    480: {
+                        slidesPerView: 1,
+                        spaceBetween: 15,
+                        centeredSlides: true
+                    },
+                    640: {
+                        slidesPerView: 1.2,
+                        spaceBetween: 20,
+                        centeredSlides: true
+                    },
+                    768: {
+                        slidesPerView: 1.5,
+                        spaceBetween: 25,
+                        centeredSlides: true
+                    },
+                    1024: {
+                        slidesPerView: 2.5,
+                        spaceBetween: 30,
+                        centeredSlides: true
+                    },
+                    1200: {
+                        slidesPerView: 3,
+                        spaceBetween: 30,
+                        centeredSlides: false
+                    }
+                }
+            });
+
+            const testimonialsSwiper = new Swiper('.testimonials-swiper', {
+                slidesPerView: 1,
+                spaceBetween: 20,
+                loop: true,
+                centeredSlides: true,
+                preloadImages: false,
+                lazy: false,
+                watchSlidesProgress: false,
+                watchSlidesVisibility: false,
+                grabCursor: true,
+                touchRatio: 1,
+                touchAngle: 45,
+                longSwipesRatio: 0.5,
+                autoplay: {
+                    delay: 4000,
+                    disableOnInteraction: false,
+                    pauseOnMouseEnter: true,
+                    stopOnLastSlide: false
+                },
+                speed: 800,
+                runCallbacksOnInit: false,
+                pagination: {
+                    el: '.testimonials-swiper .swiper-pagination',
+                    clickable: true
+                },
+                breakpoints: {
+                    480: {
+                        slidesPerView: 1,
+                        spaceBetween: 15,
+                        centeredSlides: true
+                    },
+                    640: {
+                        slidesPerView: 1.2,
+                        spaceBetween: 20,
+                        centeredSlides: true
+                    },
+                    768: {
+                        slidesPerView: 1.5,
+                        spaceBetween: 25,
+                        centeredSlides: true
+                    },
+                    1024: {
+                        slidesPerView: 2.5,
+                        spaceBetween: 30,
+                        centeredSlides: true
+                    },
+                    1200: {
+                        slidesPerView: 3,
+                        spaceBetween: 30,
+                        centeredSlides: false
+                    }
+                },
+                on: {
+                    init: function () {
+                        // Populate stars after swiper initialization
+                        setTimeout(populateStars, 100);
+                    },
+                    slideChange: function () {
+                        // Re-populate stars when slides change
+                        setTimeout(populateStars, 50);
+                    }
+                }
+            });
+
+            // Initial population of stars
+            populateStars();
+
+            // --- DYNAMIC COPYRIGHT YEAR ---
+            document.getElementById('copyrightYear').textContent = new Date().getFullYear();
+
+            // --- MOBILE MENU TOGGLE (Fixed Version) ---
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileNav = document.getElementById('mobileNav');
+
+            if (mobileMenuBtn && mobileNav) {
+                // Toggle mobile menu
+                mobileMenuBtn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    mobileNav.classList.toggle('active');
+
+                    // Change hamburger icon to X when open
+                    const icon = mobileMenuBtn.querySelector('i');
+                    if (mobileNav.classList.contains('active')) {
+                        icon.classList.remove('fa-bars');
+                        icon.classList.add('fa-times');
+                    } else {
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+
+                // Close mobile menu when clicking on links
+                document.querySelectorAll('.mobile-nav a').forEach(link => {
+                    link.addEventListener('click', function () {
+                        mobileNav.classList.remove('active');
+                        const icon = mobileMenuBtn.querySelector('i');
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    });
+                });
+
+                // Close mobile menu when clicking outside
+                document.addEventListener('click', function (e) {
+                    if (!mobileMenuBtn.contains(e.target) && !mobileNav.contains(e.target)) {
+                        mobileNav.classList.remove('active');
+                        const icon = mobileMenuBtn.querySelector('i');
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+            }
+
+            // --- CONTACT FORM AJAX SUBMISSION ---
+            const queryForm = document.getElementById('customerQueryForm');
+            const formMsg = document.getElementById('formMsg');
+            const submitBtn = document.getElementById('submitBtn');
+            queryForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = 'Sending... <i class="fas fa-spinner fa-spin"></i>';
+                fetch('/api/contact', {
+                    method: 'POST',
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(Object.fromEntries(new FormData(queryForm).entries()))
+                })
+                    .then(resp => resp.json())
+                    .then(res => {
+                        showFormMessage(res.message, res.success ? 'success' : 'error');
+                        if (res.success) queryForm.reset();
+                    })
+                    .catch(() => showFormMessage('A network error occurred.', 'error'))
+                    .finally(() => {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = 'Send Query <i class="fas fa-paper-plane"></i>';
+                    });
+            });
+
+            function showFormMessage(message, type) {
+                formMsg.textContent = message;
+                formMsg.className = `form-msg-box ${type}`;
+            }
+
+            // --- SCROLL-BASED ANIMATIONS ---
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+            document.querySelectorAll('.fade-in-section').forEach(section => {
+                observer.observe(section);
+            });
+
+            // --- ACTIVE NAV LINK ON SCROLL ---
+            const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+            const sections = document.querySelectorAll('section[id]');
+
+            function updateActiveNav() {
+                let current = '';
+                const scrollY = window.pageYOffset;
+
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - 100;
+                    const sectionHeight = section.offsetHeight;
+
+                    if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', updateActiveNav);
+            updateActiveNav(); // Run once on load
+        });
+    </script>
+    <!-- Floating WhatsApp Button -->
     <div class="whatsapp-float">
         <a href="https://wa.me/917358633124?text=Hi! I'm interested in your construction services. Please provide more information."
             target="_blank" aria-label="Contact us on WhatsApp" class="whatsapp-btn">
             <i class="fab fa-whatsapp"></i>
         </a>
     </div>
-
-    <script src="https://unpkg.com/swiper@11/swiper-bundle.min.js"></script>
-    <script>
-        // Loading Screen
-        window.addEventListener('load', function () {
-            setTimeout(() => {
-                const loadingScreen = document.getElementById('loadingScreen');
-                loadingScreen.classList.add('hidden');
-            }, 1000);
-        });
-
-        // Mobile Navigation
-        const hamburger = document.getElementById('hamburger');
-        const navLinks = document.getElementById('navLinks');
-
-        hamburger.addEventListener('click', function () {
-            hamburger.classList.toggle('active');
-            navLinks.classList.toggle('active');
-        });
-
-        // Close mobile menu when clicking on a link
-        navLinks.addEventListener('click', function (e) {
-            if (e.target.tagName === 'A') {
-                hamburger.classList.remove('active');
-                navLinks.classList.remove('active');
-            }
-        });
-
-        // Navbar scroll effect
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', function () {
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
-
-        // Smooth scroll and active navigation
-        function updateActiveNav() {
-            const sections = document.querySelectorAll('section[id]');
-            const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
-
-            sections.forEach(section => {
-                const rect = section.getBoundingClientRect();
-                const navLink = document.querySelector(`.nav-links a[href="#${section.id}"]`);
-
-                if (rect.top <= 100 && rect.bottom >= 100 && navLink) {
-                    navLinks.forEach(link => link.classList.remove('active'));
-                    navLink.classList.add('active');
-                }
-            });
-        }
-
-        // Scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver(function (entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        // Observe all animation elements
-        document.addEventListener('DOMContentLoaded', function () {
-            const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right');
-            animatedElements.forEach(el => observer.observe(el));
-        });
-
-        // Update active nav on scroll
-        window.addEventListener('scroll', updateActiveNav);
-        updateActiveNav();
-    </script>
 </body>
 
 </html>
