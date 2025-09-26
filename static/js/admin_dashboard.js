@@ -1,4 +1,20 @@
 // --- MODAL SCROLL LOCK FUNCTIONALITY ---
+// Loading Screen
+window.addEventListener('load', function () {
+    const loadingScreen = document.getElementById('loadingScreen');
+
+    // Minimum loading time of 2 seconds for professional feel
+    setTimeout(function () {
+        loadingScreen.classList.add('fade-out');
+
+        // Remove from DOM after fade animation
+        setTimeout(function () {
+            if (loadingScreen) {
+                loadingScreen.remove();
+            }
+        }, 500);
+    }, 2000); // 2 second minimum loading time
+});
 const lockBodyScroll = () => {
     document.body.classList.add('modal-open');
 };

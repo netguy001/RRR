@@ -1,6 +1,22 @@
 // Admin Login JavaScript
 // Your original HTML file didn't contain any JavaScript
 // This file is ready for any admin login functionality you want to add
+// Loading Screen
+window.addEventListener('load', function () {
+    const loadingScreen = document.getElementById('loadingScreen');
+
+    // Minimum loading time of 2 seconds for professional feel
+    setTimeout(function () {
+        loadingScreen.classList.add('fade-out');
+
+        // Remove from DOM after fade animation
+        setTimeout(function () {
+            if (loadingScreen) {
+                loadingScreen.remove();
+            }
+        }, 500);
+    }, 2000); // 2 second minimum loading time
+});
 
 document.addEventListener('DOMContentLoaded', function () {
     // Get form elements
