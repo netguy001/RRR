@@ -1,3 +1,24 @@
+// Loading Screen - Updated
+window.addEventListener('load', function () {
+    const loadingScreen = document.getElementById('loadingScreen');
+
+    // Minimum loading time of 2 seconds
+    setTimeout(function () {
+        loadingScreen.classList.add('fade-out');
+
+        // Start counter animations AFTER loading screen starts fading
+        setTimeout(function () {
+            initCounters(); // Start counting now
+        }, 300); // Small delay after fade starts
+
+        // Remove loading screen from DOM
+        setTimeout(function () {
+            if (loadingScreen) {
+                loadingScreen.remove();
+            }
+        }, 500);
+    }, 2000);
+});
 document.addEventListener('DOMContentLoaded', function () {
     // --- HERO IMAGE SLIDER ---
     function initHeroSlider() {
@@ -278,17 +299,83 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('scroll', updateActiveNav);
     updateActiveNav(); // Run once on load
 
-    // --- NAVBAR SCROLL EFFECT ---
+    // Smart Navbar
+    let lastScrollTop = 0;
     const navbar = document.querySelector('.navbar');
 
-    function handleNavbarScroll() {
-        if (window.scrollY > 50) {
+    function handleSmartNavbar() {
+        const currentScroll = window.pageYOffset;
+
+        if (currentScroll > 50) {
             navbar.classList.add('scrolled');
         } else {
             navbar.classList.remove('scrolled');
         }
+
+        if (currentScroll <= 100) {
+            navbar.classList.remove('navbar-hidden');
+            lastScrollTop = currentScroll;
+            return;
+        }
+
+        if (currentScroll > lastScrollTop) {
+            navbar.classList.add('navbar-hidden');
+        } else {
+            navbar.classList.remove('navbar-hidden');
+        }
+
+        lastScrollTop = currentScroll;
     }
 
-    window.addEventListener('scroll', handleNavbarScroll);
-    handleNavbarScroll(); // Run once on load
+    window.addEventListener('scroll', handleSmartNavbar); // Run once on load
+});
+// Counter Animation - Updated to work with loading screen
+function startCounter(element, target) {
+    let count = 0;
+    const increment = target / 60;
+
+    const timer = setInterval(() => {
+        count += increment;
+        if (count >= target) {
+            element.textContent = target + '+';
+            clearInterval(timer);
+        } else {
+            element.textContent = Math.floor(count) + '+';
+        }
+    }, 30);
+}
+
+function initCounters() {
+    const counters = [
+        { element: document.querySelector('.hero-stats .stat:nth-child(1) h3'), target: 300 },
+        { element: document.querySelector('.hero-stats .stat:nth-child(2) h3'), target: 40 },
+        { element: document.querySelector('.hero-stats .stat:nth-child(3) h3'), target: 400 }
+    ];
+
+    counters.forEach((counter, index) => {
+        if (counter.element) {
+            counter.element.textContent = '0+';
+            setTimeout(() => {
+                startCounter(counter.element, counter.target);
+            }, index * 200);
+        }
+    });
+}
+
+// Start animations when page loads
+window.addEventListener('load', function () {
+    const counters = [
+        { element: document.querySelector('.hero-stats .stat:nth-child(1) h3'), target: 300 },
+        { element: document.querySelector('.hero-stats .stat:nth-child(2) h3'), target: 40 },
+        { element: document.querySelector('.hero-stats .stat:nth-child(3) h3'), target: 400 }
+    ];
+
+    counters.forEach((counter, index) => {
+        if (counter.element) {
+            counter.element.textContent = '0+';
+            setTimeout(() => {
+                startCounter(counter.element, counter.target);
+            }, index * 200); // Stagger animations
+        }
+    });
 });
