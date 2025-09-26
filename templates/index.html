@@ -2,6 +2,67 @@
 <html lang="en">
 
 <head>
+    <!-- Your existing links -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+    <!-- Add this critical CSS inline -->
+    <style>
+        /* Critical loading screen CSS */
+        .loading-screen {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            background: linear-gradient(135deg, #0D3B66 0%, #1a5490 100%) !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            align-items: center !important;
+            z-index: 9999 !important;
+            transition: opacity 0.5s ease, visibility 0.5s ease !important;
+        }
+
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(244, 211, 94, 0.3);
+            border-top: 4px solid #F4D35E;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 2rem;
+        }
+
+        .loading-text {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .loading-subtext {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Hide content until loaded */
+        body:not(.content-loaded)>*:not(.loading-screen) {
+            visibility: hidden !important;
+        }
+    </style>
+</head>
+
+<head>
     <meta charset="UTF-8">
     <title>RRR Construction â€" Bring your vision, get your keys.</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,524 +80,522 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 
-<body>
-    <!-- Header & Navigation -->
-    <nav class="navbar" id="navbar">
-        <div class="container nav-content" style="max-width: 100vw;">
-            <a href="#home" class="logo">
-                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="RRR Construction Logo"
-                    class="logo-img">
-                <div class="logo-text">
-                    <h1>RRR Construction</h1>
-                    <p>Bring your vision, get your keys.</p>
-                </div>
-            </a>
-            <ul class="nav-links">
-                <li><a href="#home" class="active">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#testimonials">Testimonials</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li><a href="tel:+917305307785" class="btn btn-primary" style="padding: 6px 8px;"><i
-                            class="fas fa-phone"></i> Call Now</a></li>
-            </ul>
-            <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fas fa-bars"></i></button>
-        </div>
-        <div class="mobile-nav" id="mobileNav">
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#testimonials">Testimonials</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-slider">
-            <div class="hero-slide active"></div>
-            <div class="hero-slide"></div>
-            <div class="hero-slide"></div>
-            <div class="hero-slide"></div>
-        </div>
-        <div class="hero-overlay"></div>
-        <div class="container">
-            <div class="hero-content">
-                <h1>RRR <span class="highlight">Construction</span></h1>
+<!-- Header & Navigation -->
+<nav class="navbar" id="navbar">
+    <div class="container nav-content" style="max-width: 100vw;">
+        <a href="#home" class="logo">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="RRR Construction Logo" class="logo-img">
+            <div class="logo-text">
+                <h1>RRR Construction</h1>
                 <p>Bring your vision, get your keys.</p>
-                <div class="hero-buttons">
-                    <a href="#contact" class="btn btn-primary"><i class="fas fa-clipboard-list"></i> Get In Touch</a>
-                    <a href="#projects" class="btn btn-secondary"><i class="fas fa-eye"></i> View Projects</a>
-                </div>
-                <div class="hero-stats">
-                    <div class="stat">
-                        <h3>300+</h3>
-                        <p>Projects Completed</p>
-                    </div>
-                    <div class="stat">
-                        <h3>40+</h3>
-                        <p>Years Experience</p>
-                    </div>
-                    <div class="stat">
-                        <h3>400+</h3>
-                        <p>Happy Clients</p>
-                    </div>
-                </div>
             </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="section">
-        <div class="container">
-            <div class="section-title fade-in-section">
-                <h2>About RRR Construction</h2>
-                <p>A leading construction company with over 40+ years of excellence in building quality homes and
-                    commercial spaces.</p>
-            </div>
-            <div class="about-content">
-                <div class="about-text fade-in-section">
-                    <h3>Your Trusted Construction Partner</h3>
-                    <p>Since 1985, RRR Construction has been a leader in delivering exceptional residential and
-                        commercial spaces that stand the test of time.</p>
-                    <p>Our team of skilled professionals, architects, and engineers work together to exceed
-                        expectations, maintaining the highest standards of quality, safety, and sustainability.</p>
-                    <a href="#contact" class="btn btn-primary"><i class="fas fa-arrow-right"></i> Get Started</a>
-                </div>
-                <div class="about-image fade-in-section">
-                    <img src="{{ url_for('static', filename='images/abt.jpeg') }}"
-                        alt="A modern architectural building designed by RRR Construction">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Services Section -->
-    <section id="services" class="section">
-        <div class="container">
-            <div class="section-title fade-in-section">
-                <h2>Our Services</h2>
-                <p>Comprehensive construction solutions tailored to your needs.</p>
-            </div>
-            <div class="services-grid">
-                <div class="service-card fade-in-section">
-                    <div class="service-icon"><i class="fas fa-home"></i></div>
-                    <h3>Residential Construction</h3>
-                    <p>Custom homes, luxury villas, and apartments with superior craftsmanship for modern living.</p>
-                </div>
-                <div class="service-card fade-in-section">
-                    <div class="service-icon"><i class="fas fa-building"></i></div>
-                    <h3>Commercial Projects</h3>
-                    <p>Office buildings, retail spaces, and industrial facilities for modern business needs.</p>
-                </div>
-                <div class="service-card fade-in-section">
-                    <div class="service-icon"><i class="fas fa-tools"></i></div>
-                    <h3>Renovation & Remodeling</h3>
-                    <p>Transform your spaces with our comprehensive renovation services and modern upgrades.</p>
-                </div>
-                <div class="service-card fade-in-section">
-                    <div class="service-icon"><i class="fas fa-drafting-compass"></i></div>
-                    <h3>Architectural Design</h3>
-                    <p>Complete design and planning from concept to construction, with 3D visualization.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects Section - FIXED CAROUSEL -->
-    <section id="projects" class="section">
-        <div class="container">
-            <div class="section-title fade-in-section">
-                <h2>Our Flagship Projects</h2>
-                <p>Discover our portfolio of successfully completed projects that stand as a testament to our quality
-                    and commitment.</p>
-            </div>
-            <div class="carousel-container">
-                <div class="swiper projects-swiper">
-                    <div class="swiper-wrapper">
-                        {% for p in projects %}
-                        <div class="swiper-slide">
-                            <div class="project-card">
-                                <img class="project-image"
-                                    src="{{ url_for('uploaded_file', filename=p.image) if p.image else 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=350&h=220&fit=crop' }}"
-                                    alt="{{ p.title }}">
-                                <div class="project-content">
-                                    <h3>{{ p.title }}</h3>
-                                    <p>{{ p.description }}</p>
-                                    <div class="project-tags">
-                                        <span class="project-tag">{{ p.category|capitalize }}</span>
-                                        <span class="project-tag">{{ p.status|capitalize }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {% else %}
-                        <!-- Default project cards when no projects exist -->
-                        <div class="swiper-slide">
-                            <div class="project-card">
-                                <img class="project-image"
-                                    src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=350&h=220&fit=crop"
-                                    alt="Luxury Villa Project">
-                                <div class="project-content">
-                                    <h3>Modern Luxury Villa</h3>
-                                    <p>A stunning contemporary villa featuring state-of-the-art amenities and
-                                        exceptional architectural design in the heart of Chennai.</p>
-                                    <div class="project-tags">
-                                        <span class="project-tag">Residential</span>
-                                        <span class="project-tag">Completed</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="project-card">
-                                <img class="project-image"
-                                    src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=350&h=220&fit=crop"
-                                    alt="Commercial Office Complex">
-                                <div class="project-content">
-                                    <h3>Corporate Office Complex</h3>
-                                    <p>A premium office space designed for modern businesses, featuring glass facades
-                                        and energy-efficient systems.</p>
-                                    <div class="project-tags">
-                                        <span class="project-tag">Commercial</span>
-                                        <span class="project-tag">Ongoing</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="project-card">
-                                <img class="project-image"
-                                    src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=350&h=220&fit=crop"
-                                    alt="Apartment Complex">
-                                <div class="project-content">
-                                    <h3>Premium Apartments</h3>
-                                    <p>Luxury residential apartments with modern amenities, gardens, and recreational
-                                        facilities for families.</p>
-                                    <div class="project-tags">
-                                        <span class="project-tag">Residential</span>
-                                        <span class="project-tag">Completed</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="project-card">
-                                <img class="project-image"
-                                    src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=350&h=220&fit=crop"
-                                    alt="Heritage Renovation">
-                                <div class="project-content">
-                                    <h3>Heritage Home Renovation</h3>
-                                    <p>Careful restoration of a traditional Chennai home, blending heritage architecture
-                                        with modern convenience.</p>
-                                    <div class="project-tags">
-                                        <span class="project-tag">Renovation</span>
-                                        <span class="project-tag">Completed</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                    <!-- Pagination -->
-                    <div class="swiper-pagination"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials Section - FIXED CAROUSEL -->
-    <section id="testimonials" class="section">
-        <div class="container">
-            <div class="section-title fade-in-section">
-                <h2>What Our Clients Say</h2>
-                <p>We take pride in building lasting relationships with our clients, forged on trust and exceptional
-                    results.</p>
-            </div>
-            <div class="carousel-container">
-                <div class="swiper testimonials-swiper">
-                    <div class="swiper-wrapper">
-                        {% if testimonials %}
-                        {% for t in testimonials %}
-                        <div class="swiper-slide">
-                            <div class="testimonial-card" data-rating="{{ t.rating }}">
-                                <div class="rating">
-                                    <!-- Stars will be populated by JavaScript -->
-                                </div>
-                                <div class="testimonial-text">{{ t.text }}</div>
-                                <div class="testimonial-author">
-                                    <img src="{{ url_for('uploaded_file', filename=t.image) if t.image else 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=70&h=70&fit=crop&crop=face' }}"
-                                        alt="Photo of {{ t.name }}" class="author-photo">
-                                    <div class="author-info">
-                                        <h4>{{ t.name }}</h4>
-                                        <p>{{ t.company }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                        {% else %}
-                        <!-- Default testimonials when none exist -->
-                        <div class="swiper-slide">
-                            <div class="testimonial-card" data-rating="5">
-                                <div class="rating"></div>
-                                <div class="testimonial-text">RRR Construction delivered our dream home on time and
-                                    within
-                                    budget. Their attention to detail and commitment to quality is unmatched. We
-                                    couldn't be happier with the results!</div>
-                                <div class="testimonial-author">
-                                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=70&h=70&fit=crop&crop=face"
-                                        alt="Photo of Suresh Kumar" class="author-photo">
-                                    <div class="author-info">
-                                        <h4>Suresh Kumar</h4>
-                                        <p>Residential Home, Adyar</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="testimonial-card" data-rating="5">
-                                <div class="rating"></div>
-                                <div class="testimonial-text">We partnered with RRR for our new office space, and the
-                                    result exceeded our expectations. Professional service and outstanding quality
-                                    throughout the project.</div>
-                                <div class="testimonial-author">
-                                    <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=70&h=70&fit=crop&crop=face"
-                                        alt="Photo of Priya Rajan" class="author-photo">
-                                    <div class="author-info">
-                                        <h4>Priya Rajan</h4>
-                                        <p>Commercial Project, OMR</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="testimonial-card" data-rating="4">
-                                <div class="rating"></div>
-                                <div class="testimonial-text">The renovation was complex, but the RRR team handled it
-                                    with
-                                    great care. They blended modern amenities with traditional architecture beautifully.
-                                </div>
-                                <div class="testimonial-author">
-                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=70&h=70&fit=crop&crop=face"
-                                        alt="Photo of Ananth Moorthy" class="author-photo">
-                                    <div class="author-info">
-                                        <h4>Ananth Moorthy</h4>
-                                        <p>Home Renovation, Mylapore</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="testimonial-card" data-rating="5">
-                                <div class="rating"></div>
-                                <div class="testimonial-text">From concept to completion, RRR Construction maintained
-                                    the highest standards. Their architectural team brought our vision to life
-                                    perfectly.</div>
-                                <div class="testimonial-author">
-                                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=70&h=70&fit=crop&crop=face"
-                                        alt="Photo of Meera Iyer" class="author-photo">
-                                    <div class="author-info">
-                                        <h4>Meera Iyer</h4>
-                                        <p>Custom Villa, ECR</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {% endif %}
-                    </div>
-                    <!-- Pagination -->
-                    <div class="swiper-pagination"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="section">
-        <div class="container">
-            <div class="section-title">
-                <h2>Get In Touch</h2>
-                <p>Ready to start your construction project? Contact us today for a free consultation and quote.</p>
-            </div>
-            <div class="contact-content">
-                <div class="contact-form animate-fadeInLeft">
-                    <form id="customerQueryForm" autocomplete="off" novalidate>
-                        <label for="name">Full Name *</label>
-                        <div class="form-field"><input type="text" required name="name" placeholder="Full Name" /></div>
-                        <label for="name">Email Address *</label>
-                        <div class="form-field"><input type="email" required name="email" placeholder="Email Address" />
-                        </div>
-                        <label for="name">Phone Number *</label>
-                        <div class="form-field"><input type="tel" required name="phone" placeholder="Phone Number"
-                                pattern="^(?:\+91)?[6-9]\d{9}$" /></div>
-                        <label for="name">Select service *</label>
-                        <div class="form-field">
-                            <select name="service" required>
-                                <option value="" selected disabled>Select Service Required</option>
-                                <option value="Residential Construction">Residential Construction</option>
-                                <option value="Commercial Projects">Commercial Projects</option>
-                                <option value="Renovation">Renovation & Remodeling</option>
-                                <option value="Architectural Design">Architectural Design</option>
-                            </select>
-                        </div>
-                        <label for="name">Enter Message *</label>
-                        <div class="form-field"><textarea name="message" rows="3" placeholder="Your Message"
-                                required></textarea></div>
-                        <button type="submit" class="btn btn-secondary form-submit-btn" id="submitBtn"><i
-                                class="fas fa-paper-plane"></i> send essage</button>
-                        <div id="formMsg" class="form-msg-box"></div>
-                    </form>
-                </div>
-                <div class="contact-info animate-fadeInUp">
-                    <h3>Contact Information</h3>
-
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <div>
-                            <h4>Office Address</h4>
-                            <p>RRR Construction.<br>
-                                58, Satya Moorthy Street, Kalpalayam,<br>
-                                Kolathur, Chennai, Tamil Nadu 600017</p>
-                        </div>
-                    </div>
-
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-phone"></i>
-                        </div>
-                        <div>
-                            <h4>Phone Number</h4>
-                            <p><a href="tel:+917358633124">+91 7358633124</a></p>
-                        </div>
-                    </div>
-
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <div>
-                            <h4>Email Address</h4>
-                            <p><a href="mailto:info@buildwellconstructions.in">info@rrrconstruction.in</a></p>
-                        </div>
-                    </div>
-
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <div>
-                            <h4>Business Hours</h4>
-                            <p>Mon - Sat: 9:00 AM - 6:00 PM<br>
-                                Sunday: 10:00 AM - 4:00 PM</p>
-                        </div>
-                    </div>
-
-                    <div class="map-container">
-                        <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d242.83816298876357!2d80.20609170027784!3d13.136479978635904!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTPCsDA4JzExLjMiTiA4MMKwMTInMjIuNSJF!5e0!3m2!1sen!2sin!4v1758629477166!5m2!1sen!2sin"
-                            width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
-                            referrerpolicy="no-referrer-when-downgrade"></iframe>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <!-- Company Info Section -->
-                <div class="footer-section company-info">
-                    <div class="footer-logo">
-                        <div class="logo-icon">
-                            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="RRR Construction Logo"
-                                class="logo-img">
-                        </div>
-                        <h2>RRR Construction</h2>
-                    </div>
-                    <p class="company-description">
-                        Building Chennai's future with quality construction, innovative designs, and unwavering
-                        commitment to excellence.
-                    </p>
-                    <div class="social-links">
-                        <a href="#" aria-label="Facebook" class="social-link">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" aria-label="Instagram" class="social-link">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" aria-label="LinkedIn" class="social-link">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                        <a href="#" aria-label="Twitter" class="social-link">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Quick Links Section -->
-                <div class="footer-section">
-                    <h3>Quick Links</h3>
-                    <ul class="footer-links">
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#about">About Us</a></li>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="#projects">Projects</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </div>
-
-                <!-- Services Section -->
-                <div class="footer-section">
-                    <h3>Services</h3>
-                    <ul class="footer-links">
-                        <li><a href="#services">Residential Construction</a></li>
-                        <li><a href="#services">Commercial Projects</a></li>
-                        <li><a href="#services">Renovation & Remodeling</a></li>
-                        <li><a href="#services">Architectural Design</a></li>
-                    </ul>
-                </div>
-
-                <!-- Contact Info Section -->
-                <div class="footer-section contact-section">
-                    <h3>Contact Info</h3>
-                    <div class="contact-info">
-                        <p><i class="fas fa-map-marker-alt"></i> Kolathur, Chennai</p>
-                        <p><i class="fas fa-phone"></i> +91 7358633124</p>
-                        <p><i class="fas fa-envelope"></i> info@rrrconstruction.in</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Footer Bottom -->
-            <div class="footer-bottom">
-                <p>&copy; <span id="copyrightYear"></span> RRR Construction. All rights reserved. | Designed with ❤️¸
-                    for
-                    Chennai</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Floating WhatsApp Button -->
-    <div class="whatsapp-float">
-        <a href="https://wa.me/917358633124?text=Hi! I'm interested in your construction services. Please provide more information."
-            target="_blank" aria-label="Contact us on WhatsApp" class="whatsapp-btn">
-            <i class="fab fa-whatsapp"></i>
         </a>
+        <ul class="nav-links">
+            <li><a href="#home" class="active">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#testimonials">Testimonials</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="tel:+917305307785" class="btn btn-primary" style="padding: 6px 8px;"><i
+                        class="fas fa-phone"></i> Call Now</a></li>
+        </ul>
+        <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fas fa-bars"></i></button>
     </div>
+    <div class="mobile-nav" id="mobileNav">
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#testimonials">Testimonials</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </div>
+</nav>
 
-    <!-- Swiper.js -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <!-- Link to external JavaScript file -->
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+<!-- Hero Section -->
+<section id="home" class="hero">
+    <div class="hero-slider">
+        <div class="hero-slide active"></div>
+        <div class="hero-slide"></div>
+        <div class="hero-slide"></div>
+        <div class="hero-slide"></div>
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="container">
+        <div class="hero-content">
+            <h1>RRR <span class="highlight">Construction</span></h1>
+            <p>Bring your vision, get your keys.</p>
+            <div class="hero-buttons">
+                <a href="#contact" class="btn btn-primary"><i class="fas fa-clipboard-list"></i> Get In Touch</a>
+                <a href="#projects" class="btn btn-secondary"><i class="fas fa-eye"></i> View Projects</a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <h3>300+</h3>
+                    <p>Projects Completed</p>
+                </div>
+                <div class="stat">
+                    <h3>40+</h3>
+                    <p>Years Experience</p>
+                </div>
+                <div class="stat">
+                    <h3>400+</h3>
+                    <p>Happy Clients</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="section">
+    <div class="container">
+        <div class="section-title fade-in-section">
+            <h2>About RRR Construction</h2>
+            <p>A leading construction company with over 40+ years of excellence in building quality homes and
+                commercial spaces.</p>
+        </div>
+        <div class="about-content">
+            <div class="about-text fade-in-section">
+                <h3>Your Trusted Construction Partner</h3>
+                <p>Since 1985, RRR Construction has been a leader in delivering exceptional residential and
+                    commercial spaces that stand the test of time.</p>
+                <p>Our team of skilled professionals, architects, and engineers work together to exceed
+                    expectations, maintaining the highest standards of quality, safety, and sustainability.</p>
+                <a href="#contact" class="btn btn-primary"><i class="fas fa-arrow-right"></i> Get Started</a>
+            </div>
+            <div class="about-image fade-in-section">
+                <img src="{{ url_for('static', filename='images/abt.jpeg') }}"
+                    alt="A modern architectural building designed by RRR Construction">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section id="services" class="section">
+    <div class="container">
+        <div class="section-title fade-in-section">
+            <h2>Our Services</h2>
+            <p>Comprehensive construction solutions tailored to your needs.</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card fade-in-section">
+                <div class="service-icon"><i class="fas fa-home"></i></div>
+                <h3>Residential Construction</h3>
+                <p>Custom homes, luxury villas, and apartments with superior craftsmanship for modern living.</p>
+            </div>
+            <div class="service-card fade-in-section">
+                <div class="service-icon"><i class="fas fa-building"></i></div>
+                <h3>Commercial Projects</h3>
+                <p>Office buildings, retail spaces, and industrial facilities for modern business needs.</p>
+            </div>
+            <div class="service-card fade-in-section">
+                <div class="service-icon"><i class="fas fa-tools"></i></div>
+                <h3>Renovation & Remodeling</h3>
+                <p>Transform your spaces with our comprehensive renovation services and modern upgrades.</p>
+            </div>
+            <div class="service-card fade-in-section">
+                <div class="service-icon"><i class="fas fa-drafting-compass"></i></div>
+                <h3>Architectural Design</h3>
+                <p>Complete design and planning from concept to construction, with 3D visualization.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Projects Section - FIXED CAROUSEL -->
+<section id="projects" class="section">
+    <div class="container">
+        <div class="section-title fade-in-section">
+            <h2>Our Flagship Projects</h2>
+            <p>Discover our portfolio of successfully completed projects that stand as a testament to our quality
+                and commitment.</p>
+        </div>
+        <div class="carousel-container">
+            <div class="swiper projects-swiper">
+                <div class="swiper-wrapper">
+                    {% for p in projects %}
+                    <div class="swiper-slide">
+                        <div class="project-card">
+                            <img class="project-image"
+                                src="{{ url_for('uploaded_file', filename=p.image) if p.image else 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=350&h=220&fit=crop' }}"
+                                alt="{{ p.title }}">
+                            <div class="project-content">
+                                <h3>{{ p.title }}</h3>
+                                <p>{{ p.description }}</p>
+                                <div class="project-tags">
+                                    <span class="project-tag">{{ p.category|capitalize }}</span>
+                                    <span class="project-tag">{{ p.status|capitalize }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <!-- Default project cards when no projects exist -->
+                    <div class="swiper-slide">
+                        <div class="project-card">
+                            <img class="project-image"
+                                src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=350&h=220&fit=crop"
+                                alt="Luxury Villa Project">
+                            <div class="project-content">
+                                <h3>Modern Luxury Villa</h3>
+                                <p>A stunning contemporary villa featuring state-of-the-art amenities and
+                                    exceptional architectural design in the heart of Chennai.</p>
+                                <div class="project-tags">
+                                    <span class="project-tag">Residential</span>
+                                    <span class="project-tag">Completed</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="project-card">
+                            <img class="project-image"
+                                src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=350&h=220&fit=crop"
+                                alt="Commercial Office Complex">
+                            <div class="project-content">
+                                <h3>Corporate Office Complex</h3>
+                                <p>A premium office space designed for modern businesses, featuring glass facades
+                                    and energy-efficient systems.</p>
+                                <div class="project-tags">
+                                    <span class="project-tag">Commercial</span>
+                                    <span class="project-tag">Ongoing</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="project-card">
+                            <img class="project-image"
+                                src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=350&h=220&fit=crop"
+                                alt="Apartment Complex">
+                            <div class="project-content">
+                                <h3>Premium Apartments</h3>
+                                <p>Luxury residential apartments with modern amenities, gardens, and recreational
+                                    facilities for families.</p>
+                                <div class="project-tags">
+                                    <span class="project-tag">Residential</span>
+                                    <span class="project-tag">Completed</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="project-card">
+                            <img class="project-image"
+                                src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=350&h=220&fit=crop"
+                                alt="Heritage Renovation">
+                            <div class="project-content">
+                                <h3>Heritage Home Renovation</h3>
+                                <p>Careful restoration of a traditional Chennai home, blending heritage architecture
+                                    with modern convenience.</p>
+                                <div class="project-tags">
+                                    <span class="project-tag">Renovation</span>
+                                    <span class="project-tag">Completed</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <!-- Pagination -->
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section - FIXED CAROUSEL -->
+<section id="testimonials" class="section">
+    <div class="container">
+        <div class="section-title fade-in-section">
+            <h2>What Our Clients Say</h2>
+            <p>We take pride in building lasting relationships with our clients, forged on trust and exceptional
+                results.</p>
+        </div>
+        <div class="carousel-container">
+            <div class="swiper testimonials-swiper">
+                <div class="swiper-wrapper">
+                    {% if testimonials %}
+                    {% for t in testimonials %}
+                    <div class="swiper-slide">
+                        <div class="testimonial-card" data-rating="{{ t.rating }}">
+                            <div class="rating">
+                                <!-- Stars will be populated by JavaScript -->
+                            </div>
+                            <div class="testimonial-text">{{ t.text }}</div>
+                            <div class="testimonial-author">
+                                <img src="{{ url_for('uploaded_file', filename=t.image) if t.image else 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=70&h=70&fit=crop&crop=face' }}"
+                                    alt="Photo of {{ t.name }}" class="author-photo">
+                                <div class="author-info">
+                                    <h4>{{ t.name }}</h4>
+                                    <p>{{ t.company }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <!-- Default testimonials when none exist -->
+                    <div class="swiper-slide">
+                        <div class="testimonial-card" data-rating="5">
+                            <div class="rating"></div>
+                            <div class="testimonial-text">RRR Construction delivered our dream home on time and
+                                within
+                                budget. Their attention to detail and commitment to quality is unmatched. We
+                                couldn't be happier with the results!</div>
+                            <div class="testimonial-author">
+                                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=70&h=70&fit=crop&crop=face"
+                                    alt="Photo of Suresh Kumar" class="author-photo">
+                                <div class="author-info">
+                                    <h4>Suresh Kumar</h4>
+                                    <p>Residential Home, Adyar</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="testimonial-card" data-rating="5">
+                            <div class="rating"></div>
+                            <div class="testimonial-text">We partnered with RRR for our new office space, and the
+                                result exceeded our expectations. Professional service and outstanding quality
+                                throughout the project.</div>
+                            <div class="testimonial-author">
+                                <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=70&h=70&fit=crop&crop=face"
+                                    alt="Photo of Priya Rajan" class="author-photo">
+                                <div class="author-info">
+                                    <h4>Priya Rajan</h4>
+                                    <p>Commercial Project, OMR</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="testimonial-card" data-rating="4">
+                            <div class="rating"></div>
+                            <div class="testimonial-text">The renovation was complex, but the RRR team handled it
+                                with
+                                great care. They blended modern amenities with traditional architecture beautifully.
+                            </div>
+                            <div class="testimonial-author">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=70&h=70&fit=crop&crop=face"
+                                    alt="Photo of Ananth Moorthy" class="author-photo">
+                                <div class="author-info">
+                                    <h4>Ananth Moorthy</h4>
+                                    <p>Home Renovation, Mylapore</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="testimonial-card" data-rating="5">
+                            <div class="rating"></div>
+                            <div class="testimonial-text">From concept to completion, RRR Construction maintained
+                                the highest standards. Their architectural team brought our vision to life
+                                perfectly.</div>
+                            <div class="testimonial-author">
+                                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=70&h=70&fit=crop&crop=face"
+                                    alt="Photo of Meera Iyer" class="author-photo">
+                                <div class="author-info">
+                                    <h4>Meera Iyer</h4>
+                                    <p>Custom Villa, ECR</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                <!-- Pagination -->
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="section">
+    <div class="container">
+        <div class="section-title">
+            <h2>Get In Touch</h2>
+            <p>Ready to start your construction project? Contact us today for a free consultation and quote.</p>
+        </div>
+        <div class="contact-content">
+            <div class="contact-form animate-fadeInLeft">
+                <form id="customerQueryForm" autocomplete="off" novalidate>
+                    <label for="name">Full Name *</label>
+                    <div class="form-field"><input type="text" required name="name" placeholder="Full Name" /></div>
+                    <label for="name">Email Address *</label>
+                    <div class="form-field"><input type="email" required name="email" placeholder="Email Address" />
+                    </div>
+                    <label for="name">Phone Number *</label>
+                    <div class="form-field"><input type="tel" required name="phone" placeholder="Phone Number"
+                            pattern="^(?:\+91)?[6-9]\d{9}$" /></div>
+                    <label for="name">Select service *</label>
+                    <div class="form-field">
+                        <select name="service" required>
+                            <option value="" selected disabled>Select Service Required</option>
+                            <option value="Residential Construction">Residential Construction</option>
+                            <option value="Commercial Projects">Commercial Projects</option>
+                            <option value="Renovation">Renovation & Remodeling</option>
+                            <option value="Architectural Design">Architectural Design</option>
+                        </select>
+                    </div>
+                    <label for="name">Enter Message *</label>
+                    <div class="form-field"><textarea name="message" rows="3" placeholder="Your Message"
+                            required></textarea></div>
+                    <button type="submit" class="btn btn-secondary form-submit-btn" id="submitBtn"><i
+                            class="fas fa-paper-plane"></i> send essage</button>
+                    <div id="formMsg" class="form-msg-box"></div>
+                </form>
+            </div>
+            <div class="contact-info animate-fadeInUp">
+                <h3>Contact Information</h3>
+
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div>
+                        <h4>Office Address</h4>
+                        <p>RRR Construction.<br>
+                            58, Satya Moorthy Street, Kalpalayam,<br>
+                            Kolathur, Chennai, Tamil Nadu 600017</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <div>
+                        <h4>Phone Number</h4>
+                        <p><a href="tel:+917358633124">+91 7358633124</a></p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div>
+                        <h4>Email Address</h4>
+                        <p><a href="mailto:info@buildwellconstructions.in">info@rrrconstruction.in</a></p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div>
+                        <h4>Business Hours</h4>
+                        <p>Mon - Sat: 9:00 AM - 6:00 PM<br>
+                            Sunday: 10:00 AM - 4:00 PM</p>
+                    </div>
+                </div>
+
+                <div class="map-container">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d242.83816298876357!2d80.20609170027784!3d13.136479978635904!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTPCsDA4JzExLjMiTiA4MMKwMTInMjIuNSJF!5e0!3m2!1sen!2sin!4v1758629477166!5m2!1sen!2sin"
+                        width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <!-- Company Info Section -->
+            <div class="footer-section company-info">
+                <div class="footer-logo">
+                    <div class="logo-icon">
+                        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="RRR Construction Logo"
+                            class="logo-img">
+                    </div>
+                    <h2>RRR Construction</h2>
+                </div>
+                <p class="company-description">
+                    Building Chennai's future with quality construction, innovative designs, and unwavering
+                    commitment to excellence.
+                </p>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook" class="social-link">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" aria-label="Instagram" class="social-link">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" aria-label="LinkedIn" class="social-link">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="#" aria-label="Twitter" class="social-link">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Links Section -->
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+
+            <!-- Services Section -->
+            <div class="footer-section">
+                <h3>Services</h3>
+                <ul class="footer-links">
+                    <li><a href="#services">Residential Construction</a></li>
+                    <li><a href="#services">Commercial Projects</a></li>
+                    <li><a href="#services">Renovation & Remodeling</a></li>
+                    <li><a href="#services">Architectural Design</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Info Section -->
+            <div class="footer-section contact-section">
+                <h3>Contact Info</h3>
+                <div class="contact-info">
+                    <p><i class="fas fa-map-marker-alt"></i> Kolathur, Chennai</p>
+                    <p><i class="fas fa-phone"></i> +91 7358633124</p>
+                    <p><i class="fas fa-envelope"></i> info@rrrconstruction.in</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Bottom -->
+        <div class="footer-bottom">
+            <p>&copy; <span id="copyrightYear"></span> RRR Construction. All rights reserved. | Designed with ❤️¸
+                for
+                Chennai</p>
+        </div>
+    </div>
+</footer>
+
+<!-- Floating WhatsApp Button -->
+<div class="whatsapp-float">
+    <a href="https://wa.me/917358633124?text=Hi! I'm interested in your construction services. Please provide more information."
+        target="_blank" aria-label="Contact us on WhatsApp" class="whatsapp-btn">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+</div>
+
+<!-- Swiper.js -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<!-- Link to external JavaScript file -->
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 
 <body>

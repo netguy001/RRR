@@ -1,15 +1,25 @@
-// Loading Screen - Updated
+// Show content as soon as DOM loads
+document.addEventListener('DOMContentLoaded', function () {
+    document.body.classList.add('content-loaded');
+});
+
+// Rest of your existing JavaScript...
+// // Show loading screen immediately
+document.documentElement.style.overflow = 'hidden';
+
+// Loading Screen - Fixed
 window.addEventListener('load', function () {
     const loadingScreen = document.getElementById('loadingScreen');
 
     // Minimum loading time of 2 seconds
     setTimeout(function () {
         loadingScreen.classList.add('fade-out');
+        document.documentElement.style.overflow = 'auto';
 
         // Start counter animations AFTER loading screen starts fading
         setTimeout(function () {
-            initCounters(); // Start counting now
-        }, 300); // Small delay after fade starts
+            initCounters();
+        }, 300);
 
         // Remove loading screen from DOM
         setTimeout(function () {
@@ -19,6 +29,7 @@ window.addEventListener('load', function () {
         }, 500);
     }, 2000);
 });
+
 document.addEventListener('DOMContentLoaded', function () {
     // --- HERO IMAGE SLIDER ---
     function initHeroSlider() {
@@ -327,9 +338,10 @@ document.addEventListener('DOMContentLoaded', function () {
         lastScrollTop = currentScroll;
     }
 
-    window.addEventListener('scroll', handleSmartNavbar); // Run once on load
+    window.addEventListener('scroll', handleSmartNavbar);
 });
-// Counter Animation - Updated to work with loading screen
+
+// Counter Animation Functions
 function startCounter(element, target) {
     let count = 0;
     const increment = target / 60;
@@ -361,21 +373,3 @@ function initCounters() {
         }
     });
 }
-
-// Start animations when page loads
-window.addEventListener('load', function () {
-    const counters = [
-        { element: document.querySelector('.hero-stats .stat:nth-child(1) h3'), target: 300 },
-        { element: document.querySelector('.hero-stats .stat:nth-child(2) h3'), target: 40 },
-        { element: document.querySelector('.hero-stats .stat:nth-child(3) h3'), target: 400 }
-    ];
-
-    counters.forEach((counter, index) => {
-        if (counter.element) {
-            counter.element.textContent = '0+';
-            setTimeout(() => {
-                startCounter(counter.element, counter.target);
-            }, index * 200); // Stagger animations
-        }
-    });
-});
